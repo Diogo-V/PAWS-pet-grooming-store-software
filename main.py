@@ -3,7 +3,7 @@ from animals import *
 from services import *
 from datetime import date
 
-
+# Sqlite-implementation-well
 
 Base.metadata.create_all(engine)  # Generate database schema
 
