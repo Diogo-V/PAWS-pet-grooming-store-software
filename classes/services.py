@@ -1,33 +1,12 @@
-from sqlalchemy import Column, Integer, String, Numeric, ForeignKey, Date, Table
-from sqlalchemy.orm import relationship
-from database import *
-
-
-
-# Holds relationship between services and appointments
-servicesAndAppointmentsAssociation = Table(
-    "servicesAndAppointments", Base.metadata,
-    Column("serviceId", Integer, ForeignKey("services.id")),
-    Column("appointmentId", Integer, ForeignKey("appointments.id"))
-    )
-
-
 # -------------------------------------------------------------------------------------------------------------------- #
 # ---------------------------------------------------- SERVICES ------------------------------------------------------ #
 # -------------------------------------------------------------------------------------------------------------------- #
 
 
-class Service(Base):
+class Service:
     """
     Represents a service provided by the store.
     """
-
-    __tablename__ = "services"  # Creates a table on the database with the name "services"
-
-    # Table columns and attributes
-    id = Column(Integer, primary_key=True)
-    description = Column(String)
-    price = Column(Numeric)
 
     def __init__(self, description=None, price=None):
         """
@@ -66,19 +45,10 @@ class Service(Base):
 # -------------------------------------------------------------------------------------------------------------------- #
 
 
-class Appointment(Base):
+class Appointment:
     """
     Represents an appointment. It's composed of a list of services and a date of occurrence.
     """
-
-    __tablename__ = "appointments"  # Creates a table on the database with the name "appointments"
-
-    # Table columns and attributes
-    id = Column(Integer, primary_key=True)
-    services = relationship("Service", secondary=servicesAndAppointmentsAssociation)  # Change: multiple services
-    dateOfAppointment = Column(Date)
-    animalId = Column(Integer, ForeignKey("animals.id"))
-    animal = relationship("Animal", backref="appointment")
 
     def __init__(self, services=None, dateOfAppointment=None, animal=None):
         """

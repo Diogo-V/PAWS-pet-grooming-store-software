@@ -1,34 +1,7 @@
-from sqlalchemy import Column, Integer, String, Numeric, ForeignKey, Date, Table
-from sqlalchemy.orm import relationship
-from database import *
-from datetime import date
-
-
-
-# Holds relationship between pets and owners
-animalsAndClientsAssociation = Table(
-    "animalsClients", Base.metadata,
-    Column("animalId", Integer, ForeignKey("animals.id")),
-    Column("clientsId", Integer, ForeignKey("clients.id"))
-    )
-
-
-class Animal(Base):
+class Animal:
     """
     Represents an animal. It is going to be owned by one or more clients.
     """
-
-    __tablename__ = "animals"  # Creates a table on the database with the name "animals"
-
-    # Table columns and attributes
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-    owners = relationship("Client", secondary=animalsAndClientsAssociation, back_populates="pets")
-    typeOfAnimal = Column(String)
-    weight = Column(Numeric)
-    birthDate = Column(Date, nullable=True)
-    history = Column(Integer)  # Change this one
-    observations = Column(String)
 
     numberOfAnimals = 0  # Amount of animals within our program
 

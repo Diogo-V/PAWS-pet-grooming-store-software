@@ -1,26 +1,7 @@
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import relationship
-from animals import animalsAndClientsAssociation
-from database import *
-
-
-
-class Client(Base):
+class Client:
     """
     Represents a client. Each client has one or more animals
     """
-
-    __tablename__ = "clients"  # Creates a table on the database with the name "clients"
-
-    # Table columns and attributes
-    id = Column(Integer, primary_key=True)
-    first = Column(String)
-    last = Column(String)
-    email = Column(String)
-    phone = Column(Integer)
-    nif = Column(Integer)
-    address = Column(String)
-    pets = relationship("Animal", secondary=animalsAndClientsAssociation, back_populates="owners")
 
     numberOfClients = 0  # Amount of clients within our program
 
