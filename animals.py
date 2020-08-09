@@ -4,7 +4,6 @@ from database import *
 from datetime import date
 
 
-
 # Holds relationship between pets and owners
 animalsAndClientsAssociation = Table(
     "animalsClients", Base.metadata,
