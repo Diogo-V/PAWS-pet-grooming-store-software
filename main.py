@@ -4,6 +4,7 @@ from services import *
 from datetime import date
 
 
+
 Base.metadata.create_all(engine)  # Generate database schema
 
 session = Session()  # Opens a session so that we can change things on our database

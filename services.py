@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 from database import *
 
 
+
 # Holds relationship between services and appointments
 servicesAndAppointmentsAssociation = Table(
     "servicesAndAppointments", Base.metadata,

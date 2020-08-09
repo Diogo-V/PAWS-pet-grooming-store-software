@@ -4,6 +4,7 @@ from animals import animalsAndClientsAssociation
 from database import *
 
 
+
 class Client(Base):
     """
     Represents a client. Each client has one or more animals
