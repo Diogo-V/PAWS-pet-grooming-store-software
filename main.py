@@ -26,7 +26,6 @@ client2 = Client(first="Martim", last="Venancio", phone=939611491)
 # session.add_all([animal1, animal2, animal3])
 # session.add(appointment2)
 
-
 print('All services:')
 for service in session.query(Service).all():
     print(service)
