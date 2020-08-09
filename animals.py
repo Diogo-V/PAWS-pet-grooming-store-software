@@ -1,7 +1,33 @@
-class Animal:
+from sqlalchemy import Column, Integer, String, Numeric, ForeignKey, Date, Table
+from sqlalchemy.orm import relationship
+from database import *
+from datetime import date
+
+
+# Holds relationship between pets and owners
+animalsAndClientsAssociation = Table(
+    "animalsClients", Base.metadata,
+    Column("animalId", Integer, ForeignKey("animals.id")),
+    Column("clientsId", Integer, ForeignKey("clients.id"))
+    )
+
+
+class Animal(Base):
     """
     Represents an animal. It is going to be owned by one or more clients.
     """
+
+    __tablename__ = "animals"  # Creates a table on the database with the name "animals"
+
+    # Table columns and attributes
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    owners = relationship("Client", secondary=animalsAndClientsAssociation, back_populates="pets")
+    typeOfAnimal = Column(String)
+    weight = Column(Numeric)
+    birthDate = Column(Date, nullable=True)
+    history = Column(Integer)  # Change this one
+    observations = Column(String)
 
     numberOfAnimals = 0  # Amount of animals within our program
 
@@ -10,22 +36,23 @@ class Animal:
         """
         Animal class constructor.
         :param name: animal nickname -> string
-        :param owners: clients which hold the pet -> list of clients (owners)
+        :param owners: clients which own the pet -> list of clients (owners)
         :param typeOfAnimal: type of animal -> string
         :param weight: animal's weight -> double
         :param birthDate: animal's birth date -> datetime
-        :param history: record of all of the services (with dates) provided to the pet -> list of services
-        :param observations: Notes about the pet -> String
+        :param history: record of all of the services (with dates) provided to the pet -> list of appointments
+        :param observations: notes about the pet -> string
         :param appointment: set of services appointed to the pet -> list of appointments
         """
         self.name = name if name is not None else ''
         self.owners = owners if owners is not None else []
         self.typeOfAnimal = typeOfAnimal if typeOfAnimal is not None else ''
         self.weight = weight if weight is not None else 0
-        self.birthDate = birthDate if birthDate is not None else 0
-        self.history = history if history is not None else []
+        self.birthDate = birthDate
+        self.history = history if history is not None else 0  # Change this one
         self.observations = observations if observations is not None else ''
-        self.appointment = appointment if appointment is not None else []
+        self.appointment = appointment if history is not None else []
+        Animal.numberOfAnimals += 1  # Since we created one more animal, we have to increment it
 
     def __repr__(self):
         """Unambiguous representation of our object. Used mainly for debugging purposes."""
@@ -34,7 +61,7 @@ class Animal:
 
     def __str__(self):
         """Readable representation of our object. Used mainly to display our object to the user."""
-        return f"Name: {self.name} | Owners: {self.owners} | History: {self.history}"
+        return f"Name: {self.name} | Owners: {self.owners} | History: {self.appointment}"
 
     def __len__(self):
         """Returns the amount of owners the pet has."""

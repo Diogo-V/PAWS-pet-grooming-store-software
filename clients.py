@@ -1,7 +1,25 @@
-class Client:
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
+from animals import animalsAndClientsAssociation
+from database import *
+
+
+class Client(Base):
     """
     Represents a client. Each client has one or more animals
     """
+
+    __tablename__ = "clients"  # Creates a table on the database with the name "clients"
+
+    # Table columns and attributes
+    id = Column(Integer, primary_key=True)
+    first = Column(String)
+    last = Column(String)
+    email = Column(String)
+    phone = Column(Integer)
+    nif = Column(Integer)
+    address = Column(String)
+    pets = relationship("Animal", secondary=animalsAndClientsAssociation, back_populates="owners")
 
     numberOfClients = 0  # Amount of clients within our program
 
@@ -20,7 +38,7 @@ class Client:
         self.first = first if first is not None else ''
         self.last = last if last is not None else ''
         self.email = email if email is not None else ''
-        self.phone = phone if phone is not None else []
+        self.phone = phone if phone is not None else 0
         self.nif = nif if nif is not None else 0
         self.address = address if address is not None else ''
         self.pets = pets if pets is not None else []
@@ -39,9 +57,33 @@ class Client:
         return len(self.pets)
 
     def addAnimal(self, animal):
+        """
+        Associates a new pet with this client.
+        :param animal: animal object to add -> animal
+        """
         if animal not in self.pets:
             self.pets.append(animal)
 
     def removeAnimal(self, animal):
+        """
+        Removes association between a pet and this client.
+        :param animal: animal object to add -> animal
+        """
         if animal in self.pets:
             self.pets.remove(animal)
+
+    def addPhoneNumber(self, phoneNumber):
+        """
+        Adds a new phone number for the client.
+        :param phoneNumber: new phone number -> 9 digit integer
+        """
+        if phoneNumber not in self.phone:
+            self.phone.append(phoneNumber)
+
+    def removePhoneNumber(self, phoneNumber):
+        """
+        Adds a new phone number for the client.
+        :param phoneNumber: new phone number -> 9 digit integer
+        """
+        if phoneNumber not in self.phone:
+            self.phone.append(phoneNumber)

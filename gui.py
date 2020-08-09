@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter import ttk
+from tkinter.ttk import *
 from tkinter import messagebox
 
 
@@ -10,20 +10,20 @@ from tkinter import messagebox
 
 root = Tk()  # Creates root window
 root.title('PAWS - Pet Grooming Store Software')  # Window title
-root.tk.call('wm', 'iconphoto', root._w, PhotoImage(file='images/paw.ico'))  # Puts an icon on the window
-root.attributes('-zoomed', True)  # Initializes windows as
+root.tk.call('wm', 'iconphoto', root._w, PhotoImage(file='images/paw.ico'))  # Attributes an icon to the application
+root.attributes('-zoomed', True)  # Initializes windows as maximized
 
 # Creates root notebook
-notebook = ttk.Notebook(root)
+notebook = Notebook(root)
 notebook.pack()
 
 # Changes style of notebook tabs
-ttk.Style().theme_settings(ttk.Style().theme_use(), {"TNotebook.Tab": {"configure": {"padding": [190.4, 9]}}})
+Style().theme_settings(Style().theme_use(), {"TNotebook.Tab": {"configure": {"padding": [190.4, 9]}}})
 
 # Creates frames inside the notebook
-frameAppointments = ttk.Frame(notebook, width=root.winfo_screenwidth(), height=root.winfo_screenheight())
-frameDatabase = ttk.Frame(notebook, width=root.winfo_screenwidth(), height=root.winfo_screenheight())
-frameStatistics = ttk.Frame(notebook, width=root.winfo_screenwidth(), height=root.winfo_screenheight())
+frameAppointments = Frame(notebook, width=root.winfo_screenwidth(), height=root.winfo_screenheight())
+frameDatabase = Frame(notebook, width=root.winfo_screenwidth(), height=root.winfo_screenheight())
+frameStatistics = Frame(notebook, width=root.winfo_screenwidth(), height=root.winfo_screenheight())
 
 # Puts the frames on the screen
 frameAppointments.pack(fill="both", expand=True)
@@ -41,11 +41,9 @@ notebook.add(frameStatistics, text='Statistics')
 # -------------------------------------------------------------------------------------------------------------------- #
 
 
-
 # -------------------------------------------------------------------------------------------------------------------- #
 # ------------------------------------------------ DATABASE FRAME ---------------------------------------------------- #
 # -------------------------------------------------------------------------------------------------------------------- #
-
 
 
 # -------------------------------------------------------------------------------------------------------------------- #

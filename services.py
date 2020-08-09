@@ -1,10 +1,32 @@
-from datetime import date
+from sqlalchemy import Column, Integer, String, Numeric, ForeignKey, Date, Table
+from sqlalchemy.orm import relationship
+from database import *
 
 
-class Service:
+# Holds relationship between services and appointments
+servicesAndAppointmentsAssociation = Table(
+    "servicesAndAppointments", Base.metadata,
+    Column("serviceId", Integer, ForeignKey("services.id")),
+    Column("appointmentId", Integer, ForeignKey("appointments.id"))
+    )
+
+
+# -------------------------------------------------------------------------------------------------------------------- #
+# ---------------------------------------------------- SERVICES ------------------------------------------------------ #
+# -------------------------------------------------------------------------------------------------------------------- #
+
+
+class Service(Base):
     """
     Represents a service provided by the store.
     """
+
+    __tablename__ = "services"  # Creates a table on the database with the name "services"
+
+    # Table columns and attributes
+    id = Column(Integer, primary_key=True)
+    description = Column(String)
+    price = Column(Numeric)
 
     def __init__(self, description=None, price=None):
         """
@@ -38,28 +60,43 @@ class Service:
         self.price = price
 
 
-class Appointment(Service):
+# -------------------------------------------------------------------------------------------------------------------- #
+# -------------------------------------------------- APPOINTMENTS ---------------------------------------------------- #
+# -------------------------------------------------------------------------------------------------------------------- #
+
+
+class Appointment(Base):
     """
-    Represents an appointment. It's composed of a service and a date of occurrence.
+    Represents an appointment. It's composed of a list of services and a date of occurrence.
     """
 
-    def __init__(self, description=None, price=None, dateOfAppointment=None):
+    __tablename__ = "appointments"  # Creates a table on the database with the name "appointments"
+
+    # Table columns and attributes
+    id = Column(Integer, primary_key=True)
+    services = relationship("Service", secondary=servicesAndAppointmentsAssociation)  # Change: multiple services
+    dateOfAppointment = Column(Date)
+    animalId = Column(Integer, ForeignKey("animals.id"))
+    animal = relationship("Animal", backref="appointment")
+
+    def __init__(self, services=None, dateOfAppointment=None, animal=None):
         """
         Appointment class constructor.
-        :param description: type of service provided -> string
-        :param price: price of the service -> double
+        :param services: services provided to the pet -> list of services
         :param dateOfAppointment: date when the service will be provided -> date
+        :param animal: animal object that holds this appointment -> animal
         """
-        super().__init__(description, price)
-        self.dateOfAppointment = dateOfAppointment if dateOfAppointment is not None else 0
+        self.services = services
+        self.dateOfAppointment = dateOfAppointment
+        self.animal = animal
 
     def __repr__(self):
         """Unambiguous representation of our object. Used mainly for debugging purposes."""
-        return f"Service({self.description}, {self.price}, {self.dateOfAppointment})"
+        return f"Service({self.services}, {self.dateOfAppointment})"
 
     def __str__(self):
         """Readable representation of our object. Used mainly to display our object to the user."""
-        return f"Description: {self.description} | Price: {self.price} | Date: {self.dateOfAppointment}"
+        return f"List of services: {self.services} | Date: {self.dateOfAppointment} | Animal: {self.animal}"
 
     def changeDate(self, newDate):
         """
@@ -67,3 +104,10 @@ class Appointment(Service):
         :param newDate: new appointment date -> date
         """
         self.dateOfAppointment = newDate
+
+    def changeAnimal(self, newAnimal):
+        """
+        Changes scheduled animal for this appointment.
+        :param newAnimal: pets that now owns this appointment -> animal
+        """
+        self.animal = newAnimal
