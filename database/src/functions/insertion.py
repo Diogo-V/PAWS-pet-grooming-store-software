@@ -1,11 +1,6 @@
 from sqlite3 import *
 
 
-def datetimeToString(myDate):
-    """Converts a datetime to a string. Used to serialize dates for the database."""
-    return myDate.strftime("%m/%d/%Y&%H-%M-%S")
-
-
 def insertRecordAnimal(animal):
     """
     Description:

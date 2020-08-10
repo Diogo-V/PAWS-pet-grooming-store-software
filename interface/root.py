@@ -11,7 +11,7 @@ from tkinter import messagebox
 root = Tk()  # Creates root window
 root.title('PAWS - Pet Grooming Store Software')  # Window title
 root.tk.call('wm', 'iconphoto', root._w, PhotoImage(file='../images/paw.ico'))  # Attributes an icon to the application
-root.attributes('-zoomed', True)  # Initializes windows as maximized
+root.attributes('-zoomed', True)  # Initializes src as maximized
 
 # Creates root notebook
 notebook = Notebook(root)

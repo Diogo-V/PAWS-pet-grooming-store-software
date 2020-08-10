@@ -1,6 +1,0 @@
-insert into animals (name, typeOfAnimal, weight, hairType, birthDate, observations) values ('Nossa', 'Cão', 20.112, '', date(2000, 8, 5), 'amigável');
-insert into animals (name, typeOfAnimal, weight, hairType, birthDate, observations) values ('Pérola', 'Gato', 15, 'Pelo longo', NULL, 'arranha muito');
-insert into animals (name, typeOfAnimal, weight, hairType, birthDate, observations) values ('Boris Alberto', 'Cão', 40.12, 'Pelo curto', date(2010, 7, 21), 'baboso')
-
-insert into clients (name, email, phone, nif, address) values ('Nuno Venancio', 'nuno@gmail.com', 121211221342, 73823228932, default);
-insert into clients (name, email, phone, nif, address) values ('Isabel', 'isabel@gmail.com', default, default, 'quinta')
