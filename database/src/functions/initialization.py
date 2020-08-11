@@ -67,7 +67,7 @@ def createsAppointmentsTable():
     cursor = connection.cursor()
     cursor.execute("""CREATE TABLE appointments (
         services varchar(255) default '',
-        dateOfAppointment date default NULL,
+        dateOfAppointment varchar(255) default NULL,
         animalId integer,
         FOREIGN KEY(animalId) REFERENCES animals(rowid)
         )""")
@@ -90,7 +90,7 @@ def createsHistoryTable():
     cursor = connection.cursor()
     cursor.execute("""CREATE TABLE history (
         services varchar(255) default '',
-        dateOfAppointment date default NULL,
+        dateOfAppointment varchar(255) default NULL,
         price numeric default 0,        
         animalId integer,
         FOREIGN KEY(animalId) REFERENCES animals(rowid)

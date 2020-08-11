@@ -1,55 +1,46 @@
-from tkinter import *
-from tkinter.ttk import *
-from tkinter import messagebox
+from interface.windows.appointments import *
+from interface.windows.database import *
+from interface.windows.statistics import *
 
 
-# -------------------------------------------------------------------------------------------------------------------- #
-# ---------------------------------------------- ROOT AND NOTEBOOK --------------------------------------------------- #
-# -------------------------------------------------------------------------------------------------------------------- #
+class MainApplication:
+    """
+    Creates a notebooks that holds our 3 tabs: appointments, database and statistics.
+    """
 
+    def __init__(self, title):
+        """
+        Description:
+        > Constructs our main window.
 
-root = Tk()  # Creates root window
-root.title('PAWS - Pet Grooming Store Software')  # Window title
-root.tk.call('wm', 'iconphoto', root._w, PhotoImage(file='../images/paw.ico'))  # Attributes an icon to the application
-root.attributes('-zoomed', True)  # Initializes src as maximized
+        :param title: title of our application -> string
+        """
 
-# Creates root notebook
-notebook = Notebook(root)
-notebook.pack()
+        self.root = Tk()  # Creates root window
+        self.root.title(title)  # Window title
+        self.root.tk.call('wm', 'iconphoto', self.root._w, PhotoImage(file='images/paw.ico'))  # Puts icon
+        self.root.attributes('-zoomed', True)  # Initializes src as maximized
 
-# Changes style of notebook tabs
-Style().theme_settings(Style().theme_use(), {"TNotebook.Tab": {"configure": {"padding": [190.4, 9]}}})
+        # Creates root's notebook
+        self.notebook = Notebook(self.root)
+        self.notebook.pack(fill='both', expand=True)
 
-# Creates frames inside the notebook
-frameAppointments = Frame(notebook, width=root.winfo_screenwidth(), height=root.winfo_screenheight())
-frameDatabase = Frame(notebook, width=root.winfo_screenwidth(), height=root.winfo_screenheight())
-frameStatistics = Frame(notebook, width=root.winfo_screenwidth(), height=root.winfo_screenheight())
+        # Changes style of notebook windows
+        Style().theme_settings(Style().theme_use(), {"TNotebook.Tab": {"configure": {"padding": [190.4, 9]}}})
 
-# Puts the frames on the screen
-frameAppointments.pack(fill="both", expand=True)
-frameDatabase.pack(fill="both", expand=True)
-frameStatistics.pack(fill="both", expand=True)
+        # Creates notebook's tabs
+        appointments = Appointments(self.notebook)
+        database = Database(self.notebook)
+        statistics = Statistics(self.notebook)
 
-# Creates tabs inside our notebook
-notebook.add(frameAppointments, text='Appointments')
-notebook.add(frameDatabase, text='Database')
-notebook.add(frameStatistics, text='Statistics')
+        # Adds our tabs to the notebook
+        self.notebook.add(appointments, text='Appointments')
+        self.notebook.add(database, text='Database')
+        self.notebook.add(statistics, text='Statistics')
 
+        # Puts notebook on the screen
+        self.notebook.pack()
 
-# -------------------------------------------------------------------------------------------------------------------- #
-# ---------------------------------------------- APPOINTMENTS FRAME -------------------------------------------------- #
-# -------------------------------------------------------------------------------------------------------------------- #
-
-
-# -------------------------------------------------------------------------------------------------------------------- #
-# ------------------------------------------------ DATABASE FRAME ---------------------------------------------------- #
-# -------------------------------------------------------------------------------------------------------------------- #
-
-
-# -------------------------------------------------------------------------------------------------------------------- #
-# ----------------------------------------------- STATISTICS FRAME --------------------------------------------------- #
-# -------------------------------------------------------------------------------------------------------------------- #
-
-
-# Closes main window
-root.mainloop()
+    def run(self):
+        """Runs our application."""
+        self.root.mainloop()
