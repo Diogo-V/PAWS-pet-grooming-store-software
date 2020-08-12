@@ -14,6 +14,7 @@ class Database(Frame):
 
         :param master: root window where is going to be inserted -> Tk
         """
+
         # Creates database tab for the notebook
         Frame.__init__(self, master)
         super().__init__(master, **kwargs)

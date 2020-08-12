@@ -1,6 +1,11 @@
-def datetimeToString(myDate):
-    """Converts a datetime to a string. Used to serialize dates for the database."""
-    return myDate.strftime("%m/%d/%Y&%H-%M-%S")
+def dateToString(myDate):
+    """Converts a date to a string. Used to serialize dates for the database."""
+    return myDate.strftime('%d/%m/%Y')
+
+
+def timeToString(myDate):
+    """Converts a time to a string. Used to serialize dates for the database."""
+    return myDate.strftime('%S-%M-%H')
 
 
 def servicesToString(lstServices):
@@ -10,12 +15,12 @@ def servicesToString(lstServices):
 
     # Iterates over each service and adds an | at the end to separate them
     for service in lstServices:
-        strServices += service + "|"
+        strServices += service + " + "
 
     # Removes last | and returns the final string
-    return strServices[0:-1]
+    return strServices[0:-3]
 
 
 def stringToServices(strServices):
     """Converts a string of services into an array. Used to deserialize a string for the database."""
-    return strServices.split("|")
+    return strServices.split(" + ")

@@ -91,7 +91,7 @@ def insertRecordAppointment(appointment):
     try:
 
         # SQL syntax that is going to be parsed inside the database console
-        query = "insert into appointments (services, dateOfAppointment, animalId) VALUES (?, ?, ?)"
+        query = "insert into appointments (services, date, time, animalId) VALUES (?, ?, ?, ?)"
 
         # Executes command
         cursor.execute(query, appointment)
@@ -128,7 +128,7 @@ def insertRecordHistory(history):
     try:
 
         # SQL syntax that is going to be parsed inside the database console
-        query = "insert into history (services, dateOfAppointment, price, animalId) VALUES (?, ?, ?, ?)"
+        query = "insert into history (services, date, time, price, animalId) VALUES (?, ?, ?, ?, ?)"
 
         # Executes command
         cursor.execute(query, history)

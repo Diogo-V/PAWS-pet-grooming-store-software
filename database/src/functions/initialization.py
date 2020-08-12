@@ -60,14 +60,16 @@ def createsAppointmentsTable():
     Database inputs:
     > id: primary key -> integer
     > services: set of services that are going to be provided -> list of strings
-    > dateOfAppointment: date of execution -> date
+    > date: date of execution -> date
+    > time: time of the day -> time
     > animalId: animal that holds this appointment -> integer
     """
     connection = connect("database/database.sqlite")
     cursor = connection.cursor()
     cursor.execute("""CREATE TABLE appointments (
         services varchar(255) default '',
-        dateOfAppointment varchar(255) default NULL,
+        date varchar(255) default NULL,
+        time varchar(255) default NULL,
         animalId integer,
         FOREIGN KEY(animalId) REFERENCES animals(rowid)
         )""")
@@ -82,7 +84,8 @@ def createsHistoryTable():
     Database inputs:
     > id: primary key -> integer
     > services: set of services that are going to be provided -> list of strings
-    > dateOfAppointment: date of execution -> date
+    > date: date of execution -> date
+    > time: time of the day -> time
     > price: amount paid -> double
     > animalId: animal that holds this appointment -> integer
     """
@@ -90,7 +93,8 @@ def createsHistoryTable():
     cursor = connection.cursor()
     cursor.execute("""CREATE TABLE history (
         services varchar(255) default '',
-        dateOfAppointment varchar(255) default NULL,
+        date varchar(255) default NULL,
+        time varchar(255) default NULL,
         price numeric default 0,        
         animalId integer,
         FOREIGN KEY(animalId) REFERENCES animals(rowid)

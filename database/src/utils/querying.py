@@ -1,4 +1,6 @@
 from sqlite3 import *
+from database.src.utils.converters import *
+from datetime import date
 
 
 def getsClientPets(identifier):
@@ -130,6 +132,60 @@ def getsPetHistory(identifier):
 
         # Returns history found during query
         return history
+
+    except Error:
+
+        # Error information and details processing
+        print(type(Error))
+        print(Error.args)
+        print(Error)
+
+    finally:
+
+        connection.close()  # Closes connection with our database
+
+
+def getsDayAppointments(day):
+    """
+    Description:
+    Gets a list of appointments for a specific day.
+
+    :param day: required date -> date
+    """
+
+    # Creates a connection to our database and a cursor to work with it
+    connection = connect("database/database.sqlite")
+    cursor = connection.cursor()
+
+    try:
+
+        # SQL syntax that is going to be parsed inside the database console
+        query = f"""
+                select
+                    animals.name, 
+                    clients.name,
+                    appointments.services, 
+                    appointments.time,
+                    clients.phone,
+                    animals.observations
+                from
+                    animals
+                inner join
+                    appointments,
+                    clients,
+                    petsClientsLink
+                where
+                    appointments.date = '{dateToString(day)}' and
+                    appointments.animalId = petsClientsLink.petId and
+                    animals.ROWID = petsClientsLink.petId and
+                    clients.ROWID = petsClientsLink.clientId
+                """
+
+        # Executes command and gets a list of appointments
+        appointments = cursor.execute(query).fetchall()
+
+        # Returns appointments found during query
+        return appointments
 
     except Error:
 
