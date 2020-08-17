@@ -2,17 +2,10 @@ from tkinter import *
 from tkinter.ttk import *
 from database.src.utils.querying import *
 from datetime import date
+from operator import itemgetter
 
 
-# Criar a parte de quando clico numa das entradas da arvore e aparece uma descrição sobre o appointment + 2 butões
-# para o cancelar e para o concluir
-
-# Criar a parte de dar refresh cada vez que entro na aba dos appointments
-
-# Criar a parte de criar, deletar e dar update nos appointments
-
-# Criar a parte em que os resultados aparecem todos sorted pela hora de entrada
-
+# tree.bind('<Double 1>', getRow) -> getRow é uma função
 
 class Appointments(Frame):
     """
@@ -43,16 +36,16 @@ class Appointments(Frame):
 
         # Creates tree that will display all the appointments for the day
         self.tree = Treeview(self.display, columns=(1, 2, 3, 4, 5, 6), height=900)
-        self.tree.pack(padx=10, pady=10)
+        self.tree.pack(side=LEFT, padx=10, pady=10)
 
         # Formats columns
         self.tree.column("#0", stretch=NO, anchor='center', width=0)
-        self.tree.column(1, stretch=NO, anchor='center', width=216)
-        self.tree.column(2, stretch=NO, anchor='center', width=216)
-        self.tree.column(3, stretch=NO, anchor='center', width=216)
-        self.tree.column(4, stretch=NO, anchor='center', width=216)
-        self.tree.column(5, stretch=NO, anchor='center', width=216)
-        self.tree.column(6, stretch=NO, anchor='center', width=216)
+        self.tree.column(1, stretch=NO, anchor='center', width=214)
+        self.tree.column(2, stretch=NO, anchor='center', width=214)
+        self.tree.column(3, stretch=NO, anchor='center', width=214)
+        self.tree.column(4, stretch=NO, anchor='center', width=214)
+        self.tree.column(5, stretch=NO, anchor='center', width=214)
+        self.tree.column(6, stretch=NO, anchor='center', width=214)
 
         # Define columns heading
         self.tree.heading('#0', text='', anchor='w')
@@ -62,6 +55,11 @@ class Appointments(Frame):
         self.tree.heading(4, text='Hora', anchor='center')
         self.tree.heading(5, text='Número de telemóvel', anchor='center')
         self.tree.heading(6, text='Observações', anchor='center')
+
+        # Creates a scrollbar for the tree view and then puts it on the screen
+        self.scrollbar = Scrollbar(self.display, orient="vertical", command=self.tree.yview)
+        self.scrollbar.pack(side=RIGHT, fill="y")
+        self.tree.configure(yscrollcommand=self.scrollbar.set)
 
         # Allocates memory for the entry values and puts today's date in there
         day = StringVar(self.search, value=str(date.today().day))
@@ -94,7 +92,7 @@ class Appointments(Frame):
         Description:
         > Gets values inside each entry box and creates a date
         """
-        return date(self.entryYear.get(), self.entryMonth.get(), self.entryDay.get())
+        return date(eval(self.entryYear.get()), eval(self.entryMonth.get()), eval(self.entryDay.get()))
 
     def updateTree(self):
         """
@@ -103,15 +101,16 @@ class Appointments(Frame):
         """
 
         # Gets values of each entry
-        dateAppointment = date(eval(self.entryYear.get()), eval(self.entryMonth.get()), eval(self.entryDay.get()))
+        dateAppointment = self.getsEntriesDate()
 
         # Deletes previous rows before inserting the new ones
+        self.tree.delete(*self.tree.get_children())
 
         # Gets rows to be displayed
         rows = getsDayAppointments(dateAppointment)
 
         # Sorts rows according to it's time of arrival at the store
-        sorted(rows)
+        rows.sort(key=itemgetter(3))
 
         # Gets rows to be displayed and does so
         for row in rows:
