@@ -145,12 +145,12 @@ def getsPetHistory(identifier):
         connection.close()  # Closes connection with our database
 
 
-def getsDayAppointments(day):
+def getsDayAppointments(dateAppointment):
     """
     Description:
     Gets a list of appointments for a specific day.
 
-    :param day: required date -> date
+    :param dateAppointment: required date -> date
     """
 
     # Creates a connection to our database and a cursor to work with it
@@ -175,7 +175,7 @@ def getsDayAppointments(day):
                     clients,
                     petsClientsLink
                 where
-                    appointments.date = '{dateToString(day)}' and
+                    appointments.date = '{dateToString(dateAppointment)}' and
                     appointments.animalId = petsClientsLink.petId and
                     animals.ROWID = petsClientsLink.petId and
                     clients.ROWID = petsClientsLink.clientId

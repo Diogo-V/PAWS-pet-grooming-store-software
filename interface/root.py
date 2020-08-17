@@ -26,7 +26,7 @@ class MainApplication:
         self.notebook.pack(fill='both', expand=True)
 
         # Changes style of notebook windows
-        Style().theme_settings(Style().theme_use(), {"TNotebook.Tab": {"configure": {"padding": [190.4, 9]}}})
+        Style().theme_settings(Style().theme_use(), {"TNotebook.Tab": {"configure": {"padding": [185.5, 9]}}})
 
         # Creates notebook's tabs
         appointments = Appointments(self.notebook)
@@ -34,9 +34,9 @@ class MainApplication:
         statistics = Statistics(self.notebook)
 
         # Adds our tabs to the notebook
-        self.notebook.add(appointments, text='Appointments')
-        self.notebook.add(database, text='Database')
-        self.notebook.add(statistics, text='Statistics')
+        self.notebook.add(appointments, text='Marcações')
+        self.notebook.add(database, text='Base de dados')
+        self.notebook.add(statistics, text='Estatisticas')
 
         # Puts notebook on the screen
         self.notebook.pack()

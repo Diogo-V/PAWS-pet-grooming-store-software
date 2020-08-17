@@ -22,3 +22,8 @@ class Database(Frame):
         # Creates tab main window and puts it on the screen
         self.window = Frame(self, height=self.winfo_screenheight(), width=self.winfo_screenmmwidth())
         self.window.pack(fill='both', expand=True)
+
+        # Creates a frame for the pets and puts it on the screen
+        self.pets = LabelFrame(self.window, text=' Animais ', width=500, height=500)
+        self.pets.pack()
+
