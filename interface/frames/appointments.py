@@ -1,11 +1,8 @@
-from tkinter import *
-from tkinter.ttk import *
 from database.src.utils.querying import *
 from datetime import date
 from operator import itemgetter
+from interface.windows.appointment import *
 
-
-# tree.bind('<Double 1>', getRow) -> getRow é uma função
 
 class Appointments(Frame):
     """
@@ -31,8 +28,8 @@ class Appointments(Frame):
         # Creates a search frame and a display frame and puts them on the screen
         self.search = LabelFrame(self.window, text=' Pesquisar dia ', width=1500, height=100)
         self.display = LabelFrame(self.window, text=' Marcações ')
-        self.search.pack(padx=20, pady=20)
-        self.display.pack(padx=20, pady=(0, 20))
+        self.search.pack(padx=20, pady=20, fill="both", expand=True)
+        self.display.pack(padx=20, pady=(0, 20), fill="both", expand=True)
 
         # Creates tree that will display all the appointments for the day
         self.tree = Treeview(self.display, columns=(1, 2, 3, 4, 5, 6), height=900)
@@ -87,6 +84,9 @@ class Appointments(Frame):
         # Initializes appointments tree view with today's appointments
         self.updateTree()
 
+        # Links double click with a window popup
+        self.tree.bind('<Double 1>', self.displayAppointmentsWindow)
+
     def getsEntriesDate(self):
         """
         Description:
@@ -112,6 +112,26 @@ class Appointments(Frame):
         # Sorts rows according to it's time of arrival at the store
         rows.sort(key=itemgetter(3))
 
-        # Gets rows to be displayed and does so
+        # Displays rows inside our tree
         for row in rows:
             self.tree.insert('', 'end', values=row)
+
+    def displayAppointmentsWindow(self, event):
+        """
+        Description:
+        > Displays toplevel window with the information about the selected appointment.
+
+        :param event: event of clicking a button -> event
+        """
+
+        # Gets row that was clicked
+        item = self.tree.identify_row(event.y)
+
+        # If the user didn't click on a blank space, shows the toplevel window else, does nothing
+        if item:
+
+            # Gets row information
+            info = self.tree.item(item, 'value')
+
+            # Creates toplevel window that will display the information about this appointment
+            WindowAppointment(self.display, info)

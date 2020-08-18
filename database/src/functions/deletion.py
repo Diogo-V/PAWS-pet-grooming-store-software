@@ -21,7 +21,7 @@ def deleteRecordAnimal(identifier):
         # Executes command
         cursor.execute(query)
 
-        # Writes new record in the database
+        # Deletes record from the database
         connection.commit()
 
     except Error:
@@ -58,7 +58,7 @@ def deleteRecordClient(identifier):
         # Executes command
         cursor.execute(query)
 
-        # Writes new record in the database
+        # Deletes record from the database
         connection.commit()
 
     except Error:
@@ -95,7 +95,7 @@ def deleteRecordAppointment(identifier):
         # Executes command
         cursor.execute(query)
 
-        # Writes new record in the database
+        # Deletes record from the database
         connection.commit()
 
     except Error:
@@ -132,7 +132,7 @@ def deleteRecordHistory(identifier):
         # Executes command
         cursor.execute(query)
 
-        # Writes new record in the database
+        # Deletes record from the database
         connection.commit()
 
     except Error:
@@ -169,7 +169,7 @@ def deleteRecordPetClientLink(identifier):
         # Executes command
         cursor.execute(query)
 
-        # Writes new record in the database
+        # Deletes record from the database
         connection.commit()
 
     except Error:

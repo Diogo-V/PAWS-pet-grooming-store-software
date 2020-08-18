@@ -16,13 +16,13 @@ def createsAnimalsTable():
     """
     connection = connect("database/database.sqlite")
     cursor = connection.cursor()
-    cursor.execute("""CREATE TABLE animals (
-        name varchar(255) default NULL, 
+    cursor.execute("""CREATE TABLE IF NOT EXISTS animals (
+        name varchar(255) default '', 
         typeOfAnimal varchar(255) default 'Cão',
-        weight numeric default NULL,
+        weight numeric default 0,
         hairType varchar(255) default 'Pelo curto',
-        birthDate varchar(255) default NULL,
-        observations varchar(255) default NULL
+        birthDate varchar(255) default '',
+        observations varchar(255) default ''
         )""")
     connection.commit()
     connection.close()
@@ -42,7 +42,7 @@ def createsClientsTable():
     """
     connection = connect("database/database.sqlite")
     cursor = connection.cursor()
-    cursor.execute("""CREATE TABLE clients (
+    cursor.execute("""CREATE TABLE IF NOT EXISTS clients (
         name varchar(255) default '',
         email varchar(255) default '',
         phone integer default 0,
@@ -62,14 +62,16 @@ def createsAppointmentsTable():
     > services: set of services that are going to be provided -> list of strings
     > date: date of execution -> date
     > time: time of the day -> time
+    > price: amount paid -> double
     > animalId: animal that holds this appointment -> integer
     """
     connection = connect("database/database.sqlite")
     cursor = connection.cursor()
-    cursor.execute("""CREATE TABLE appointments (
+    cursor.execute("""CREATE TABLE IF NOT EXISTS appointments (
         services varchar(255) default '',
-        date varchar(255) default NULL,
-        time varchar(255) default NULL,
+        date varchar(255) default '',
+        time varchar(255) default '',
+        price numeric default 0,
         animalId integer,
         FOREIGN KEY(animalId) REFERENCES animals(rowid)
         )""")
@@ -91,7 +93,7 @@ def createsHistoryTable():
     """
     connection = connect("database/database.sqlite")
     cursor = connection.cursor()
-    cursor.execute("""CREATE TABLE history (
+    cursor.execute("""CREATE TABLE IF NOT EXISTS history (
         services varchar(255) default '',
         date varchar(255) default NULL,
         time varchar(255) default NULL,
@@ -114,31 +116,9 @@ def createsPetsClientsLinkTable():
         """
     connection = connect("database/database.sqlite")
     cursor = connection.cursor()
-    cursor.execute("""CREATE TABLE petsClientsLink (
+    cursor.execute("""CREATE TABLE IF NOT EXISTS petsClientsLink (
             petId integer default 0,
             clientId integer default 0
             )""")
-    connection.commit()
-    connection.close()
-
-
-def initAllTables():
-    """Creates and initiates all tables."""
-    createsAnimalsTable()
-    createsClientsTable()
-    createsPetsClientsLinkTable()
-    createsAppointmentsTable()
-    createsHistoryTable()
-
-
-def deleteAllTables():
-    """Deletes all existing tables inside our database."""
-    connection = connect("database/database.sqlite")
-    cursor = connection.cursor()
-    cursor.execute("DROP TABLE animals")
-    cursor.execute("DROP TABLE clients")
-    cursor.execute("DROP TABLE petsClientsLink")
-    cursor.execute("DROP TABLE appointments")
-    cursor.execute("DROP TABLE history")
     connection.commit()
     connection.close()

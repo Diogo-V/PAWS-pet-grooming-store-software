@@ -1,11 +1,10 @@
 from interface.root import *
-from database.src.functions.insertion import *
-from datetime import *
-from database.src.utils.constants import *
+from database.src.root import *
 
 
 def main():
-    """Creates the user interface and every functionally that comes with it."""
+    """Creates our application by initializing the database and the user interface."""
+    initDatabase()
     root = MainApplication('PAWS - Pet Grooming Store Software')
     root.run()
 

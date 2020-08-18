@@ -24,7 +24,7 @@ link1 = (1, 1)
 link2 = (3, 1)
 link3 = (2, 2)
 
-initAllTables()
+initDatabase()
 
 insertRecordAnimal(animal1)
 insertRecordAnimal(animal2)
