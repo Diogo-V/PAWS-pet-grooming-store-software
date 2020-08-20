@@ -35,6 +35,11 @@ class WindowAppointment(Toplevel):
         self.clientWindow.pack(side=LEFT, fill='both', expand=True)
         self.appointmentWindow.pack(side=LEFT, fill='both', expand=True)
 
+        # Blocks resizing for each labelFrame
+        self.petWindow.grid_propagate(False)
+        self.clientWindow.grid_propagate(False)
+        self.appointmentWindow.grid_propagate(False)
+
         # Gets a list containing the information that is going to be displayed
         self.information = getsInfoForAppointmentsWindow(appointmentID)
 
