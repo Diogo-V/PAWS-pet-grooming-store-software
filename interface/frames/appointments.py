@@ -1,5 +1,3 @@
-from database.src.utils.querying import *
-from datetime import date
 from operator import itemgetter
 from interface.windows.appointment import *
 
@@ -32,11 +30,12 @@ class Appointments(Frame):
         self.display.pack(padx=20, pady=(0, 20), fill="both", expand=True)
 
         # Creates tree that will display all the appointments for the day
-        self.tree = Treeview(self.display, columns=(1, 2, 3, 4, 5, 6), height=900)
+        self.tree = Treeview(self.display, columns=(0, 1, 2, 3, 4, 5, 6), height=900)
         self.tree.pack(side=LEFT, padx=10, pady=10)
 
         # Formats columns
         self.tree.column("#0", stretch=NO, anchor='center', width=0)
+        self.tree.column(0, stretch=NO, anchor='center', width=0)
         self.tree.column(1, stretch=NO, anchor='center', width=214)
         self.tree.column(2, stretch=NO, anchor='center', width=214)
         self.tree.column(3, stretch=NO, anchor='center', width=214)
@@ -46,6 +45,7 @@ class Appointments(Frame):
 
         # Define columns heading
         self.tree.heading('#0', text='', anchor='w')
+        self.tree.heading(0, text='', anchor='w')  # Used to store appointments' id
         self.tree.heading(1, text='Nome do animal', anchor='center')
         self.tree.heading(2, text='Nome do cliente', anchor='center')
         self.tree.heading(3, text='Serviços', anchor='center')
@@ -110,7 +110,7 @@ class Appointments(Frame):
         rows = getsDayAppointments(dateAppointment)
 
         # Sorts rows according to it's time of arrival at the store
-        rows.sort(key=itemgetter(3))
+        rows.sort(key=itemgetter(4))
 
         # Displays rows inside our tree
         for row in rows:
@@ -131,7 +131,10 @@ class Appointments(Frame):
         if item:
 
             # Gets row information
-            info = self.tree.item(item, 'value')
+            info = self.tree.item(item, 'values')
+
+            # Since we only need the appointment id to query trough the database, we discard the rest
+            appointmentID = info[0]
 
             # Creates toplevel window that will display the information about this appointment
-            WindowAppointment(self.display, info)
+            WindowAppointment(self.display, appointmentID)
