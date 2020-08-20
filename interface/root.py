@@ -1,6 +1,7 @@
 from interface.frames.appointments import *
 from interface.frames.database import *
 from interface.frames.statistics import *
+from tkinter.font import *
 
 
 class MainApplication:
@@ -20,6 +21,15 @@ class MainApplication:
         self.root.title(title)  # Window title
         self.root.tk.call('wm', 'iconphoto', self.root._w, PhotoImage(file='images/paw.ico'))  # Puts icon
         self.root.attributes('-zoomed', True)  # Initializes src as maximized
+
+        # Changes default font of the entire file
+        myFont = Font(font=("Varela", 12))
+        self.root.option_add("*Font", myFont)
+        s = Style()
+
+        s.configure('Red.TLabelframe.Label', font=('courier', 15, 'bold'))
+        s.configure('Red.TLabelframe.Label', foreground='red')
+        s.configure('Red.TLabelframe.Label', background='blue')
 
         # Creates root's notebook
         self.notebook = Notebook(self.root)

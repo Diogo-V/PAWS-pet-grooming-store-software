@@ -43,37 +43,32 @@ class WindowAppointment(Toplevel):
         [clientName, clientNIF, clientPhone] = self.getsClientInfo()
         [appServices, appDate, appTime, appPrice] = self.getsAppointmentInfo()
 
-        # Creates labels that will describe each field in each section
-        Label(self.petWindow, text='Nome: ').grid(column=0, row=0, sticky='e', pady=35)
-        Label(self.petWindow, text='Tipo de animal: ').grid(column=0, row=1, sticky='e', pady=35)
-        Label(self.petWindow, text='Peso: ').grid(column=0, row=2, sticky='e', pady=35)
-        Label(self.petWindow, text='Tipo de pelo: ').grid(column=0, row=3, sticky='e', pady=35)
-        Label(self.petWindow, text='Observações: ').grid(column=0, row=4, sticky='e', pady=35)
+        # Formats some fields so that they don't show 'None'
+        if petObservations is None:
+            petObservations = ''
+        if clientPhone is None:
+            clientPhone = ''
+        if clientNIF is None:
+            clientNIF = ''
+        if petWeight is None or petWeight is 0:
+            petWeight = ''
 
-        Label(self.clientWindow, text='Nome: ').grid(column=0, row=0, sticky='e', pady=35)
-        Label(self.clientWindow, text='NIF: ').grid(column=0, row=1, sticky='e', pady=35)
-        Label(self.clientWindow, text='Número de telemóvel: ').grid(column=0, row=2, sticky='e', pady=35)
+        # Creates labels that will describe each field in each section and inserts information after it
+        Label(self.petWindow, text=f'Nome:  {petName}').grid(column=0, row=0, sticky='w', pady=35)
+        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=5, sticky='ew')
+        Label(self.petWindow, text=f'Tipo de animal:  {petType}').grid(column=0, row=1, sticky='w', pady=35)
+        Label(self.petWindow, text=f'Peso:  {petWeight}Kg').grid(column=0, row=2, sticky='w', pady=35)
+        Label(self.petWindow, text=f'Tipo de pelo:  {petHair}').grid(column=0, row=3, sticky='w', pady=35)
+        Label(self.petWindow, text=f'Observações:  {petObservations}').grid(column=0, row=4, sticky='e', pady=35)
 
-        Label(self.appointmentWindow, text='Serviços: ').grid(column=0, row=0, sticky='e', pady=35)
-        Label(self.appointmentWindow, text='Dia: ').grid(column=0, row=1, sticky='e', pady=35)
-        Label(self.appointmentWindow, text='Hora: ').grid(column=0, row=2, sticky='e', pady=35)
-        Label(self.appointmentWindow, text='Preço do servico: ').grid(column=0, row=3, sticky='e', pady=35)
+        Label(self.clientWindow, text=f'Nome:  {clientName}').grid(column=0, row=0, sticky='w', pady=35)
+        Label(self.clientWindow, text=f'NIF:  {clientNIF}').grid(column=0, row=1, sticky='w', pady=35)
+        Label(self.clientWindow, text=f'Número de telemóvel:  {clientPhone}').grid(column=0, row=2, sticky='w', pady=35)
 
-        # Inserts information about each field for each section after each label
-        Label(self.petWindow, text=petName).grid(column=1, row=0, sticky='w', pady=35)
-        Label(self.petWindow, text=petType).grid(column=1, row=1, sticky='w', pady=35)
-        Label(self.petWindow, text=f"{petWeight}Kg").grid(column=1, row=2, sticky='w', pady=35)
-        Label(self.petWindow, text=petHair).grid(column=1, row=3, sticky='w', pady=35)
-        Label(self.petWindow, text=petObservations).grid(column=1, row=4, sticky='w', pady=35)
-
-        Label(self.clientWindow, text=clientName).grid(column=1, row=0, sticky='w', pady=35)
-        Label(self.clientWindow, text=clientNIF).grid(column=1, row=1, sticky='w', pady=35)
-        Label(self.clientWindow, text=clientPhone).grid(column=1, row=2, sticky='w', pady=35)
-
-        Label(self.appointmentWindow, text=appServices).grid(column=1, row=0, sticky='w', pady=35)
-        Label(self.appointmentWindow, text=appDate).grid(column=1, row=1, sticky='w', pady=35)
-        Label(self.appointmentWindow, text=appTime).grid(column=1, row=2, sticky='w', pady=35)
-        Label(self.appointmentWindow, text=f"{appPrice}€").grid(column=1, row=3, sticky='w', pady=35)
+        Label(self.appointmentWindow, text=f'Serviços:  {appServices}').grid(column=0, row=0, sticky='w', pady=35)
+        Label(self.appointmentWindow, text=f'Dia:  {appDate}').grid(column=0, row=1, sticky='w', pady=35)
+        Label(self.appointmentWindow, text=f'Hora:  {appTime}').grid(column=0, row=2, sticky='w', pady=35)
+        Label(self.appointmentWindow, text=f'Preço do servico:  {appPrice}€').grid(column=0, row=3, sticky='w', pady=35)
 
     def getsPetInfo(self):
         """Gets and filters information about the pet from the information list."""
