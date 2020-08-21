@@ -1,10 +1,10 @@
 from operator import itemgetter
-from interface.windows.appointment import *
+from interface.popupWindows.appointment import *
 from datetime import date
 from database.src.utils.querying import getsDayAppointments
 
 
-class Appointments(Frame):
+class Clients(Frame):
     """
     Frame that holds appointments for the day.
     """
