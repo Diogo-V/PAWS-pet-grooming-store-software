@@ -1,5 +1,7 @@
 from operator import itemgetter
 from interface.windows.appointment import *
+from datetime import date
+from database.src.utils.querying import getsDayAppointments
 
 
 class Appointments(Frame):
@@ -28,6 +30,10 @@ class Appointments(Frame):
         self.display = LabelFrame(self.window, text=' Marcações ')
         self.search.pack(padx=20, pady=20, fill="both", expand=True)
         self.display.pack(padx=20, pady=(0, 20), fill="both", expand=True)
+
+        # Blocks resizing for each labelFrame
+        self.search.grid_propagate(False)
+        self.display.grid_propagate(False)
 
         # Creates tree that will display all the appointments for the day
         self.tree = Treeview(self.display, columns=(0, 1, 2, 3, 4, 5, 6), height=900)
@@ -77,14 +83,18 @@ class Appointments(Frame):
         self.entryYear = Entry(self.search, textvariable=year)
         self.entryYear.pack(side=LEFT, padx=(0, 15), pady=20)
 
+        # Creates refresh button and puts it on the screen
+        self.refresh = Button(self.search, text='Hoje', command=lambda: self.refreshTree(self))
+        self.refresh.pack(side=LEFT, padx=(250, 10), pady=20)
+
         # Creates search button and puts it on the screen
-        self.button = Button(self.search, text='Procurar', command=self.updateTree)
-        self.button.pack(side=LEFT, padx=(515, 30), pady=20)
+        self.button = Button(self.search, text='Procurar', command=self.updateTreeDate)
+        self.button.pack(side=LEFT, padx=(10, 50), pady=20)
 
         # Initializes appointments tree view with today's appointments
-        self.updateTree()
+        self.updateTreeDate()
 
-        # Links double click with a window popup
+        # Links double click on a row with a window popup
         self.tree.bind('<Double 1>', self.displayAppointmentsWindow)
 
     def getsEntriesDate(self):
@@ -92,29 +102,32 @@ class Appointments(Frame):
         Description:
         > Gets values inside each entry box and creates a date
         """
-        return date(eval(self.entryYear.get()), eval(self.entryMonth.get()), eval(self.entryDay.get()))
 
-    def updateTree(self):
+        # Gets information (strings) from each entry
+        year = self.entryYear.get()
+        month = self.entryMonth.get()
+        day = self.entryDay.get()
+
+        # If one of the entries is empty, returns today's date. If not, returns requested date
+        if year == '' or month == '' or day == '':
+            return date.today()
+        else:
+            return date(eval(year), eval(month), eval(day))
+
+    def updateTreeDate(self):
         """
         Description:
-        > Gets values inside our search entries and updates rows inside our tree view.
+        > Gets values inside our search entries and gets rows that are going to be displayed.
         """
 
         # Gets values of each entry
         dateAppointment = self.getsEntriesDate()
 
-        # Deletes previous rows before inserting the new ones
-        self.tree.delete(*self.tree.get_children())
-
         # Gets rows to be displayed
         rows = getsDayAppointments(dateAppointment)
 
-        # Sorts rows according to it's time of arrival at the store
-        rows.sort(key=itemgetter(4))
-
-        # Displays rows inside our tree
-        for row in rows:
-            self.tree.insert('', 'end', values=row)
+        # Puts and displays rows in tree
+        self.displayTreeRows(rows)
 
     def displayAppointmentsWindow(self, event):
         """
@@ -137,4 +150,32 @@ class Appointments(Frame):
             appointmentID = info[0]
 
             # Creates toplevel window that will display the information about this appointment
-            WindowAppointment(self.display, appointmentID)
+            WindowAppointment(self, appointmentID)
+
+    def displayTreeRows(self, rows):
+        """
+        Description:
+        > Sorts rows according to the time of arrival and displays them on our tree.
+
+        :param rows: list of tuples containing our information -> list
+        """
+
+        # Deletes previous rows before inserting the new ones
+        self.tree.delete(*self.tree.get_children())
+
+        # Sorts rows according to it's time of arrival at the store
+        rows.sort(key=itemgetter(4))
+
+        # Displays rows inside our tree
+        for row in rows:
+            self.tree.insert('', 'end', values=row)
+
+    @staticmethod
+    def refreshTree(treeFrame):
+        """Refreshes all the entries inside the tree. Show entries for today's date."""
+
+        # Gets rows to be displayed for today
+        rows = getsDayAppointments(date.today())
+
+        # Puts and displays rows in tree
+        treeFrame.displayTreeRows(rows)

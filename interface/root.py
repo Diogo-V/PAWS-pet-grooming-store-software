@@ -25,11 +25,6 @@ class MainApplication:
         # Changes default font of the entire file
         myFont = Font(font=("Varela", 12))
         self.root.option_add("*Font", myFont)
-        s = Style()
-
-        s.configure('Red.TLabelframe.Label', font=('courier', 15, 'bold'))
-        s.configure('Red.TLabelframe.Label', foreground='red')
-        s.configure('Red.TLabelframe.Label', background='blue')
 
         # Creates root's notebook
         self.notebook = Notebook(self.root)
@@ -39,14 +34,14 @@ class MainApplication:
         Style().theme_settings(Style().theme_use(), {"TNotebook.Tab": {"configure": {"padding": [185.5, 9]}}})
 
         # Creates notebook's frames
-        appointments = Appointments(self.notebook)
-        database = Database(self.notebook)
-        statistics = Statistics(self.notebook)
+        appointmentsFrame = Appointments(self.notebook)
+        databaseFrame = Database(self.notebook)
+        statisticsFrame = Statistics(self.notebook)
 
         # Adds our frames to the notebook
-        self.notebook.add(appointments, text='Marcações')
-        self.notebook.add(database, text='Base de dados')
-        self.notebook.add(statistics, text='Estatisticas')
+        self.notebook.add(appointmentsFrame, text='Marcações')
+        self.notebook.add(databaseFrame, text='Base de dados')
+        self.notebook.add(statisticsFrame, text='Estatisticas')
 
         # Puts notebook on the screen
         self.notebook.pack()

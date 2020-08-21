@@ -1,6 +1,10 @@
 from tkinter import *
+from tkinter import messagebox
 from tkinter.ttk import *
-from database.src.utils.querying import *
+from database.src.utils.querying import getsInfoForAppointmentsWindow
+from database.src.functions.insertion import insertRecordHistory
+from database.src.functions.deletion import deleteRecordAppointment
+from interface.frames import appointments
 
 
 class WindowAppointment(Toplevel):
@@ -27,6 +31,10 @@ class WindowAppointment(Toplevel):
         self.window = Frame(self, height=500, width=1000)
         self.window.pack(fill='both', expand=True)
 
+        # Creates class variable so that it can be used as a property
+        self.master = master
+        self.appointmentID = appointmentID
+
         # Creates 3 small frames for each part of the description. Used to organize the information
         self.petWindow = LabelFrame(self.window, text=' Sobre o animal ', height=500, width=333)
         self.clientWindow = LabelFrame(self.window, text=' Sobre o cliente ', height=500, width=333)
@@ -44,53 +52,114 @@ class WindowAppointment(Toplevel):
         self.information = getsInfoForAppointmentsWindow(appointmentID)
 
         # Gets and filters information about the pet, owner and appointment from the information list
-        [petName, petType, petWeight, petHair, petObservations] = self.getsPetInfo()
-        [clientName, clientNIF, clientPhone] = self.getsClientInfo()
-        [appServices, appDate, appTime, appPrice] = self.getsAppointmentInfo()
+        [self.petID, self.petName, self.petType, self.petWeight, self.petHair, self.petObs] = self.getsPetInfo()
+        [self.clientName, self.clientNIF, self.clientPhone] = self.getsClientInfo()
+        [self.appServices, self.appDate, self.appTime, self.appPrice] = self.getsAppointmentInfo()
 
         # Formats some fields so that they don't show 'None'
-        if petObservations is None:
-            petObservations = ''
-        if clientPhone is None:
-            clientPhone = ''
-        if clientNIF is None:
-            clientNIF = ''
-        if petWeight is None or petWeight is 0:
-            petWeight = ''
+        if self.petObs is None:
+            self.petObs = ''
+        if self.clientPhone is None:
+            self.clientPhone = ''
+        if self.clientNIF is None:
+            self.clientNIF = ''
+        if self.petWeight is None or self.petWeight is 0:
+            self.petWeight = ''
 
-        # Creates labels that will describe each field in each section and inserts information after it
-        Label(self.petWindow, text=f'Nome:  {petName}').grid(column=0, row=0, sticky=W, pady=35)
+        # Creates labels that will describe each field in each section and puts the requested information after it
+        descPetName = Label(self.petWindow, text=f'Nome:  {self.petName}', width=100)
+        descPetName.grid(column=0, row=0, sticky=W, pady=20)
+        descPetType = Label(self.petWindow, text=f'Tipo de animal:  {self.petType}')
+        descPetType.grid(column=0, row=2, sticky=W, pady=20)
+        descPetWeight = Label(self.petWindow, text=f'Peso:  {self.petWeight}Kg')
+        descPetWeight.grid(column=0, row=4, sticky=W, pady=20)
+        descPetHair = Label(self.petWindow, text=f'Tipo de pelo:  {self.petHair}')
+        descPetHair.grid(column=0, row=6, sticky=W, pady=20)
+        descPetObs = Label(self.petWindow, text=f'Observações: ')
+        descPetObs.grid(column=0, row=8, sticky=W, pady=20)
+        textPetObs = Label(self.petWindow, text=f'{self.petObs}', justify=LEFT, wraplength=333)
+        textPetObs.grid(column=0, row=9, sticky=W)
+
+        descClientName = Label(self.clientWindow, text=f'Nome:  {self.clientName}', width=100)
+        descClientName.grid(column=0, row=0, sticky=W, pady=20)
+        descClientNIF = Label(self.clientWindow, text=f'NIF:  {self.clientNIF}')
+        descClientNIF.grid(column=0, row=2, sticky=W, pady=20)
+        descClientPhone = Label(self.clientWindow, text=f'Telemóvel:  {self.clientPhone}')
+        descClientPhone.grid(column=0, row=4, sticky=W, pady=20)
+
+        descAppServices = Label(self.appointmentWindow, text=f'Serviços:  {self.appServices}', width=100)
+        descAppServices.grid(column=0, row=0, sticky=W, pady=20)
+        descAppDate = Label(self.appointmentWindow, text=f'Dia:  {self.appDate}')
+        descAppDate.grid(column=0, row=2, sticky=W, pady=20)
+        descAppTime = Label(self.appointmentWindow, text=f'Hora:  {self.appTime}')
+        descAppTime.grid(column=0, row=4, sticky=W, pady=20)
+        descAppPrice = Label(self.appointmentWindow, text=f'Preço do servico:  {self.appPrice}€')
+        descAppPrice.grid(column=0, row=6, sticky=W, pady=20)
+
+        # Creates separators so that we can organize the window more efficiently
         Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=1, sticky=(W, E))
-        Label(self.petWindow, text=f'Tipo de animal:  {petType}').grid(column=0, row=2, sticky=W, pady=35)
         Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=3, sticky=(W, E))
-        Label(self.petWindow, text=f'Peso:  {petWeight}Kg').grid(column=0, row=4, sticky=W, pady=35)
         Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=5, sticky=(W, E))
-        Label(self.petWindow, text=f'Tipo de pelo:  {petHair}').grid(column=0, row=6, sticky=W, pady=35)
         Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=7, sticky=(W, E))
-        Label(self.petWindow, text=f'Observações:  {petObservations}').grid(column=0, row=8, sticky=W, pady=35)
 
-        Label(self.clientWindow, text=f'Nome:  {clientName}').grid(column=0, row=0, sticky=W, pady=35)
         Separator(self.clientWindow, orient=HORIZONTAL).grid(column=0, row=1, sticky=(W, E))
-        Label(self.clientWindow, text=f'NIF:  {clientNIF}').grid(column=0, row=2, sticky=W, pady=35)
         Separator(self.clientWindow, orient=HORIZONTAL).grid(column=0, row=3, sticky=(W, E))
-        Label(self.clientWindow, text=f'Número de telemóvel:  {clientPhone}').grid(column=0, row=4, sticky=W, pady=35)
 
-        Label(self.appointmentWindow, text=f'Serviços:  {appServices}').grid(column=0, row=0, sticky=W, pady=35)
         Separator(self.appointmentWindow, orient=HORIZONTAL).grid(column=0, row=1, sticky=(W, E))
-        Label(self.appointmentWindow, text=f'Dia:  {appDate}').grid(column=0, row=2, sticky=W, pady=35)
         Separator(self.appointmentWindow, orient=HORIZONTAL).grid(column=0, row=3, sticky=(W, E))
-        Label(self.appointmentWindow, text=f'Hora:  {appTime}').grid(column=0, row=4, sticky=W, pady=35)
         Separator(self.appointmentWindow, orient=HORIZONTAL).grid(column=0, row=5, sticky=(W, E))
-        Label(self.appointmentWindow, text=f'Preço do servico:  {appPrice}€').grid(column=0, row=6, sticky=W, pady=35)
+
+        # Used to get some space between the appointments information and the buttons
+        Label(self.appointmentWindow, text='').grid(column=0, row=7, pady=10)
+        Label(self.appointmentWindow, text='').grid(column=0, row=8, pady=10)
+
+        # Create a button that finalizes appointment by sending it to te history table
+        butFinalize = Button(self.appointmentWindow, text='Finalizar', command=self.finalizeAppointment)
+        butFinalize.grid(column=0, row=9, pady=20, padx=(60, 50), sticky=W)
+
+        # Create a button that destroys appointment
+        butDestroy = Button(self.appointmentWindow, text='Remover', command=self.destroyAppointment)
+        butDestroy.grid(column=0, row=9, pady=20, padx=(180, 0), sticky=W)
 
     def getsPetInfo(self):
         """Gets and filters information about the pet from the information list."""
-        return self.information[0][0:5]
+        return self.information[0][0:6]
 
     def getsClientInfo(self):
         """Gets and filters information about the client from the information list."""
-        return self.information[0][5:8]
+        return self.information[0][6:9]
 
     def getsAppointmentInfo(self):
         """Gets and filters information about the appointments from the information list."""
-        return self.information[0][8:12]
+        return self.information[0][9:13]
+
+    def destroyAppointment(self):
+        """Checks if user wants to destroy appointment and if so, deletes it from the database."""
+
+        # Shows a popup to confirm destruction of appointments
+        message = messagebox.askquestion('Eliminar', 'Deseja eliminar a marcação?')
+
+        # If we want to eliminate our appointment, we change our database, else, does nothing
+        if message == 'yes':
+
+            # Changes database entries
+            deleteRecordAppointment(self.appointmentID)
+
+            # Refresh tree because we now have a different display
+            appointments.Appointments.refreshTree(self.master)
+
+    def finalizeAppointment(self):
+        """Checks if user wants to finalize appointment and if so, sends it to the history table and refreshes tree."""
+
+        # Shows a popup to confirm finalization
+        message = messagebox.askquestion('Finalizar', 'Deseja finalizar a marcação?')
+
+        # If we want to finalize our appointment, we change our database, else, does nothing
+        if message == 'yes':
+
+            # Changes database entries
+            insertRecordHistory((self.appServices, self.appDate, self.appTime, self.appPrice, self.petID))
+            deleteRecordAppointment(self.appointmentID)
+
+            # Refresh tree because we now have a different display
+            appointments.Appointments.refreshTree(self.master)
