@@ -3,6 +3,7 @@ from operator import itemgetter
 from interface.databaseNotebookTabs.popupWindows.links.insertion import WindowInsertLink
 from interface.rootNotebookTabs.popupWindows.appointments.information import *
 from database.src.query.databaseNotebookTabs.links import getsAllLinks, getsRequestedLinks
+from database.src.utils.constants import typeOfAnimal
 
 
 class Links(Frame):
@@ -59,8 +60,8 @@ class Links(Frame):
         self.entryPetName.pack(side=LEFT, padx=(0, 5), pady=20)
         self.labelPetType = Label(self.search, text='Tipo de animal:')
         self.labelPetType.pack(side=LEFT, padx=(10, 5), pady=20)
-        self.entryPetType = Entry(self.search, textvariable=petType)
-        self.entryPetType.pack(side=LEFT, padx=(0, 5), pady=20)
+        self.comboboxPetType = Combobox(self.search, textvariable=petType, state="readonly", values=[''] + typeOfAnimal)
+        self.comboboxPetType.pack(side=LEFT, padx=(0, 5), pady=20)
         self.labelClientName = Label(self.search, text='Nome do cliente:')
         self.labelClientName.pack(side=LEFT, padx=(10, 5), pady=20)
         self.entryClientName = Entry(self.search, textvariable=clientName)
@@ -70,7 +71,7 @@ class Links(Frame):
         self.button = Button(self.search, text='Procurar', command=self.updateTree)
         self.button.pack(side=RIGHT, padx=(10, 25), pady=20)
 
-        # Creates tree that will display all the appointments for the day
+        # Creates tree that will display all the links
         self.tree = Treeview(self.display, columns=(0, 1, 2, 3), height=900)
         self.tree.pack(side=LEFT, padx=10, pady=10)
 
@@ -83,7 +84,7 @@ class Links(Frame):
 
         # Define columns heading
         self.tree.heading('#0', text='', anchor='w')
-        self.tree.heading(0, text='', anchor='w')  # Used to store appointments' id
+        self.tree.heading(0, text='', anchor='w')
         self.tree.heading(1, text='Nome do animal', anchor='center')
         self.tree.heading(2, text='Tipo de animal', anchor='center')
         self.tree.heading(3, text='Nome do cliente', anchor='center')
@@ -104,7 +105,7 @@ class Links(Frame):
         Description:
         > Gets values inside each entry box and creates a list with those values.
         """
-        return [self.entryPetName.get(), self.entryPetType.get(), self.entryClientName.get()]
+        return [self.entryPetName.get(), self.comboboxPetType.get(), self.entryClientName.get()]
 
     def updateTree(self):
         """
@@ -147,6 +148,7 @@ class Links(Frame):
             linkID = info[0]
 
             # Creates toplevel window that will display the information about this relationship
+
 
     def displayTreeRows(self, rows):
         """
