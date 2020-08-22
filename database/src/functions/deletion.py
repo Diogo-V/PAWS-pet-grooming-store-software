@@ -149,12 +149,12 @@ def deleteRecordHistory(identifier):
         connection.close()  # Closes connection with our database
 
 
-def deleteRecordPetClientLink(identifier):
+def deleteRecordPetClientLink(tupleOfID):
     """
     Description:
     Deletes a record of a link between a pet and a client in the database.
 
-    :param identifier: link id -> integer
+    :param tupleOfID: tuple of ids -> tuple of integers
     """
 
     # Creates a connection to our database and a cursor to work with it
@@ -164,7 +164,7 @@ def deleteRecordPetClientLink(identifier):
     try:
 
         # SQL syntax that is going to be parsed inside the database console
-        query = f"delete from petsClientsLink where ROWID = " + str(identifier)
+        query = f"delete from petsClientsLink where petId = {tupleOfID[0]} and clientId = {tupleOfID[1]}"
 
         # Executes command
         cursor.execute(query)

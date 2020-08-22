@@ -194,3 +194,48 @@ def getsClientsForLinksWindow():
     finally:
 
         connection.close()  # Closes connection with our database
+
+
+def checksIfLinkIsAlreadyInDatabase(link):
+    """
+    Description:
+    > Checks if links is inside our database.
+
+    :return boolean value -> boolean
+    """
+
+    # Creates a connection to our database and a cursor to work with it
+    connection = connect("database/database.sqlite")
+    cursor = connection.cursor()
+
+    try:
+
+        # SQL syntax that is going to be parsed inside the database console
+        query = f"""
+                select 
+                    exists(
+                        select 1 from petsClientsLink where petId = {link[0]} and clientId = {link[1]}
+                    );
+                """
+
+        # Gets list containing the requested information
+        info = cursor.execute(query).fetchall()[0][0]
+
+        # Returns a boolean value according to the result. Can return an error if is invalid
+        if info == 1:
+            return True
+        elif info == 0:
+            return False
+        else:
+            raise ValueError("Invalid return type")
+
+    except Error:
+
+        # Error information and details processing
+        print(type(Error))
+        print(Error.args)
+        print(Error)
+
+    finally:
+
+        connection.close()  # Closes connection with our database

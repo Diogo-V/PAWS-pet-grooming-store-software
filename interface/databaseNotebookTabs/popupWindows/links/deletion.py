@@ -2,15 +2,15 @@ from operator import itemgetter
 from tkinter import *
 from tkinter import messagebox
 from tkinter.ttk import *
+from database.src.functions.deletion import deleteRecordPetClientLink
 from interface.databaseNotebookTabs import links
-from database.src.functions.insertion import insertRecordPetClientLink
-from database.src.query.databaseNotebookTabs.links import *
+from database.src.query.databaseNotebookTabs.links import getsPetsForLinksWindow, getsClientsForLinksWindow
 from database.src.utils.constants import typeOfAnimal
 
 
-class WindowInsertLink(Toplevel):
+class WindowDeleteLink(Toplevel):
     """
-    Toplevel window used to create a new relationship between an animal and an owner.
+    Toplevel window used to delete a relationship between an animal and an owner.
     """
 
     def __init__(self, master):
@@ -56,8 +56,8 @@ class WindowInsertLink(Toplevel):
         self.clients.grid_propagate(False)
 
         # Creates link button and puts it on the screen
-        self.link = Button(self.window, text='Relacionar', command=self.linkEntries)
-        self.link.grid(column=1, row=2, padx=58)
+        self.link = Button(self.window, text='Deletar ligação', command=self.removeEntries)
+        self.link.grid(column=1, row=2, padx=45)
 
         # Creates needed entry variables
         petName = StringVar(self.petsSearch)
@@ -125,17 +125,9 @@ class WindowInsertLink(Toplevel):
         self.refreshTreePets()
         self.refreshTreeClients()
 
-        # Creates a Label that tells the user if link already exists or not
-        self.statusVar = StringVar(value="Entradas invalidas")
-        self.status = Label(self.window, textvariable=self.statusVar)
-        self.status.grid(column=1, row=0)
-
         # Links double click on a row with a window popup
         # self.treePets.bind('<Double 1>', self.displayPetWindow)
         # self.treeClients.bind('<Double 1>', self.displayClientWindow)
-
-        # Updates every 0.2 seconds the status our Label. Used to tell the user if entries are valid
-        self.master.after(200, self.updateLinkLabel)
 
     def refreshTreePets(self):
         """
@@ -214,51 +206,31 @@ class WindowInsertLink(Toplevel):
         else:
             return ()
 
-    def linkEntries(self):
+    def removeEntries(self):
         """
         Description:
-        > Checks if the user really wants to insert this link and if so, does it.
+        > Checks if the user really wants to delete this link and if so, does it.
         """
 
         # Gets our tuple of id's. If it got an error, the returned tuple is empty
         tupleOfIDs = self.getsSelectedIDS()
 
         # Checks if tuple of id's is valid. If not, shows an error and stops execution
-        if not self.checksIfTupleOfIdsIsValid(tupleOfIDs):
+        if not self.checksIfTupleOfIdsIsValid():
             messagebox.showerror('ERRO', 'Selecione um animal e um cliente antes de prosseguir!', parent=self.window)
             return
 
-        # Checks if user really wants to link both entries
-        message = messagebox.askyesno('Relacionar entradas', 'Desejar ligar estes dois elementos?', parent=self.window)
+        # Checks if user really wants to delete this link
+        message = messagebox.askyesno('Deletar', 'Desejar deletar a ligação entre os elementos?', parent=self.window)
 
         # If the answer was yes, we can process, else, does nothing
         if message:
 
             # Inserts values in our database
-            insertRecordPetClientLink(tupleOfIDs)
+            deleteRecordPetClientLink(tupleOfIDs)
 
             # Refreshes main tree
             links.Links.refreshTree(self.master)
-
-    def updateLinkLabel(self):
-        """
-        Description:
-        > Checks if we have one row from each tree selected. If so, checks if it already exists and displays a message.
-        """
-
-        # Gets links of ids
-        tupleOfIds = self.getsSelectedIDS()
-
-        # If we don't have a valid entry, then we can't check if link already exists
-        if self.checksIfTupleOfIdsIsValid(tupleOfIds):
-
-            # Checks if link is already in the database and tells the user if so
-            if checksIfLinkIsAlreadyInDatabase(tupleOfIds):
-                self.statusVar.set("Entrada já inserida")
-            else:
-                self.statusVar.set("Entrada possível")
-
-        self.master.after(200, self.updateLinkLabel)
 
     @staticmethod
     def checksIfTupleOfIdsIsValid(Ids):
