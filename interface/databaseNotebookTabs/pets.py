@@ -1,12 +1,12 @@
 from operator import itemgetter
-from interface.popupWindows.appointment import *
+from database.src.query.rootNotebookTabs.appointments import getsDayAppointments
+from interface.rootNotebookTabs.popupWindows.appointments.information import *
 from datetime import date
-from database.src.utils.querying import getsDayAppointments
 
 
 class Pets(Frame):
     """
-    Frame that holds appointments for the day.
+    Frame that holds information about pets. Also has button to update our database and a TreeView to show our entries.
     """
 
     def __init__(self, master, **kwargs):
@@ -14,7 +14,7 @@ class Pets(Frame):
         Description:
         > Creates our window.
 
-        :param master: root window where is going to be inserted -> Tk
+        :param master: root window where is going to be inserted -> notebook
         """
 
         # Creates appointments tab for the notebook

@@ -1,12 +1,13 @@
+from math import floor
 from operator import itemgetter
-from interface.popupWindows.appointment import *
-from datetime import date
-from database.src.utils.querying import getsDayAppointments
+from interface.databaseNotebookTabs.popupWindows.links.insertion import WindowInsertLink
+from interface.rootNotebookTabs.popupWindows.appointments.information import *
+from database.src.query.databaseNotebookTabs.links import getsAllLinks, getsRequestedLinks
 
 
 class Links(Frame):
     """
-    Frame that holds appointments for the day.
+    Frame that holds information about links. Also has button to update our database and a TreeView to show our entries.
     """
 
     def __init__(self, master, **kwargs):
@@ -14,7 +15,7 @@ class Links(Frame):
         Description:
         > Creates our window.
 
-        :param master: root window where is going to be inserted -> Tk
+        :param master: root window where is going to be inserted -> notebook
         """
 
         # Creates appointments tab for the notebook
@@ -25,114 +26,110 @@ class Links(Frame):
         self.window = Frame(self, height=self.winfo_screenheight(), width=self.winfo_screenwidth())
         self.window.pack(fill='both', expand=True)
 
-        # Creates a search frame and a display frame and puts them on the screen
-        self.search = LabelFrame(self.window, text=' Pesquisar dia ', width=1500, height=100)
-        self.display = LabelFrame(self.window, text=' Marcações ')
-        self.search.pack(padx=20, pady=20, fill="both", expand=True)
+        # Creates a database frame, search frame and a display frame to better organize our UI
+        self.database = LabelFrame(self.window, text=' Manutenção das entradas ', width=1500, height=100)
+        self.search = LabelFrame(self.window, text=' Pesquisar entradas ', width=1500, height=100)
+        self.display = LabelFrame(self.window, text=' Relações ')
+        self.database.pack(padx=20, pady=(10, 0), fill="both", expand=True)
+        self.search.pack(padx=20, pady=10, fill="both", expand=True)
         self.display.pack(padx=20, pady=(0, 20), fill="both", expand=True)
 
         # Blocks resizing for each labelFrame
+        self.database.grid_propagate(False)
         self.search.grid_propagate(False)
         self.display.grid_propagate(False)
 
+        # Creates buttons to insert, delete and update our entries inside the database
+        self.insert = Button(self.database, text='Inserir', command=lambda: WindowInsertLink(self))
+        self.delete = Button(self.database, text='Deletar')
+        self.update = Button(self.database, text='Alterar')
+        self.insert.pack(side=LEFT, padx=(270, 125), pady=20)
+        self.delete.pack(side=LEFT, padx=(125, 125), pady=20)
+        self.update.pack(side=LEFT, padx=(140, 270), pady=20)
+
+        # Allocates memory for the entry values
+        petName = StringVar(self.search)
+        petType = StringVar(self.search)
+        clientName = StringVar(self.search)
+
+        # Creates labels and entry fields and puts them on the screen
+        self.labelPetName = Label(self.search, text='Nome do animal:')
+        self.labelPetName.pack(side=LEFT, padx=(25, 5), pady=20)
+        self.entryPetName = Entry(self.search, textvariable=petName)
+        self.entryPetName.pack(side=LEFT, padx=(0, 5), pady=20)
+        self.labelPetType = Label(self.search, text='Tipo de animal:')
+        self.labelPetType.pack(side=LEFT, padx=(10, 5), pady=20)
+        self.entryPetType = Entry(self.search, textvariable=petType)
+        self.entryPetType.pack(side=LEFT, padx=(0, 5), pady=20)
+        self.labelClientName = Label(self.search, text='Nome do cliente:')
+        self.labelClientName.pack(side=LEFT, padx=(10, 5), pady=20)
+        self.entryClientName = Entry(self.search, textvariable=clientName)
+        self.entryClientName.pack(side=LEFT, padx=(0, 15), pady=20)
+
+        # Creates search button and puts it on the screen
+        self.button = Button(self.search, text='Procurar', command=self.updateTree)
+        self.button.pack(side=RIGHT, padx=(10, 25), pady=20)
+
         # Creates tree that will display all the appointments for the day
-        self.tree = Treeview(self.display, columns=(0, 1, 2, 3, 4, 5, 6), height=900)
+        self.tree = Treeview(self.display, columns=(0, 1, 2, 3), height=900)
         self.tree.pack(side=LEFT, padx=10, pady=10)
 
         # Formats columns
         self.tree.column("#0", stretch=NO, anchor='center', width=0)
         self.tree.column(0, stretch=NO, anchor='center', width=0)
-        self.tree.column(1, stretch=NO, anchor='center', width=214)
-        self.tree.column(2, stretch=NO, anchor='center', width=214)
-        self.tree.column(3, stretch=NO, anchor='center', width=214)
-        self.tree.column(4, stretch=NO, anchor='center', width=214)
-        self.tree.column(5, stretch=NO, anchor='center', width=214)
-        self.tree.column(6, stretch=NO, anchor='center', width=214)
+        self.tree.column(1, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/3 - 28))
+        self.tree.column(2, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/3 - 28))
+        self.tree.column(3, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/3 - 28))
 
         # Define columns heading
         self.tree.heading('#0', text='', anchor='w')
         self.tree.heading(0, text='', anchor='w')  # Used to store appointments' id
         self.tree.heading(1, text='Nome do animal', anchor='center')
-        self.tree.heading(2, text='Nome do cliente', anchor='center')
-        self.tree.heading(3, text='Serviços', anchor='center')
-        self.tree.heading(4, text='Hora', anchor='center')
-        self.tree.heading(5, text='Número de telemóvel', anchor='center')
-        self.tree.heading(6, text='Observações', anchor='center')
+        self.tree.heading(2, text='Tipo de animal', anchor='center')
+        self.tree.heading(3, text='Nome do cliente', anchor='center')
 
         # Creates a scrollbar for the tree view and then puts it on the screen
         self.scrollbar = Scrollbar(self.display, orient="vertical", command=self.tree.yview)
         self.scrollbar.pack(side=RIGHT, fill="y")
         self.tree.configure(yscrollcommand=self.scrollbar.set)
 
-        # Allocates memory for the entry values and puts today's date in there
-        day = StringVar(self.search, value=str(date.today().day))
-        month = StringVar(self.search, value=str(date.today().month))
-        year = StringVar(self.search, value=str(date.today().year))
-
-        # Creates labels and entry fields and puts them on the screen
-        self.labelDay = Label(self.search, text='Dia:')
-        self.labelDay.pack(side=LEFT, padx=(50, 5), pady=20)
-        self.entryDay = Entry(self.search, textvariable=day)
-        self.entryDay.pack(side=LEFT, padx=(0, 5), pady=20)
-        self.labelMonth = Label(self.search, text='Mês:')
-        self.labelMonth.pack(side=LEFT, padx=(10, 5), pady=20)
-        self.entryMonth = Entry(self.search, textvariable=month)
-        self.entryMonth.pack(side=LEFT, padx=(0, 5), pady=20)
-        self.labelYear = Label(self.search, text='Ano:')
-        self.labelYear.pack(side=LEFT, padx=(10, 5), pady=20)
-        self.entryYear = Entry(self.search, textvariable=year)
-        self.entryYear.pack(side=LEFT, padx=(0, 15), pady=20)
-
-        # Creates refresh button and puts it on the screen
-        self.refresh = Button(self.search, text='Hoje', command=lambda: self.refreshTree(self))
-        self.refresh.pack(side=LEFT, padx=(250, 10), pady=20)
-
-        # Creates search button and puts it on the screen
-        self.button = Button(self.search, text='Procurar', command=self.updateTreeDate)
-        self.button.pack(side=LEFT, padx=(10, 50), pady=20)
-
-        # Initializes appointments tree view with today's appointments
-        self.updateTreeDate()
+        # Initializes appointments tree view with default rows (every single relationship)
+        self.refreshTree()
 
         # Links double click on a row with a window popup
-        self.tree.bind('<Double 1>', self.displayAppointmentsWindow)
+        self.tree.bind('<Double 1>', self.displayLinkWindow)
 
-    def getsEntriesDate(self):
+    def getsEntries(self):
         """
         Description:
-        > Gets values inside each entry box and creates a date
+        > Gets values inside each entry box and creates a list with those values.
         """
+        return [self.entryPetName.get(), self.entryPetType.get(), self.entryClientName.get()]
 
-        # Gets information (strings) from each entry
-        year = self.entryYear.get()
-        month = self.entryMonth.get()
-        day = self.entryDay.get()
-
-        # If one of the entries is empty, returns today's date. If not, returns requested date
-        if year == '' or month == '' or day == '':
-            return date.today()
-        else:
-            return date(eval(year), eval(month), eval(day))
-
-    def updateTreeDate(self):
+    def updateTree(self):
         """
         Description:
         > Gets values inside our search entries and gets rows that are going to be displayed.
         """
 
-        # Gets values of each entry
-        dateAppointment = self.getsEntriesDate()
+        # Gets information in entries
+        [petName, petType, clientName] = self.getsEntries()
 
-        # Gets rows to be displayed
-        rows = getsDayAppointments(dateAppointment)
+        # If no information was typed, just refresh page
+        if petName == '' and petType == '' and clientName == '':
+            self.refreshTree()
+        else:
 
-        # Puts and displays rows in tree
-        self.displayTreeRows(rows)
+            # Gets rows that are going to be displayed
+            rows = getsRequestedLinks([petName, petType, clientName])
 
-    def displayAppointmentsWindow(self, event):
+            # Displays our queried rows
+            self.displayTreeRows(rows)
+
+    def displayLinkWindow(self, event):
         """
         Description:
-        > Displays toplevel window with the information about the selected appointment.
+        > Displays toplevel window with the information about the selected relationship.
 
         :param event: event of clicking a button -> event
         """
@@ -147,15 +144,14 @@ class Links(Frame):
             info = self.tree.item(item, 'values')
 
             # Since we only need the appointment id to query trough the database, we discard the rest
-            appointmentID = info[0]
+            linkID = info[0]
 
-            # Creates toplevel window that will display the information about this appointment
-            WindowAppointment(self, appointmentID)
+            # Creates toplevel window that will display the information about this relationship
 
     def displayTreeRows(self, rows):
         """
         Description:
-        > Sorts rows according to the time of arrival and displays them on our tree.
+        > Sorts rows according to pet's name and displays them on the screen.
 
         :param rows: list of tuples containing our information -> list
         """
@@ -163,19 +159,18 @@ class Links(Frame):
         # Deletes previous rows before inserting the new ones
         self.tree.delete(*self.tree.get_children())
 
-        # Sorts rows according to it's time of arrival at the store
-        rows.sort(key=itemgetter(4))
+        # Sorts rows according to pet's name
+        rows.sort(key=itemgetter(1))
 
         # Displays rows inside our tree
         for row in rows:
             self.tree.insert('', 'end', values=row)
 
-    @staticmethod
-    def refreshTree(treeFrame):
-        """Refreshes all the entries inside the tree. Show entries for today's date."""
+    def refreshTree(self):
+        """Refreshes all the entries inside the tree. Show default entries."""
 
-        # Gets rows to be displayed for today
-        rows = getsDayAppointments(date.today())
+        # Gets default rows
+        rows = getsAllLinks()
 
         # Puts and displays rows in tree
-        treeFrame.displayTreeRows(rows)
+        self.displayTreeRows(rows)

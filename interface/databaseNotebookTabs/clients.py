@@ -1,7 +1,7 @@
 from operator import itemgetter
-from interface.popupWindows.appointment import *
+from database.src.query.rootNotebookTabs.appointments import getsDayAppointments
+from interface.rootNotebookTabs.popupWindows.appointments.information import *
 from datetime import date
-from database.src.utils.querying import getsDayAppointments
 
 
 class Clients(Frame):
