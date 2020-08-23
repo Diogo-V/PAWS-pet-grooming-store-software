@@ -35,7 +35,7 @@ class WindowAppointment(Toplevel):
         self.master = master
         self.appointmentID = appointmentID
 
-        # Creates 3 small rootNotebookTabs for each part of the description. Used to organize the information
+        # Creates 3 small LabelFrame for each part of the description. Used to organize the information
         self.petWindow = LabelFrame(self.window, text=' Sobre o animal ', height=500, width=333)
         self.clientWindow = LabelFrame(self.window, text=' Sobre o cliente ', height=500, width=333)
         self.appointmentWindow = LabelFrame(self.window, text=' Sobre a marcação ', height=500, width=334)

@@ -7,6 +7,8 @@ from interface.databaseNotebookTabs import links
 from database.src.query.databaseNotebookTabs.links import getsPetsForLinksWindow, getsClientsForLinksWindow, \
     checksIfLinkIsAlreadyInDatabase, getsRequestedPets, getsRequestedClients
 from database.src.utils.constants import typeOfAnimal
+from interface.databaseNotebookTabs.popupWindows.clients.information import WindowClient
+from interface.databaseNotebookTabs.popupWindows.pets.information import WindowPet
 
 
 class WindowDeleteLink(Toplevel):
@@ -138,8 +140,8 @@ class WindowDeleteLink(Toplevel):
         self.status.grid(column=1, row=0)
 
         # Links double click on a row with a window popup
-        # self.treePets.bind('<Double 1>', self.displayPetWindow)
-        # self.treeClients.bind('<Double 1>', self.displayClientWindow)
+        self.treePets.bind('<Double 1>', self.displayPetWindow)
+        self.treeClients.bind('<Double 1>', self.displayClientWindow)
 
         # Updates every 0.2 seconds the status our Label. Used to tell the user if entries are valid
         self.master.after(200, self.updateLinkLabel)
@@ -330,6 +332,50 @@ class WindowDeleteLink(Toplevel):
                 self.statusVar.set("Entrada não existente")
 
         self.master.after(200, self.updateLinkLabel)
+
+    def displayPetWindow(self, event):
+        """
+        Description:
+        > Displays toplevel window with the information about the selected pet.
+
+        :param event: event of clicking a button -> event
+        """
+
+        # Gets row that was clicked
+        item = self.treePets.identify_row(event.y)
+
+        # If the user didn't click on a blank space, shows the toplevel window else, does nothing
+        if item:
+            # Gets row information
+            info = self.treePets.item(item, 'values')
+
+            # Since we only need the pet id to query trough the database, we discard the rest
+            petID = info[0]
+
+            # Creates toplevel window that will display the information about this pet
+            WindowPet(self, petID)
+
+    def displayClientWindow(self, event):
+        """
+        Description:
+        > Displays toplevel window with the information about the selected client.
+
+        :param event: event of clicking a button -> event
+        """
+
+        # Gets row that was clicked
+        item = self.treeClients.identify_row(event.y)
+
+        # If the user didn't click on a blank space, shows the toplevel window else, does nothing
+        if item:
+            # Gets row information
+            info = self.treeClients.item(item, 'values')
+
+            # Since we only need the client id to query trough the database, we discard the rest
+            clientID = info[0]
+
+            # Creates toplevel window that will display the information about this client
+            WindowClient(self, clientID)
 
     @staticmethod
     def checksIfTupleOfIdsIsValid(Ids):

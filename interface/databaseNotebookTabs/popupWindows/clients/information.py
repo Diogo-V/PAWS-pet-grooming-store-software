@@ -1,25 +1,25 @@
 from tkinter import *
 from tkinter.ttk import *
-from database.src.query.databaseNotebookTabs.pets import getsInfoForPetWindow
+from database.src.query.databaseNotebookTabs.clients import getsInfoForClientWindow
 
 
-class WindowPet(Toplevel):
+class WindowClient(Toplevel):
     """
-    Toplevel window used to show information about this pet.
+    Toplevel window used to show information about this client.
     """
 
-    def __init__(self, master, animalID):
+    def __init__(self, master, linkID):
         """
         Description:
         > Creates our window.
 
         :param master: Frame window where is going to be inserted -> Frame
-        :param animalID: animal rowid inside the database -> integer
+        :param linkID: link rowid inside the database -> integer
         """
 
         # Creates toplevel window that will be displayed. Sets size and blocks resize
         Toplevel.__init__(self, master)
-        self.title('Informações sobre este animal')
+        self.title('Informações sobre esta este animal<->cliente')
         self.geometry("1000x500")
         self.resizable(False, False)
         self.transient(master)
@@ -39,7 +39,7 @@ class WindowPet(Toplevel):
         self.clientWindow.grid_propagate(False)
 
         # Gets a list containing the information that is going to be displayed
-        self.information = getsInfoForPetWindow(animalID)
+        self.information = getsInfoForClientWindow(linkID)
 
         # Gets and filters information about the pet and owner from the information list
         [self.petName, self.petType, self.petWeight, self.petHair, self.petBirth, self.petObs] = self.getsPetInfo()

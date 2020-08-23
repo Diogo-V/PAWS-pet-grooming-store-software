@@ -1,13 +1,11 @@
 from tkinter import *
-from tkinter import messagebox
 from tkinter.ttk import *
-
 from database.src.query.databaseNotebookTabs.links import getsInfoForLinkWindow
 
 
 class WindowLink(Toplevel):
     """
-    Toplevel window used to create a new relationship between an animal and an owner.
+    Toplevel window used to show information about this relationship.
     """
 
     def __init__(self, master, linkID):
@@ -26,18 +24,11 @@ class WindowLink(Toplevel):
         self.resizable(False, False)
         self.transient(master)
 
-        # Creates instance variable so that it can be used later on
-        self.master = master
-
         # Creates frame (used to put widgets in it) for our toplevel window and puts it on the screen
         self.window = Frame(self, height=500, width=1000)
         self.window.pack(fill='both', expand=True)
 
-        # Creates class variable so that it can be used as a property
-        self.master = master
-        self.linkID = linkID
-
-        # Creates 3 small rootNotebookTabs for each part of the description. Used to organize the information
+        # Creates 2 small rootNotebookTabs for each part of the description. Used to organize the information
         self.petWindow = LabelFrame(self.window, text=' Sobre o animal ', height=500, width=500)
         self.clientWindow = LabelFrame(self.window, text=' Sobre o cliente ', height=500, width=500)
         self.petWindow.pack(side=LEFT, fill='both', expand=True)
@@ -50,7 +41,7 @@ class WindowLink(Toplevel):
         # Gets a list containing the information that is going to be displayed
         self.information = getsInfoForLinkWindow(linkID)
 
-        # Gets and filters information about the pet, owner and appointment from the information list
+        # Gets and filters information about the pet and owner from the information list
         [self.petName, self.petType, self.petWeight, self.petHair, self.petBirth, self.petObs] = self.getsPetInfo()
         [self.clientName, self.clientNIF, self.clientPhone, self.clientEmail, self.clientAdr] = self.getsClientInfo()
 
