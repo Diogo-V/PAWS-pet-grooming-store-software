@@ -1,7 +1,7 @@
 from math import floor
 from operator import itemgetter
-
 from interface.databaseNotebookTabs.popupWindows.links.deletion import WindowDeleteLink
+from interface.databaseNotebookTabs.popupWindows.links.information import WindowLink
 from interface.databaseNotebookTabs.popupWindows.links.insertion import WindowInsertLink
 from interface.rootNotebookTabs.popupWindows.appointments.information import *
 from database.src.query.databaseNotebookTabs.links import getsAllLinks, getsRequestedLinks
@@ -43,12 +43,10 @@ class Links(Frame):
         self.display.grid_propagate(False)
 
         # Creates buttons to insert, delete and update our entries inside the database
-        self.insert = Button(self.database, text='Inserir', command=lambda: WindowInsertLink(self))
-        self.delete = Button(self.database, text='Deletar', command=lambda: WindowDeleteLink(self))
-        self.update = Button(self.database, text='Alterar')
-        self.insert.pack(side=LEFT, padx=(270, 125), pady=20)
+        self.insert = Button(self.database, text='Inserir nova entrada', command=lambda: WindowInsertLink(self))
+        self.delete = Button(self.database, text='Deletar entrada existente', command=lambda: WindowDeleteLink(self))
+        self.insert.pack(side=LEFT, padx=(310, 250), pady=20)
         self.delete.pack(side=LEFT, padx=(125, 125), pady=20)
-        self.update.pack(side=LEFT, padx=(140, 270), pady=20)
 
         # Allocates memory for the entry values
         petName = StringVar(self.search)
@@ -150,7 +148,7 @@ class Links(Frame):
             linkID = info[0]
 
             # Creates toplevel window that will display the information about this relationship
-
+            WindowLink(self, linkID)
 
     def displayTreeRows(self, rows):
         """

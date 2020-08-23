@@ -23,7 +23,7 @@ class WindowInsertLink(Toplevel):
 
         # Creates toplevel window that will be displayed. Sets size and blocks resize
         Toplevel.__init__(self, master)
-        self.title('Inserir nova relação entre animal e dono')
+        self.title('Selecionar a relação entre animal e dono que deseja inserir')
         self.geometry("1000x500")
         self.resizable(False, False)
         self.transient(master)
@@ -36,12 +36,12 @@ class WindowInsertLink(Toplevel):
         self.window.pack(fill='both', expand=True)
 
         # Creates 2 LabelFrames that will hold our search buttons for each section
-        self.petsSearch = LabelFrame(self.window, text=' Procurar animais ', width=400, height=100)
-        self.clientsSearch = LabelFrame(self.window, text=' Procurar clientes ', width=400, height=100)
+        self.petsSearch = LabelFrame(self.window, text=' Procurar animais ', width=400, height=120)
+        self.clientsSearch = LabelFrame(self.window, text=' Procurar clientes ', width=400, height=120)
 
         # Creates 2 LabelFrames that will hold our pets and clients' trees, respectively
-        self.pets = LabelFrame(self.window, text=' Animais ', width=400, height=400)
-        self.clients = LabelFrame(self.window, text=' Clientes ', width=400, height=400)
+        self.pets = LabelFrame(self.window, text=' Animais ', width=400, height=370)
+        self.clients = LabelFrame(self.window, text=' Clientes ', width=400, height=370)
 
         # Puts our labelFrames on the screen
         self.petsSearch.grid(column=0, row=0)
@@ -66,20 +66,26 @@ class WindowInsertLink(Toplevel):
 
         # Creates search fields for pets
         self.labelPetName = Label(self.petsSearch, text='Nome:')
-        self.labelPetName.pack(side=LEFT, padx=(5, 5), pady=20)
+        self.labelPetName.grid(column=0, row=0, padx=(5, 5), pady=(20, 10), sticky=W)
         self.entryPetName = Entry(self.petsSearch, textvariable=petName, width=15)
-        self.entryPetName.pack(side=LEFT, padx=(0, 5), pady=20)
+        self.entryPetName.grid(column=1, row=0, padx=(0, 5), pady=(20, 10), sticky=W)
         self.labelPetType = Label(self.petsSearch, text='Tipo:')
-        self.labelPetType.pack(side=LEFT, padx=(5, 5), pady=20)
+        self.labelPetType.grid(column=2, row=0, padx=(5, 5), pady=(20, 10))
         self.entryPetType = Combobox(self.petsSearch, textvariable=petType, state="readonly",
                                      values=[''] + typeOfAnimal, width=10)
-        self.entryPetType.pack(side=LEFT, padx=(0, 5), pady=20)
+        self.entryPetType.grid(column=4, row=0, padx=(0, 5), pady=(20, 10))
 
         # Creates search filed for clients
         self.labelClientName = Label(self.clientsSearch, text='Nome:')
-        self.labelClientName.pack(side=LEFT, padx=(91, 5), pady=20)
+        self.labelClientName.grid(column=0, row=0, padx=(5, 5), pady=(20, 10), sticky=W)
         self.entryClientName = Entry(self.clientsSearch, textvariable=clientName, width=15)
-        self.entryClientName.pack(side=LEFT, padx=(0, 91), pady=20)
+        self.entryClientName.grid(column=1, row=0, padx=(0, 5), pady=(20, 10), sticky=W)
+
+        # Creates search buttons for each section
+        self.petsButton = Button(self.petsSearch, text='Procurar', width=20, command=self.updatePetTree)
+        self.clientsButton = Button(self.clientsSearch, text='Procurar', width=20, command=self.updateClientTree)
+        self.petsButton.grid(column=0, row=1, padx=5, columnspan=2)
+        self.clientsButton.grid(column=0, row=1, padx=5, columnspan=2)
 
         # Creates tree that will display all the pets information
         self.treePets = Treeview(self.pets, columns=(0, 1, 2), height=17)
@@ -136,6 +142,64 @@ class WindowInsertLink(Toplevel):
 
         # Updates every 0.2 seconds the status our Label. Used to tell the user if entries are valid
         self.master.after(200, self.updateLinkLabel)
+
+    def getsPetEntries(self):
+        """
+        Description:
+        > Gets information inserted inside our entries.
+
+        :return: list containing such info -> list of strings
+        """
+        return [self.entryPetName.get(), self.entryPetType.get()]
+
+    def getsClientEntries(self):
+        """
+        Description:
+        > Gets information inserted inside our entries.
+
+        :return: list containing such info -> list of strings
+        """
+        return [self.entryClientName.get()]
+
+    def updatePetTree(self):
+        """
+        Description:
+        > Gets values inside our search entries and gets rows that are going to be displayed.
+        """
+
+        # Gets entries for pets
+        [petName, petType] = self.getsPetEntries()
+
+        # If no information was typed, just refresh the page
+        if petName == '' and petType == '':
+            self.refreshTreePets()
+        else:
+
+            # Gets requested rows
+            rows = getsRequestedPets([petName, petType])
+
+            # Displays information on our tree
+            self.displayTreePetsRows(rows)
+
+    def updateClientTree(self):
+        """
+        Description:
+        > Gets values inside our search entries and gets rows that are going to be displayed.
+        """
+
+        # Gets entries for clients
+        [clientName] = self.getsClientEntries()
+
+        # If no information was typed, just refresh the page
+        if clientName == '':
+            self.refreshTreeClients()
+        else:
+
+            # Gets requested rows
+            rows = getsRequestedClients([clientName])
+
+            # Displays information on our tree
+            self.displayTreeClientsRows(rows)
 
     def refreshTreePets(self):
         """
@@ -220,12 +284,15 @@ class WindowInsertLink(Toplevel):
         > Checks if the user really wants to insert this link and if so, does it.
         """
 
-        # Gets our tuple of id's. If it got an error, the returned tuple is empty
-        tupleOfIDs = self.getsSelectedIDS()
-
-        # Checks if tuple of id's is valid. If not, shows an error and stops execution
-        if not self.checksIfTupleOfIdsIsValid(tupleOfIDs):
+        # Checks if one row from each tree has been selected. If not, sends an error
+        if self.status.cget("text") == "Entradas invalidas":
             messagebox.showerror('ERRO', 'Selecione um animal e um cliente antes de prosseguir!', parent=self.window)
+            return
+
+        # Checks if combo of entries is valid. If not, interrupts
+        if self.status.cget("text") == "Entrada já inserida":
+            messagebox.showerror('ERRO', 'Selecione um animal e um cliente que não tenham sido já relacionados!',
+                                 parent=self.window)
             return
 
         # Checks if user really wants to link both entries
@@ -233,6 +300,9 @@ class WindowInsertLink(Toplevel):
 
         # If the answer was yes, we can process, else, does nothing
         if message:
+
+            # Gets our tuple of id's. If it got an error, the returned tuple is empty
+            tupleOfIDs = self.getsSelectedIDS()
 
             # Inserts values in our database
             insertRecordPetClientLink(tupleOfIDs)
