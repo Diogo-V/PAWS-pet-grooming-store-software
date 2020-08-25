@@ -74,7 +74,7 @@ class WindowClient(Toplevel):
         descPetBirthDate.grid(column=0, row=8, sticky=W, pady=15)
         descPetObs = Label(self.petWindow, text=f'Observações: ')
         descPetObs.grid(column=0, row=10, sticky=W, pady=20)
-        textPetObs = Label(self.petWindow, text=f'{self.petObs}', justify=LEFT, wraplength=333)
+        textPetObs = Label(self.petWindow, text=f'{self.petObs}', justify=LEFT, wraplength=500)
         textPetObs.grid(column=0, row=11, sticky=W)
 
         descClientName = Label(self.clientWindow, text=f'Nome:  {self.clientName}', width=100)
@@ -83,9 +83,9 @@ class WindowClient(Toplevel):
         descClientNIF.grid(column=0, row=2, sticky=W, pady=15)
         descClientPhone = Label(self.clientWindow, text=f'Telemóvel:  {self.clientPhone}')
         descClientPhone.grid(column=0, row=4, sticky=W, pady=15)
-        descClientEmail = Label(self.clientWindow, text=f'Email:  {self.clientEmail}', justify=LEFT, wraplength=333)
+        descClientEmail = Label(self.clientWindow, text=f'Email:  {self.clientEmail}', justify=LEFT, wraplength=500)
         descClientEmail.grid(column=0, row=6, sticky=W, pady=15)
-        descClientAddress = Label(self.clientWindow, text=f'Morada:  {self.clientAdr}', justify=LEFT, wraplength=333)
+        descClientAddress = Label(self.clientWindow, text=f'Morada:  {self.clientAdr}', justify=LEFT, wraplength=500)
         descClientAddress.grid(column=0, row=8, sticky=W, pady=15)
 
         # Creates separators so that we can organize the window more efficiently

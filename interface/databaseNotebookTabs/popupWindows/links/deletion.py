@@ -4,8 +4,7 @@ from tkinter import messagebox
 from tkinter.ttk import *
 from database.src.functions.deletion import deleteRecordPetClientLink
 from interface.databaseNotebookTabs import links
-from database.src.query.databaseNotebookTabs.links import getsPetsForLinksWindow, getsClientsForLinksWindow, \
-    checksIfLinkIsAlreadyInDatabase, getsRequestedPets, getsRequestedClients
+from database.src.query.databaseNotebookTabs.links import *
 from database.src.utils.constants import typeOfAnimal
 from interface.databaseNotebookTabs.popupWindows.clients.information import WindowClient
 from interface.databaseNotebookTabs.popupWindows.pets.information import WindowPet

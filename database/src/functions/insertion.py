@@ -7,6 +7,7 @@ def insertRecordAnimal(animal):
     Creates a new record of an animal in the database.
 
     :param animal: set of information that represents an animal -> tuple
+    :return newly created pet's rowid -> integer
     """
 
     # Creates a connection to our database and a cursor to work with it
@@ -24,6 +25,9 @@ def insertRecordAnimal(animal):
 
         # Writes new record in the database
         connection.commit()
+
+        # Returns rowid of the just inserted pet
+        return cursor.lastrowid
 
     except Error:
 
