@@ -22,10 +22,6 @@ class MainApplication:
         self.root.tk.call('wm', 'iconphoto', self.root._w, PhotoImage(file='images/paw.ico'))  # Puts icon
         self.root.attributes('-zoomed', True)  # Initializes src as maximized
 
-        # Changes default font of the entire file
-        myFont = Font(font=("Varela", 12))
-        self.root.option_add("*Font", myFont)
-
         # Creates style for root notebook rootNotebookTabs
         Style().theme_settings(Style().theme_use(), {"TNotebook.Tab": {"configure": {"padding": [105.5, 9]}}})
 
