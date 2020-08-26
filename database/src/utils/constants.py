@@ -1,8 +1,13 @@
 # Services provided by this store
-services = ['Dar banho', 'Cortar as unhas', 'Cortar o pelo', 'Outro']
+services = ['Banho', 'Unhas', 'Nós', 'Higiene', 'Escovagem', 'Tosquia', 'Outro']
 
 # Pets received by this store
 typeOfAnimal = ['Cão', 'Gato', 'Coelho', 'Outro']
 
 # Type of hair held by the animal
-typeOfHair = ['Pelo longo', 'Pelo curto']
+typeOfHair = ['Pelo muito longo', 'Pelo encaraculado', 'Pelo longo', 'Pelo curto', 'Outro']
+
+# Raça do cão (default=Non defined race), Cor do pelo, trocar BirthDate por Age
+# Criar observações para o appointment
+
+# Selecionar donos puchys
