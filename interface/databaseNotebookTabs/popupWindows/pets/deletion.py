@@ -55,24 +55,24 @@ class WindowDeletePet(Toplevel):
 
         # Creates labels and entry fields and puts them on the screen
         self.labelPetName = Label(self.search, text='Nome:')
-        self.labelPetName.pack(side=LEFT, padx=(25, 5), pady=20)
+        self.labelPetName.pack(side=LEFT, padx=(25, 5), pady=10)
         self.entryPetName = Entry(self.search, textvariable=petName)
-        self.entryPetName.pack(side=LEFT, padx=(0, 5), pady=20)
+        self.entryPetName.pack(side=LEFT, padx=(0, 5), pady=10)
         self.labelPetType = Label(self.search, text='Tipo:')
-        self.labelPetType.pack(side=LEFT, padx=(10, 5), pady=20)
+        self.labelPetType.pack(side=LEFT, padx=(10, 5), pady=10)
         self.comboboxPetType = Combobox(self.search, textvariable=petType, state="readonly", values=[''] + typeOfAnimal)
-        self.comboboxPetType.pack(side=LEFT, padx=(0, 5), pady=20)
+        self.comboboxPetType.pack(side=LEFT, padx=(0, 5), pady=10)
         self.labelClientName = Label(self.search, text='Cliente:')
-        self.labelClientName.pack(side=LEFT, padx=(10, 5), pady=20)
+        self.labelClientName.pack(side=LEFT, padx=(10, 5), pady=10)
         self.entryClientName = Entry(self.search, textvariable=clientName)
-        self.entryClientName.pack(side=LEFT, padx=(0, 15), pady=20)
+        self.entryClientName.pack(side=LEFT, padx=(0, 15), pady=10)
 
         # Creates search button and puts it on the screen
         self.button = Button(self.search, text='Procurar', command=self.updateTree)
-        self.button.pack(side=LEFT, padx=(130, 50), pady=20)
+        self.button.pack(side=LEFT, padx=(130, 50), pady=10)
 
         # Creates tree that will display all the links
-        self.tree = Treeview(self.display, columns=(0, 1, 2, 3, 4, 5), height=11)
+        self.tree = Treeview(self.display, columns=(0, 1, 2, 3, 4, 5), height=13)
         self.tree.pack(side=LEFT, padx=10, pady=10)
 
         # Formats columns
