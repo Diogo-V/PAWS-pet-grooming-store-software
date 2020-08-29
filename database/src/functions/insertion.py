@@ -66,6 +66,9 @@ def insertRecordClient(client):
         # Writes new record in the database
         connection.commit()
 
+        # Returns rowid of the just inserted pet
+        return cursor.lastrowid
+
     except Error:
 
         # Error information and details processing

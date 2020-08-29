@@ -32,7 +32,7 @@ class Pets(Frame):
         # Creates a database frame, search frame and a display frame to better organize our UI
         self.database = LabelFrame(self.window, text=' Manutenção das entradas ', width=1500, height=100)
         self.search = LabelFrame(self.window, text=' Pesquisar entradas ', width=1500, height=100)
-        self.display = LabelFrame(self.window, text=' Relações ')
+        self.display = LabelFrame(self.window, text=' Visualização das entradas ')
         self.database.pack(padx=20, pady=(10, 0), fill="both", expand=True)
         self.search.pack(padx=20, pady=10, fill="both", expand=True)
         self.display.pack(padx=20, pady=(0, 20), fill="both", expand=True)
@@ -90,8 +90,8 @@ class Pets(Frame):
         self.tree.heading('#0', text='', anchor='w')
         self.tree.heading(0, text='', anchor='w')
         self.tree.heading(1, text='Nome do animal', anchor='center')
-        self.tree.heading(3, text='Nome do cliente', anchor='center')
-        self.tree.heading(2, text='Tipo de animal', anchor='center')
+        self.tree.heading(2, text='Nome do cliente', anchor='center')
+        self.tree.heading(3, text='Tipo de animal', anchor='center')
         self.tree.heading(4, text='Peso', anchor='center')
         self.tree.heading(5, text='Tipo de pelo', anchor='center')
 
@@ -100,7 +100,7 @@ class Pets(Frame):
         self.scrollbar.pack(side=RIGHT, fill="y")
         self.tree.configure(yscrollcommand=self.scrollbar.set)
 
-        # Initializes appointments tree view with default rows (every single relationship)
+        # Initializes pets tree view with default rows (every single relationship)
         self.refreshTree()
 
         # Links double click on a row with a window popup

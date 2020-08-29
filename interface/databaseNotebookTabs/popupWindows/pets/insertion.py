@@ -88,7 +88,7 @@ class WindowInsertPet(Toplevel):
         self.entryPetHair.grid(column=1, row=6, padx=(5, 5), pady=10, sticky=W)
         self.entryPetBirth = Entry(self.petWindow, textvariable=petBirth)
         self.entryPetBirth.grid(column=1, row=8, padx=(5, 5), pady=10, sticky=W)
-        self.entryPetObs = Text(self.petWindow, width=48, height=10)
+        self.entryPetObs = Text(self.petWindow, width=60, height=10)
         self.entryPetObs.grid(column=0, row=11, padx=(5, 5), pady=0, sticky=W, columnspan=2)
 
         # Creates separators to better organize our UI
@@ -108,7 +108,7 @@ class WindowInsertPet(Toplevel):
         self.clientsButton = Button(self.clientWindow, text='Procurar', width=20, command=self.updateClientTree)
         self.clientsButton.grid(column=2, row=0, pady=(20, 10), sticky=E)
 
-        # Creates tree that will display all the links
+        # Creates tree that will display all the clients
         self.treeClients = Treeview(self.clientWindow, columns=(0, 1), height=15)
         self.treeClients.grid(column=0, row=1, columnspan=3, padx=10, pady=10)
 
@@ -180,17 +180,20 @@ class WindowInsertPet(Toplevel):
                     # Inserts values inside our database. Also gets rowid of the animal
                     animalID = insertRecordAnimal(petInfo)
 
-                    # Gets owner's id
-                    ownerId = self.treeClients.item(owner[0], "values")[0]
+                    # Checks if insertion went well
+                    if animalID is not None:
 
-                    # Creates a link between the client and the pet
-                    insertRecordPetClientLink((animalID, ownerId))
+                        # Gets owner's id
+                        ownerId = self.treeClients.item(owner[0], "values")[0]
 
-                    # Refreshes main tree
-                    pets.Pets.refreshTree(self.master)
+                        # Creates a link between the client and the pet
+                        insertRecordPetClientLink((animalID, ownerId))
 
-                    # Eliminates window
-                    self.destroy()
+                        # Refreshes main tree
+                        pets.Pets.refreshTree(self.master)
+
+                        # Eliminates window
+                        self.destroy()
 
     def getsPetEntries(self):
         """
@@ -249,7 +252,7 @@ class WindowInsertPet(Toplevel):
         > Gets all the default values for the corresponding tree.
         """
 
-        # Gets default values for animals
+        # Gets default values for clients
         rows = getsClientsForLinksWindow()
 
         # Displays rows

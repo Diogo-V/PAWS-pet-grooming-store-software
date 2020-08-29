@@ -1,5 +1,5 @@
 # Description
-Under development. Not suitable for used yet
+Under development. Not suitable for use yet
 
 
 

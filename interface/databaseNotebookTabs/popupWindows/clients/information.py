@@ -8,18 +8,18 @@ class WindowClient(Toplevel):
     Toplevel window used to show information about this client.
     """
 
-    def __init__(self, master, linkID):
+    def __init__(self, master, clientID):
         """
         Description:
         > Creates our window.
 
         :param master: Frame window where is going to be inserted -> Frame
-        :param linkID: link rowid inside the database -> integer
+        :param clientID: client rowid inside the database -> integer
         """
 
         # Creates toplevel window that will be displayed. Sets size and blocks resize
         Toplevel.__init__(self, master)
-        self.title('Informações sobre esta este animal<->cliente')
+        self.title('Informações sobre este cliente')
         self.geometry("1000x500")
         self.resizable(False, False)
         self.transient(master)
@@ -29,17 +29,17 @@ class WindowClient(Toplevel):
         self.window.pack(fill='both', expand=True)
 
         # Creates 2 small rootNotebookTabs for each part of the description. Used to organize the information
-        self.petWindow = LabelFrame(self.window, text=' Sobre o animal ', height=500, width=500)
         self.clientWindow = LabelFrame(self.window, text=' Sobre o cliente ', height=500, width=500)
-        self.petWindow.pack(side=LEFT, fill='both', expand=True)
+        self.petWindow = LabelFrame(self.window, text=' Sobre o animal ', height=500, width=500)
         self.clientWindow.pack(side=LEFT, fill='both', expand=True)
+        self.petWindow.pack(side=LEFT, fill='both', expand=True)
 
         # Blocks resizing for each labelFrame
         self.petWindow.grid_propagate(False)
         self.clientWindow.grid_propagate(False)
 
         # Gets a list containing the information that is going to be displayed
-        self.information = getsInfoForClientWindow(linkID)
+        self.information = getsInfoForClientWindow(clientID)
 
         # Gets and filters information about the pet and owner from the information list
         [self.petName, self.petType, self.petWeight, self.petHair, self.petBirth, self.petObs] = self.getsPetInfo()
