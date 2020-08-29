@@ -1,15 +1,14 @@
-from math import floor
 from operator import itemgetter
 
 from database.src.functions.deletion import deleteRecordAnimal
 from database.src.query.databaseNotebookTabs.pets import getsAllPets, getsRequestedPets
+from database.src.utils.constants import typeOfAnimal
 from interface.databaseNotebookTabs import pets
 from interface.databaseNotebookTabs.popupWindows.pets.information import WindowPet
 from interface.rootNotebookTabs.popupWindows.appointments.information import *
-from database.src.utils.constants import typeOfAnimal
 
 
-class WindowDeletePet(Toplevel):
+class WindowDeleteClient(Toplevel):
     """
     Toplevel window used to search and delete pets.
     """

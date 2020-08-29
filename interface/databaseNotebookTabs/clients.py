@@ -1,6 +1,8 @@
 from math import floor
 from operator import itemgetter
+
 from database.src.query.databaseNotebookTabs.clients import getsRequestedClients, getsAllClients
+from interface.databaseNotebookTabs.popupWindows.clients.deletion import WindowDeleteClient
 from interface.databaseNotebookTabs.popupWindows.clients.information import WindowClient
 from interface.databaseNotebookTabs.popupWindows.clients.insertion import WindowInsertClient
 from interface.rootNotebookTabs.popupWindows.appointments.information import *
