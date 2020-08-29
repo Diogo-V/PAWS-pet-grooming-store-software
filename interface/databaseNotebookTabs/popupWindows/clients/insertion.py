@@ -1,12 +1,12 @@
 from operator import itemgetter
 from tkinter import *
-from tkinter.ttk import *
 from tkinter import messagebox
-from database.src.functions.insertion import insertRecordAnimal, insertRecordPetClientLink, insertRecordClient
-from database.src.query.databaseNotebookTabs.links import getsRequestedClients, getsPetsForLinksWindow, \
-    getsRequestedPets
-from database.src.utils.constants import typeOfAnimal, typeOfHair
-from interface.databaseNotebookTabs import pets, clients
+from tkinter.ttk import *
+
+from database.src.functions.insertion import insertRecordPetClientLink, insertRecordClient
+from database.src.query.databaseNotebookTabs.links import getsPetsForLinksWindow, getsRequestedPets
+from database.src.utils.constants import typeOfAnimal
+from interface.databaseNotebookTabs import clients
 
 
 class WindowInsertClient(Toplevel):

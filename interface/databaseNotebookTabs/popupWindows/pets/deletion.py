@@ -1,12 +1,11 @@
-from math import floor
 from operator import itemgetter
 
 from database.src.functions.deletion import deleteRecordAnimal
 from database.src.query.databaseNotebookTabs.pets import getsAllPets, getsRequestedPets
+from database.src.utils.constants import typeOfAnimal
 from interface.databaseNotebookTabs import pets
 from interface.databaseNotebookTabs.popupWindows.pets.information import WindowPet
 from interface.rootNotebookTabs.popupWindows.appointments.information import *
-from database.src.utils.constants import typeOfAnimal
 
 
 class WindowDeletePet(Toplevel):
@@ -14,7 +13,7 @@ class WindowDeletePet(Toplevel):
     Toplevel window used to search and delete pets.
     """
 
-    def __init__(self, master, **kwargs):
+    def __init__(self, master):
         """
         Description:
         > Creates our window.
@@ -22,7 +21,7 @@ class WindowDeletePet(Toplevel):
         :param master: root window where is going to be inserted -> notebook
         """
 
-        # Creates appointments tab for the notebook
+        # Creates toplevel window that will be displayed. Sets size and blocks resize
         Toplevel.__init__(self, master)
         self.title('Deletar animal')
         self.geometry("1000x500")
@@ -88,8 +87,8 @@ class WindowDeletePet(Toplevel):
         self.tree.heading('#0', text='', anchor='w')
         self.tree.heading(0, text='', anchor='w')
         self.tree.heading(1, text='Nome do animal', anchor='center')
-        self.tree.heading(3, text='Nome do cliente', anchor='center')
-        self.tree.heading(2, text='Tipo de animal', anchor='center')
+        self.tree.heading(2, text='Nome do cliente', anchor='center')
+        self.tree.heading(3, text='Tipo de animal', anchor='center')
         self.tree.heading(4, text='Peso', anchor='center')
         self.tree.heading(5, text='Tipo de pelo', anchor='center')
 

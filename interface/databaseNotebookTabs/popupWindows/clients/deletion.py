@@ -1,19 +1,18 @@
 from operator import itemgetter
 
-from database.src.functions.deletion import deleteRecordAnimal
-from database.src.query.databaseNotebookTabs.pets import getsAllPets, getsRequestedPets
-from database.src.utils.constants import typeOfAnimal
-from interface.databaseNotebookTabs import pets
-from interface.databaseNotebookTabs.popupWindows.pets.information import WindowPet
+from database.src.functions.deletion import deleteRecordClient
+from database.src.query.databaseNotebookTabs.clients import getsRequestedClients, getsAllClients
+from interface.databaseNotebookTabs import clients
+from interface.databaseNotebookTabs.popupWindows.clients.information import WindowClient
 from interface.rootNotebookTabs.popupWindows.appointments.information import *
 
 
 class WindowDeleteClient(Toplevel):
     """
-    Toplevel window used to search and delete pets.
+    Toplevel window used to delete existing clients.
     """
 
-    def __init__(self, master, **kwargs):
+    def __init__(self, master):
         """
         Description:
         > Creates our window.
@@ -21,9 +20,9 @@ class WindowDeleteClient(Toplevel):
         :param master: root window where is going to be inserted -> notebook
         """
 
-        # Creates appointments tab for the notebook
+        # Creates toplevel window that will be displayed. Sets size and blocks resize
         Toplevel.__init__(self, master)
-        self.title('Deletar animal')
+        self.title('Deletar cliente')
         self.geometry("1000x500")
         self.resizable(False, False)
         self.transient(master)
@@ -34,7 +33,7 @@ class WindowDeleteClient(Toplevel):
 
         # Creates a search frame and a display frame and puts them on the screen
         self.search = LabelFrame(self.window, text=' Pesquisar ', width=1000, height=100)
-        self.display = LabelFrame(self.window, text=' Animais ', width=1000, height=300)
+        self.display = LabelFrame(self.window, text=' Clientes ', width=1000, height=300)
         self.search.pack(padx=10, pady=10, fill="both", expand=True)
         self.display.pack(padx=10, pady=(0, 10), fill="both", expand=True)
 
@@ -48,49 +47,47 @@ class WindowDeleteClient(Toplevel):
         self.delete.grid_propagate(False)
 
         # Allocates memory for the entry values
-        petName = StringVar()
-        petType = StringVar()
         clientName = StringVar()
+        clientPhone = StringVar()
+        petName = StringVar()
 
         # Creates labels and entry fields and puts them on the screen
-        self.labelPetName = Label(self.search, text='Nome:')
-        self.labelPetName.pack(side=LEFT, padx=(25, 5), pady=10)
-        self.entryPetName = Entry(self.search, textvariable=petName)
-        self.entryPetName.pack(side=LEFT, padx=(0, 5), pady=10)
-        self.labelPetType = Label(self.search, text='Tipo:')
-        self.labelPetType.pack(side=LEFT, padx=(10, 5), pady=10)
-        self.comboboxPetType = Combobox(self.search, textvariable=petType, state="readonly", values=[''] + typeOfAnimal)
-        self.comboboxPetType.pack(side=LEFT, padx=(0, 5), pady=10)
-        self.labelClientName = Label(self.search, text='Cliente:')
-        self.labelClientName.pack(side=LEFT, padx=(10, 5), pady=10)
+        self.labelClientName = Label(self.search, text='Nome:')
+        self.labelClientName.pack(side=LEFT, padx=(25, 5), pady=10)
         self.entryClientName = Entry(self.search, textvariable=clientName)
-        self.entryClientName.pack(side=LEFT, padx=(0, 15), pady=10)
+        self.entryClientName.pack(side=LEFT, padx=(0, 5), pady=10)
+        self.labelClientPhone = Label(self.search, text='Telemóvel:')
+        self.labelClientPhone.pack(side=LEFT, padx=(10, 5), pady=10)
+        self.entryClientPhone = Entry(self.search, textvariable=clientPhone)
+        self.entryClientPhone.pack(side=LEFT, padx=(0, 5), pady=10)
+        self.labelPetName = Label(self.search, text='Animal:')
+        self.labelPetName.pack(side=LEFT, padx=(10, 5), pady=10)
+        self.entryPetName = Entry(self.search, textvariable=petName)
+        self.entryPetName.pack(side=LEFT, padx=(0, 15), pady=10)
 
         # Creates search button and puts it on the screen
         self.button = Button(self.search, text='Procurar', command=self.updateTree)
-        self.button.pack(side=LEFT, padx=(130, 50), pady=10)
+        self.button.pack(side=LEFT, padx=(100, 50), pady=10)
 
         # Creates tree that will display all the links
-        self.tree = Treeview(self.display, columns=(0, 1, 2, 3, 4, 5), height=13)
+        self.tree = Treeview(self.display, columns=(0, 1, 2, 3, 4), height=13)
         self.tree.pack(side=LEFT, padx=10, pady=10)
 
         # Formats columns
         self.tree.column("#0", stretch=NO, anchor='center', width=0)
         self.tree.column(0, stretch=NO, anchor='center', width=0)
-        self.tree.column(1, stretch=NO, anchor='center', width=184)
-        self.tree.column(2, stretch=NO, anchor='center', width=184)
-        self.tree.column(3, stretch=NO, anchor='center', width=184)
-        self.tree.column(4, stretch=NO, anchor='center', width=184)
-        self.tree.column(5, stretch=NO, anchor='center', width=184)
+        self.tree.column(1, stretch=NO, anchor='center', width=235)
+        self.tree.column(2, stretch=NO, anchor='center', width=235)
+        self.tree.column(3, stretch=NO, anchor='center', width=235)
+        self.tree.column(4, stretch=NO, anchor='center', width=235)
 
         # Define columns heading
         self.tree.heading('#0', text='', anchor='w')
         self.tree.heading(0, text='', anchor='w')
-        self.tree.heading(1, text='Nome do animal', anchor='center')
-        self.tree.heading(3, text='Nome do cliente', anchor='center')
-        self.tree.heading(2, text='Tipo de animal', anchor='center')
-        self.tree.heading(4, text='Peso', anchor='center')
-        self.tree.heading(5, text='Tipo de pelo', anchor='center')
+        self.tree.heading(1, text='Nome do cliente', anchor='center')
+        self.tree.heading(2, text='Telemóvel', anchor='center')
+        self.tree.heading(3, text='Nome do animal', anchor='center')
+        self.tree.heading(4, text='Tipo de animal', anchor='center')
 
         # Creates a scrollbar for the tree view and then puts it on the screen
         self.scrollbar = Scrollbar(self.display, orient="vertical", command=self.tree.yview)
@@ -101,7 +98,7 @@ class WindowDeleteClient(Toplevel):
         self.updateTree()
 
         # Links double click on a row with a window popup
-        self.tree.bind('<Double 1>', self.displayPetWindow)
+        self.tree.bind('<Double 1>', self.displayClientWindow)
 
     def deleteEntry(self):
         """
@@ -109,11 +106,11 @@ class WindowDeleteClient(Toplevel):
         > Gets the id of the selected row and, if the user confirms, deletes it.
         """
 
-        # Gets tuple with the selected pet. If none were selected, gets an empty tuple
-        pet = self.tree.selection()
+        # Gets tuple with the selected client. If none were selected, gets an empty tuple
+        client = self.tree.selection()
 
         # Gets if an entry was selected
-        if pet != ():
+        if client != ():
 
             # Confirms if the user wants to eliminate this entry
             msg = messagebox.askyesno('Confirmar remoção', 'Deseja remover a entrada selecionada?', parent=self.window)
@@ -121,28 +118,28 @@ class WindowDeleteClient(Toplevel):
             # If the user agreed, deletes it
             if msg:
 
-                # Gets pet row id
-                petId = self.tree.item(pet[0], "values")[0]
+                # Gets client row id
+                clientID = self.tree.item(client[0], "values")[0]
 
                 # Removes from database
-                deleteRecordAnimal(petId)
+                deleteRecordClient(clientID)
 
                 # Refreshes main tree
-                pets.Pets.refreshTree(self.master)
+                clients.Clients.refreshTree(self.master)
 
                 # Eliminates window
                 self.destroy()
 
-        # If a pet was not selected and the button was still pressed, we throw an error
+        # If a client was not selected and the button was still pressed, we throw an error
         else:
-            messagebox.showerror('Erro', 'Precisa de selecionar um animal antes de tentar remover!', parent=self.window)
+            messagebox.showerror('Erro', 'Selecione um cliente antes de tentar remover!', parent=self.window)
 
     def getsEntries(self):
         """
         Description:
         > Gets values inside each entry box and creates a list with those values.
         """
-        return [self.entryPetName.get(), self.comboboxPetType.get(), self.entryClientName.get()]
+        return [self.entryClientName.get(), self.entryClientPhone.get(), self.entryPetName.get()]
 
     def updateTree(self):
         """
@@ -151,15 +148,15 @@ class WindowDeleteClient(Toplevel):
         """
 
         # Gets information in entries
-        [petName, petType, clientName] = self.getsEntries()
+        [clientName, clientPhone, petName] = self.getsEntries()
 
         # If no information was typed, just refresh page
-        if petName == '' and petType == '' and clientName == '':
+        if clientName == '' and clientPhone == '' and petName == '':
             self.refreshTree()
         else:
 
             # Gets rows that are going to be displayed
-            rows = getsRequestedPets([petName, petType, clientName])
+            rows = getsRequestedClients([clientName, clientPhone, petName])
 
             # Displays our queried rows
             self.displayTreeRows(rows)
@@ -168,7 +165,7 @@ class WindowDeleteClient(Toplevel):
         """Refreshes all the entries inside the tree. Show default entries."""
 
         # Gets default rows
-        rows = getsAllPets()
+        rows = getsAllClients()
 
         # Puts and displays rows in tree
         self.displayTreeRows(rows)
@@ -191,7 +188,7 @@ class WindowDeleteClient(Toplevel):
         for row in rows:
             self.tree.insert('', 'end', values=row)
 
-    def displayPetWindow(self, event):
+    def displayClientWindow(self, event):
         """
         Description:
         > Displays toplevel window with the information about the selected pet.
@@ -208,8 +205,8 @@ class WindowDeleteClient(Toplevel):
             # Gets row information
             info = self.tree.item(item, 'values')
 
-            # Since we only need the pet id to query trough the database, we discard the rest
-            petID = info[0]
+            # Since we only need the client id to query trough the database, we discard the rest
+            clientID = info[0]
 
-            # Creates toplevel window that will display the information about this pet
-            WindowPet(self, petID)
+            # Creates toplevel window that will display the information about this client
+            WindowClient(self, clientID)
