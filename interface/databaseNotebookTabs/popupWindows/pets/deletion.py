@@ -1,6 +1,6 @@
 from operator import itemgetter
 
-from database.src.functions.deletion import deleteRecordAnimal
+from database.src.functions.deletion import deleteRecordAnimal, deletePetsLinks, deletePetsClients
 from database.src.query.databaseNotebookTabs.pets import getsAllPets, getsRequestedPets
 from database.src.utils.constants import typeOfAnimal
 from interface.databaseNotebookTabs import pets
@@ -126,6 +126,13 @@ class WindowDeletePet(Toplevel):
 
                 # Removes from database
                 deleteRecordAnimal(petId)
+
+                # Asks if the user wants to eliminate all the associated clients. if so, does it
+                if messagebox.askyesno('Remover cliente', 'Deseja remover os clientes associados?', parent=self.window):
+                    deletePetsClients(petId)
+
+                # Removes associated links
+                deletePetsLinks(petId)
 
                 # Refreshes main tree
                 pets.Pets.refreshTree(self.master)

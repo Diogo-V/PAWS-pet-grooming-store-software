@@ -1,6 +1,6 @@
 from operator import itemgetter
 
-from database.src.functions.deletion import deleteRecordClient
+from database.src.functions.deletion import deleteRecordClient, deleteClientsLinks, deleteClientsPets
 from database.src.query.databaseNotebookTabs.clients import getsRequestedClients, getsAllClients
 from interface.databaseNotebookTabs import clients
 from interface.databaseNotebookTabs.popupWindows.clients.information import WindowClient
@@ -121,8 +121,15 @@ class WindowDeleteClient(Toplevel):
                 # Gets client row id
                 clientID = self.tree.item(client[0], "values")[0]
 
-                # Removes from database
+                # Removes clients from database
                 deleteRecordClient(clientID)
+
+                # Asks if the user wants to eliminate all the associated pets. if so, does it
+                if messagebox.askyesno('Remover animais', 'Deseja remover os animais associados?', parent=self.window):
+                    deleteClientsPets(clientID)
+
+                # Removes associated links
+                deleteClientsLinks(clientID)
 
                 # Refreshes main tree
                 clients.Clients.refreshTree(self.master)
