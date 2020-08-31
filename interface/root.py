@@ -1,7 +1,6 @@
 from interface.rootNotebookTabs.appointments import *
 from interface.rootNotebookTabs.database import *
 from interface.rootNotebookTabs.statistics import *
-from tkinter.font import *
 
 
 class MainApplication:
@@ -30,7 +29,7 @@ class MainApplication:
         self.notebook.pack(fill='both', expand=True)
 
         # Creates notebook's rootNotebookTabs
-        appointmentsFrame = Appointments(self.notebook)
+        appointmentsFrame = DayAppointments(self.notebook)
         databaseFrame = Database(self.notebook)
         statisticsFrame = Statistics(self.notebook)
 

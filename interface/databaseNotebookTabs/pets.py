@@ -1,11 +1,12 @@
 from math import floor
 from operator import itemgetter
+
 from database.src.query.databaseNotebookTabs.pets import getsAllPets, getsRequestedPets
+from database.src.utils.constants import typeOfAnimal
 from interface.databaseNotebookTabs.popupWindows.pets.deletion import WindowDeletePet
 from interface.databaseNotebookTabs.popupWindows.pets.information import WindowPet
 from interface.databaseNotebookTabs.popupWindows.pets.insertion import WindowInsertPet
 from interface.rootNotebookTabs.popupWindows.appointments.information import *
-from database.src.utils.constants import typeOfAnimal
 
 
 class Pets(Frame):
@@ -21,7 +22,7 @@ class Pets(Frame):
         :param master: root window where is going to be inserted -> notebook
         """
 
-        # Creates appointments tab for the notebook
+        # Creates pets tab for the notebook
         Frame.__init__(self, master)
         super().__init__(master, **kwargs)
 
@@ -100,7 +101,7 @@ class Pets(Frame):
         self.scrollbar.pack(side=RIGHT, fill="y")
         self.tree.configure(yscrollcommand=self.scrollbar.set)
 
-        # Initializes pets tree view with default rows (every single relationship)
+        # Initializes pets tree view with default rows (every single pet)
         self.refreshTree()
 
         # Links double click on a row with a window popup

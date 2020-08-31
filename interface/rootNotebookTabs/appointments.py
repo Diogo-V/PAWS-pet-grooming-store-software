@@ -1,10 +1,11 @@
-from operator import itemgetter
-from interface.rootNotebookTabs.popupWindows.appointments.information import *
 from datetime import date
+from operator import itemgetter
+
 from database.src.query.rootNotebookTabs.appointments import getsDayAppointments
+from interface.rootNotebookTabs.popupWindows.appointments.information import *
 
 
-class Appointments(Frame):
+class DayAppointments(Frame):
     """
     Frame that holds appointments for the day.
     """

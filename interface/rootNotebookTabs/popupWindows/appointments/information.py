@@ -1,9 +1,10 @@
 from tkinter import *
 from tkinter import messagebox
 from tkinter.ttk import *
-from database.src.query.rootNotebookTabs.appointments import getsInfoForAppointmentsWindow
-from database.src.functions.insertion import insertRecordHistory
+
 from database.src.functions.deletion import deleteRecordAppointment
+from database.src.functions.insertion import insertRecordHistory
+from database.src.query.rootNotebookTabs.appointments import getsInfoForAppointmentsWindow
 from interface.rootNotebookTabs import appointments
 
 
@@ -146,7 +147,7 @@ class WindowAppointment(Toplevel):
             deleteRecordAppointment(self.appointmentID)
 
             # Refresh tree because we now have a different display
-            appointments.Appointments.refreshTree(self.master)
+            appointments.DayAppointments.refreshTree(self.master)
 
     def finalizeAppointment(self):
         """Checks if user wants to finalize appointment and if so, sends it to the history table and refreshes tree."""
@@ -162,4 +163,4 @@ class WindowAppointment(Toplevel):
             deleteRecordAppointment(self.appointmentID)
 
             # Refresh tree because we now have a different display
-            appointments.Appointments.refreshTree(self.master)
+            appointments.DayAppointments.refreshTree(self.master)
