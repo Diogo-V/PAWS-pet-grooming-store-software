@@ -95,7 +95,7 @@ class WindowDeleteClient(Toplevel):
         self.tree.configure(yscrollcommand=self.scrollbar.set)
 
         # Populates tree
-        self.updateTree()
+        self.refreshTree()
 
         # Links double click on a row with a window popup
         self.tree.bind('<Double 1>', self.displayClientWindow)

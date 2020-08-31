@@ -3,6 +3,7 @@ from operator import itemgetter
 
 from database.src.query.databaseNotebookTabs.appointments import getsAllAppointments, getsRequestedAppointments
 from database.src.utils.constants import typeOfAnimal
+from interface.databaseNotebookTabs.popupWindows.appointments.deletion import WindowDeleteAppointment
 from interface.rootNotebookTabs.popupWindows.appointments.information import *
 
 
@@ -42,7 +43,8 @@ class Appointments(Frame):
 
         # Creates buttons to insert, delete and update our entries inside the database
         self.insert = Button(self.database, text='Inserir nova entrada')
-        self.delete = Button(self.database, text='Deletar entrada existente')
+        self.delete = Button(self.database, text='Deletar entrada existente',
+                             command=lambda: WindowDeleteAppointment(self))
         self.change = Button(self.database, text='Alterar entrada')
         self.insert.pack(side=LEFT, padx=(310, 0), pady=20)
         self.delete.pack(side=LEFT, padx=(115, 0), pady=20)
