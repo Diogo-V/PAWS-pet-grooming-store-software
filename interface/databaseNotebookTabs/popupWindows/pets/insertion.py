@@ -1,7 +1,8 @@
 from operator import itemgetter
 from tkinter import *
-from tkinter.ttk import *
 from tkinter import messagebox
+from tkinter.ttk import *
+
 from database.src.functions.insertion import insertRecordAnimal, insertRecordPetClientLink
 from database.src.query.databaseNotebookTabs.links import getsRequestedClients, getsClientsForLinksWindow
 from database.src.utils.constants import typeOfAnimal, typeOfHair
@@ -72,12 +73,10 @@ class WindowInsertPet(Toplevel):
         clientName = StringVar()
 
         # Restriction commands
-        validateString = (master.register(self.validateString), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
         validateNumber = (master.register(self.validateNumber), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
 
         # Creates entry fields
-        self.entryPetName = Entry(self.petWindow, textvariable=petName, validate="focusout",
-                                  validatecommand=validateString, invalidcommand=self.entryError)
+        self.entryPetName = Entry(self.petWindow, textvariable=petName)
         self.entryPetName.grid(column=1, row=0, padx=(5, 5), pady=10, sticky=W)
         self.entryPetType = Combobox(self.petWindow, textvariable=petType, state="readonly", values=typeOfAnimal)
         self.entryPetType.grid(column=1, row=2, padx=(5, 5), pady=10, sticky=W)

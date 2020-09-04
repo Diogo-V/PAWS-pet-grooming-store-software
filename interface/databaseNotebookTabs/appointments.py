@@ -4,6 +4,7 @@ from operator import itemgetter
 from database.src.query.databaseNotebookTabs.appointments import getsAllAppointments, getsRequestedAppointments
 from database.src.utils.constants import typeOfAnimal
 from interface.databaseNotebookTabs.popupWindows.appointments.deletion import WindowDeleteAppointment
+from interface.databaseNotebookTabs.popupWindows.appointments.firstTimers import WindowFirstTimer
 from interface.databaseNotebookTabs.popupWindows.appointments.insertion import WindowInsertAppointment
 from interface.rootNotebookTabs.popupWindows.appointments.information import *
 
@@ -43,11 +44,12 @@ class Appointments(Frame):
         self.display.grid_propagate(False)
 
         # Creates buttons to insert, delete and update our entries inside the database
+        self.firstTimer = Button(self.database, text='Primeira vez', command=lambda: WindowFirstTimer(self))
         self.insert = Button(self.database, text='Inserir nova entrada', command=lambda: WindowInsertAppointment(self))
-        self.delete = Button(self.database, text='Deletar entrada existente',
-                             command=lambda: WindowDeleteAppointment(self))
+        self.delete = Button(self.database, text='Deletar existente', command=lambda: WindowDeleteAppointment(self))
         self.change = Button(self.database, text='Alterar entrada')
-        self.insert.pack(side=LEFT, padx=(310, 0), pady=20)
+        self.firstTimer.pack(side=LEFT, padx=(50, 0), pady=20)
+        self.insert.pack(side=LEFT, padx=(150, 0), pady=20)
         self.delete.pack(side=LEFT, padx=(115, 0), pady=20)
         self.change.pack(side=LEFT, padx=(125, 125), pady=20)
 

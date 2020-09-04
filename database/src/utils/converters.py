@@ -1,5 +1,5 @@
-from sqlite3 import *
 from datetime import date
+from sqlite3 import *
 
 
 def dateToString(myDate):
@@ -9,7 +9,7 @@ def dateToString(myDate):
 
 def timeToString(myDate):
     """Converts a time to a string. Used to serialize dates for the database."""
-    return myDate.strftime('%S-%M-%H')
+    return myDate.strftime('%H-%M-%S')
 
 
 def servicesToString(lstServices):
