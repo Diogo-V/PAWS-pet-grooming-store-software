@@ -98,7 +98,7 @@ def insertRecordAppointment(appointment):
     try:
 
         # SQL syntax that is going to be parsed inside the database console
-        query = "insert into appointments (services, date, time, animalId) VALUES (?, ?, ?, ?)"
+        query = "insert into appointments (services, date, time, price, animalId) VALUES (?, ?, ?, ?, ?)"
 
         # Executes command
         cursor.execute(query, appointment)

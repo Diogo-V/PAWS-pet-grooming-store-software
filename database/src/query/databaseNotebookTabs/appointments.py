@@ -126,3 +126,95 @@ def getsRequestedAppointments(queryInfo):
     finally:
 
         connection.close()  # Closes connection with our database
+
+
+def getsRequestedPets(queryInfo):
+    """
+    Description:
+    > Gets a list of tuples that holds information about pets that is going to be displayed.
+
+    :param queryInfo: list containing the info to query upon -> list of strings
+    """
+
+    def getQuery():
+        """Checks the type of query that we need to make and gets it."""
+
+        # Extracts components
+        [petName, petType] = queryInfo
+
+        if petName == '':
+            return f"animals.typeOfAnimal like '%{petType}%'"
+        elif petType == '':
+            return f"animals.name like '%{petName}%'"
+        else:
+            return f"animals.name like '%{petName}%' and animals.typeOfAnimal like '%{petType}%'"
+
+    # Creates a connection to our database and a cursor to work with it
+    connection = connect("database/database.sqlite")
+    cursor = connection.cursor()
+
+    try:
+
+        # SQL syntax that is going to be parsed inside the database console
+        query = f"""
+                select
+                    animals.ROWID, animals.name, animals.typeOfAnimal
+                from
+                    animals
+                where
+                    {getQuery()}
+                """
+
+        # Gets list containing the requested information
+        info = cursor.execute(query).fetchall()
+
+        return info
+
+    except Error:
+
+        # Error information and details processing
+        print(type(Error))
+        print(Error.args)
+        print(Error)
+
+    finally:
+
+        connection.close()  # Closes connection with our database
+
+
+def getsPetsForAppointmentsWindow():
+    """
+    Description:
+    > Gets a list of tuples that hold all of the animals in our database.
+    """
+
+    # Creates a connection to our database and a cursor to work with it
+    connection = connect("database/database.sqlite")
+    cursor = connection.cursor()
+
+    try:
+
+        # SQL syntax that is going to be parsed inside the database console
+        query = f"""
+                select
+                    animals.ROWID,
+                    animals.name, animals.typeOfAnimal
+                from
+                    animals
+                """
+
+        # Gets list containing the requested information
+        info = cursor.execute(query).fetchall()
+
+        return info
+
+    except Error:
+
+        # Error information and details processing
+        print(type(Error))
+        print(Error.args)
+        print(Error)
+
+    finally:
+
+        connection.close()  # Closes connection with our database
