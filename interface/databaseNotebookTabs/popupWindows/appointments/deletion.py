@@ -119,6 +119,11 @@ class WindowDeleteAppointment(Toplevel):
         # Gets tuple with the selected appointment. If none were selected, gets an empty tuple
         appointment = self.tree.selection()
 
+        # If the user selected more than one appointment. Throws error and interrupts
+        if len(appointment) != 1:
+            messagebox.showerror("Erro", "Selecione apenas uma marcação antes de continuar!", parent=self.window)
+            return
+
         # Gets if an entry was selected
         if appointment != ():
 

@@ -194,6 +194,11 @@ class WindowInsertAppointment(Toplevel):
         # Gets tuple with the selected pet
         appSelectedPet = self.tree.selection()
 
+        # If the user selected more than one pet. Throws error and interrupts
+        if len(appSelectedPet) != 1:
+            messagebox.showerror("Erro", "Selecione apenas uma animal antes de continuar!", parent=self.window)
+            return
+
         # Gets selected services
         appServices = self.getsServices()
 

@@ -144,6 +144,11 @@ class WindowInsertPet(Toplevel):
             # Gets confirmation from user
             msg = messagebox.askyesno('Confirmar submissão', 'Deseja inserir o animal sem dono?', parent=self.window)
 
+            # Makes sure that the user only selected one client
+            if len(owner) != 1:
+                messagebox.showerror("Erro", "Selecione apenas um cliente antes de continuar!", parent=self.window)
+                return
+
             # Checks the answer from the user. If answer was 'no', we stop execution
             if msg:
 

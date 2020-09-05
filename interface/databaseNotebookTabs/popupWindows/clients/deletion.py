@@ -109,6 +109,11 @@ class WindowDeleteClient(Toplevel):
         # Gets tuple with the selected client. If none were selected, gets an empty tuple
         client = self.tree.selection()
 
+        # If the user selected more than one client. Throws error and interrupts
+        if len(client) != 1:
+            messagebox.showerror("Erro", "Selecione apenas uma cliente antes de continuar!", parent=self.window)
+            return
+
         # Gets if an entry was selected
         if client != ():
 

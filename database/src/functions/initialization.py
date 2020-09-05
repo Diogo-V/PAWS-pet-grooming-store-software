@@ -73,7 +73,7 @@ def createsAppointmentsTable():
         time varchar(255) default '',
         price numeric default 0,
         animalId integer,
-        FOREIGN KEY(animalId) REFERENCES animals(rowid)
+        FOREIGN KEY(animalId) REFERENCES animals(rowid) on delete cascade 
         )""")
     connection.commit()
     connection.close()

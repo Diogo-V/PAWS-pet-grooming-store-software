@@ -118,6 +118,11 @@ class WindowDeletePet(Toplevel):
             # Confirms if the user wants to eliminate this entry
             msg = messagebox.askyesno('Confirmar remoção', 'Deseja remover a entrada selecionada?', parent=self.window)
 
+            # Makes sure that the user only selected one pet
+            if len(pet) != 1:
+                messagebox.showerror("Erro", "Selecione apenas um animal antes de continuar!", parent=self.window)
+                return
+
             # If the user agreed, deletes it
             if msg:
 
