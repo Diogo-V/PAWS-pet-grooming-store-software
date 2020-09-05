@@ -3,7 +3,8 @@ from operator import itemgetter
 
 import interface
 from database.src.functions.insertion import insertRecordAppointment
-from database.src.query.databaseNotebookTabs.appointments import getsRequestedPets, getsPetsForAppointmentsWindow
+from database.src.query.databaseNotebookTabs.appointments import getsRequestedPets, getsPetsForAppointmentsWindow, \
+    checksIfPetHasAnOwner
 from database.src.utils.constants import *
 from database.src.utils.converters import dateToString, timeToString, servicesToString
 from interface.databaseNotebookTabs.popupWindows.pets.information import WindowPet
@@ -225,6 +226,12 @@ class WindowInsertAppointment(Toplevel):
                 # Validates time
                 if appTime == '':
                     messagebox.showerror('Erro', 'Hora invalida! Insira uma nova hora', parent=self.window)
+                    return
+
+                # Checks if the pet has a link with a client. If not, interrupts
+                if not checksIfPetHasAnOwner(appPetID):
+                    messagebox.showerror("Erro", "O animal selecionado não tem um dono associado. Crie uma ligação com"
+                                                 "um cliente antes de prosseguir.", parent=self.window)
                     return
 
                 # Creates info that is going to be inserted

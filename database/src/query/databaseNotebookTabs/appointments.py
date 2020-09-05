@@ -218,3 +218,50 @@ def getsPetsForAppointmentsWindow():
     finally:
 
         connection.close()  # Closes connection with our database
+
+
+def checksIfPetHasAnOwner(petID):
+    """
+    Description:
+    > Checks if the pet has a client associated to it.
+    :param petID: pet rowid -> integer
+    :return boolean value
+    """
+
+    # Creates a connection to our database and a cursor to work with it
+    connection = connect("database/database.sqlite")
+    cursor = connection.cursor()
+
+    try:
+
+        # SQL syntax that is going to be parsed inside the database console
+        query = f"""
+                select
+                    clients.ROWID
+                from
+                    clients
+                inner join 
+                    animals, petsClientsLink
+                where
+                    petsClientsLink.petId = {petID} and petsClientsLink.clientId = clients.ROWID
+                """
+
+        # Gets list containing the requested information
+        info = cursor.execute(query).fetchall()
+
+        # Checks if pet has at least one owner. If so returns True, else, False
+        if len(info) > 0:
+            return True
+        else:
+            return False
+
+    except Error:
+
+        # Error information and details processing
+        print(type(Error))
+        print(Error.args)
+        print(Error)
+
+    finally:
+
+        connection.close()  # Closes connection with our database
