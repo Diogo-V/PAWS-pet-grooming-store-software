@@ -5,7 +5,7 @@ services = ['Banho', 'Unhas', 'Nós', 'Higiene', 'Escovagem', 'Tosquia', 'Outro'
 typeOfAnimal = ['Cão', 'Gato', 'Coelho', 'Outro']
 
 # Type of hair held by the animal
-typeOfHair = ['Pelo muito longo', 'Pelo encaraculado', 'Pelo longo', 'Pelo curto', 'Pelo cerdoso' 'Outro']
+typeOfHair = ['Pelo muito longo', 'Pelo encaraculado', 'Pelo longo', 'Pelo curto', 'Pelo cerdoso', 'Outro']
 
 # Raça do cão (default=Non defined race), Cor do pelo, trocar BirthDate por Age, sexo
 # Criar observações para o appointment

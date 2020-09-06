@@ -216,7 +216,7 @@ class WindowInsertPet(Toplevel):
         petObs = self.entryPetObs.get('1.0', 'end')
 
         # Checks if required values were inserted and returns them if so
-        if self.checkRequiredValues((petName, petType, petWeight, petHair)):
+        if self.checkRequiredValues((petName, petType)):
             return petName, petType, eval(petWeight), petHair, petBirth, petObs
         else:
             return ()
@@ -288,7 +288,7 @@ class WindowInsertPet(Toplevel):
         :param info: tuple containing all the inserted info -> tuple of strings
         :return: boolean value
         """
-        if info[0] != '' and info[1] != '' and info[2] != '' and info[3] != '':
+        if info[0] != '' and info[1] != '':
             return True
         else:
             messagebox.showerror('Erro nas entradas',

@@ -3,6 +3,7 @@ from operator import itemgetter
 
 from database.src.query.databaseNotebookTabs.pets import getsAllPets, getsRequestedPets
 from database.src.utils.constants import typeOfAnimal
+from interface.databaseNotebookTabs.popupWindows.links.mix import WindowInsertMix
 from interface.databaseNotebookTabs.popupWindows.pets.deletion import WindowDeletePet
 from interface.databaseNotebookTabs.popupWindows.pets.information import WindowPet
 from interface.databaseNotebookTabs.popupWindows.pets.insertion import WindowInsertPet
@@ -44,10 +45,12 @@ class Pets(Frame):
         self.display.grid_propagate(False)
 
         # Creates buttons to insert, delete and update our entries inside the database
+        self.mix = Button(self.database, text="Inserir animal e cliente", command=lambda: WindowInsertMix(self))
         self.insert = Button(self.database, text='Inserir nova entrada', command=lambda: WindowInsertPet(self))
         self.delete = Button(self.database, text='Deletar entrada existente', command=lambda: WindowDeletePet(self))
         self.change = Button(self.database, text='Alterar entrada')
-        self.insert.pack(side=LEFT, padx=(310, 0), pady=20)
+        self.mix.pack(side=LEFT, padx=(50, 0), pady=20)
+        self.insert.pack(side=LEFT, padx=(200, 0), pady=20)
         self.delete.pack(side=LEFT, padx=(115, 0), pady=20)
         self.change.pack(side=LEFT, padx=(125, 125), pady=20)
 

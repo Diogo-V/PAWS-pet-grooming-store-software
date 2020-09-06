@@ -3,8 +3,7 @@ from operator import itemgetter
 
 import interface
 from database.src.functions.insertion import insertRecordAppointment
-from database.src.query.databaseNotebookTabs.appointments import getsRequestedPets, getsPetsForAppointmentsWindow, \
-    checksIfPetHasAnOwner
+from database.src.query.databaseNotebookTabs.appointments import *
 from database.src.utils.constants import *
 from database.src.utils.converters import dateToString, timeToString, servicesToString
 from interface.databaseNotebookTabs.popupWindows.pets.information import WindowPet

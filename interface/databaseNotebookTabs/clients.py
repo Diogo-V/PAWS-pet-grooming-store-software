@@ -5,6 +5,7 @@ from database.src.query.databaseNotebookTabs.clients import getsRequestedClients
 from interface.databaseNotebookTabs.popupWindows.clients.deletion import WindowDeleteClient
 from interface.databaseNotebookTabs.popupWindows.clients.information import WindowClient
 from interface.databaseNotebookTabs.popupWindows.clients.insertion import WindowInsertClient
+from interface.databaseNotebookTabs.popupWindows.links.mix import WindowInsertMix
 from interface.rootNotebookTabs.popupWindows.appointments.information import *
 
 
@@ -43,10 +44,12 @@ class Clients(Frame):
         self.display.grid_propagate(False)
 
         # Creates buttons to insert, delete and update our entries inside the database
+        self.mix = Button(self.database, text="Inserir animal e cliente", command=lambda: WindowInsertMix(self))
         self.insert = Button(self.database, text='Inserir nova entrada', command=lambda: WindowInsertClient(self))
         self.delete = Button(self.database, text='Deletar entrada existente', command=lambda: WindowDeleteClient(self))
         self.change = Button(self.database, text='Alterar entrada')
-        self.insert.pack(side=LEFT, padx=(310, 0), pady=20)
+        self.mix.pack(side=LEFT, padx=(50, 0), pady=20)
+        self.insert.pack(side=LEFT, padx=(200, 0), pady=20)
         self.delete.pack(side=LEFT, padx=(115, 0), pady=20)
         self.change.pack(side=LEFT, padx=(125, 125), pady=20)
 
