@@ -1,10 +1,11 @@
 from tkinter import *
 from tkinter.ttk import *
-from interface.databaseNotebookTabs.pets import Pets
-from interface.databaseNotebookTabs.clients import Clients
-from interface.databaseNotebookTabs.links import Links
+
 from interface.databaseNotebookTabs.appointments import Appointments
+from interface.databaseNotebookTabs.clients import Clients
 from interface.databaseNotebookTabs.history import History
+from interface.databaseNotebookTabs.links import Links
+from interface.databaseNotebookTabs.pets import Pets
 
 
 class Database(Frame):
@@ -44,4 +45,4 @@ class Database(Frame):
         self.notebook.add(self.clientsFrame, text='Clientes')
         self.notebook.add(self.linkFrame, text='Relação')
         self.notebook.add(self.appointmentsFrame, text='Marcações')
-        self.notebook.add(self.historyFrame, text='Historico')
+        self.notebook.add(self.historyFrame, text='Histórico')

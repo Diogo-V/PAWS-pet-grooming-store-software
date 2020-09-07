@@ -100,7 +100,7 @@ class WindowInsertMix(Toplevel):
         descClientName.grid(column=0, row=0, padx=(5, 5), pady=30, sticky=W)
         descClientEmail = Label(self.clientWindow, text='Email:')
         descClientEmail.grid(column=0, row=2, padx=(5, 5), pady=30, sticky=W)
-        descClientPhone = Label(self.clientWindow, text='Telemovel:')
+        descClientPhone = Label(self.clientWindow, text='Telemóvel:')
         descClientPhone.grid(column=0, row=4, padx=(5, 5), pady=30, sticky=W)
         descClientNIF = Label(self.clientWindow, text='NIF:')
         descClientNIF.grid(column=0, row=6, padx=(5, 5), pady=30, sticky=W)

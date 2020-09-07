@@ -1,11 +1,12 @@
 from math import floor
 from operator import itemgetter
+
+from database.src.query.databaseNotebookTabs.links import getsAllLinks, getsRequestedLinks
+from database.src.utils.constants import typeOfAnimal
 from interface.databaseNotebookTabs.popupWindows.links.deletion import WindowDeleteLink
 from interface.databaseNotebookTabs.popupWindows.links.information import WindowLink
 from interface.databaseNotebookTabs.popupWindows.links.insertion import WindowInsertLink
 from interface.rootNotebookTabs.popupWindows.appointments.information import *
-from database.src.query.databaseNotebookTabs.links import getsAllLinks, getsRequestedLinks
-from database.src.utils.constants import typeOfAnimal
 
 
 class Links(Frame):
@@ -43,8 +44,8 @@ class Links(Frame):
         self.display.grid_propagate(False)
 
         # Creates buttons to insert, delete and update our entries inside the database
-        self.insert = Button(self.database, text='Inserir nova entrada', command=lambda: WindowInsertLink(self))
-        self.delete = Button(self.database, text='Deletar entrada existente', command=lambda: WindowDeleteLink(self))
+        self.insert = Button(self.database, text='Inserir ', command=lambda: WindowInsertLink(self))
+        self.delete = Button(self.database, text='Apagar', command=lambda: WindowDeleteLink(self))
         self.insert.pack(side=LEFT, padx=(310, 250), pady=20)
         self.delete.pack(side=LEFT, padx=(125, 125), pady=20)
 

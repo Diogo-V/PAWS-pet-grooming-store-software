@@ -45,9 +45,9 @@ class Appointments(Frame):
 
         # Creates buttons to insert, delete and update our entries inside the database
         self.firstTimer = Button(self.database, text='Primeira vez', command=lambda: WindowFirstTimer(self))
-        self.insert = Button(self.database, text='Inserir nova entrada', command=lambda: WindowInsertAppointment(self))
-        self.delete = Button(self.database, text='Deletar existente', command=lambda: WindowDeleteAppointment(self))
-        self.change = Button(self.database, text='Alterar entrada')
+        self.insert = Button(self.database, text='Inserir', command=lambda: WindowInsertAppointment(self))
+        self.delete = Button(self.database, text='Apagar', command=lambda: WindowDeleteAppointment(self))
+        self.change = Button(self.database, text='Alterar')
         self.firstTimer.pack(side=LEFT, padx=(50, 0), pady=20)
         self.insert.pack(side=LEFT, padx=(150, 0), pady=20)
         self.delete.pack(side=LEFT, padx=(115, 0), pady=20)

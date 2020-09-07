@@ -1,4 +1,4 @@
-from datetime import date, time, datetime
+import datetime
 from operator import itemgetter
 
 import interface
@@ -218,8 +218,13 @@ class WindowInsertAppointment(Toplevel):
                 appPetID = self.tree.item(appSelectedPet[0], "values")[0]
 
                 # Validates date
-                if appDate == '' or appTime == '':
+                if appDate == '':
                     messagebox.showerror('Erro', 'Insira uma data valida antes de prosseguir!', parent=self.window)
+                    return
+
+                # Validates time
+                if appTime == '':
+                    messagebox.showerror('Erro', 'Insira uma hora valida antes de prosseguir!', parent=self.window)
                     return
 
                 # Validates time
@@ -279,10 +284,10 @@ class WindowInsertAppointment(Toplevel):
             year = eval(self.entryDateYear.get())
 
             # Creates a date
-            appDate = date(year, month, day)
+            appDate = datetime.date(year, month, day)
 
             # Checks if date is a today or a day after today. If not, throws an error
-            if appDate < date.today():
+            if appDate < datetime.date.today():
                 raise ValueError
 
             # Returns date in a string
@@ -305,7 +310,7 @@ class WindowInsertAppointment(Toplevel):
             minutes = eval(self.entryTimeMinutes.get())
 
             # Creates a time
-            appTime = time(hours, minutes)
+            appTime = datetime.time(hours, minutes)
 
             # Returns time in a string
             return timeToString(appTime)
@@ -469,7 +474,7 @@ class WindowInsertAppointment(Toplevel):
         if valueIfAllowed != '':
             try:
                 value = float(valueIfAllowed)
-                if not value >= datetime.now().year:
+                if not datetime.datetime.now().year <= value <= 9999:
                     raise ValueError
                 return True
             except ValueError:
