@@ -203,7 +203,7 @@ class WindowInsertAppointment(Toplevel):
         appServices = self.getsServices()
 
         # Checks if the user selected a pet and a set of services. If not, throws an error
-        if appSelectedPet != () and appServices != []:
+        if appSelectedPet != () and appServices != '':
 
             # Gets confirmation from user
             msg = messagebox.askyesno('Confirmar submissão', 'Deseja inserir a marcação?', parent=self.window)
