@@ -2,10 +2,11 @@ from operator import itemgetter
 from tkinter import *
 from tkinter import messagebox
 from tkinter.ttk import *
+
 from database.src.functions.deletion import deleteRecordPetClientLink
-from interface.databaseNotebookTabs import links
 from database.src.query.databaseNotebookTabs.links import *
 from database.src.utils.constants import typeOfAnimal
+from interface.databaseNotebookTabs import links
 from interface.databaseNotebookTabs.popupWindows.clients.information import WindowClient
 from interface.databaseNotebookTabs.popupWindows.pets.information import WindowPet
 
@@ -25,7 +26,7 @@ class WindowDeleteLink(Toplevel):
 
         # Creates toplevel window that will be displayed. Sets size and blocks resize
         Toplevel.__init__(self, master)
-        self.title('Selecionar a relação entre animal e dono a eliminar')
+        self.title('Apagar relação entre animal e dono')
         self.geometry("1000x500")
         self.resizable(False, False)
         self.transient(master)

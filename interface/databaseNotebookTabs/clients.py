@@ -45,8 +45,8 @@ class Clients(Frame):
 
         # Creates buttons to insert, delete and update our entries inside the database
         self.mix = Button(self.database, text="Inserir animal e cliente", command=lambda: WindowInsertMix(self))
-        self.insert = Button(self.database, text='Inserir novo animal', command=lambda: WindowInsertClient(self))
-        self.delete = Button(self.database, text='Apagar animal', command=lambda: WindowDeleteClient(self))
+        self.insert = Button(self.database, text='Inserir novo cliente', command=lambda: WindowInsertClient(self))
+        self.delete = Button(self.database, text='Apagar cliente', command=lambda: WindowDeleteClient(self))
         self.change = Button(self.database, text='Alterar entrada')
         self.mix.pack(side=LEFT, padx=(50, 0), pady=20)
         self.insert.pack(side=LEFT, padx=(200, 0), pady=20)

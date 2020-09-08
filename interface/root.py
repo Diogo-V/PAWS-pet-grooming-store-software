@@ -36,7 +36,7 @@ class MainApplication:
         # Adds our rootNotebookTabs to the notebook. The spaces fill the rest of the tab's space
         self.notebook.add(appointmentsFrame, text='                    Marcações                    ')
         self.notebook.add(databaseFrame, text='                    Base de dados                    ')
-        self.notebook.add(statisticsFrame, text='                    Estatisticas                    ')
+        self.notebook.add(statisticsFrame, text='                    Estatísticas                    ')
 
         # Puts notebook on the screen
         self.notebook.pack()

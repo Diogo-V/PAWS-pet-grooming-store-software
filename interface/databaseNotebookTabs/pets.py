@@ -45,9 +45,9 @@ class Pets(Frame):
         self.display.grid_propagate(False)
 
         # Creates buttons to insert, delete and update our entries inside the database
-        self.mix = Button(self.database, text="Inserir animal e cliente", command=lambda: WindowInsertMix(self))
-        self.insert = Button(self.database, text='Inserir novo cliente', command=lambda: WindowInsertPet(self))
-        self.delete = Button(self.database, text='Apagar cliente', command=lambda: WindowDeletePet(self))
+        self.mix = Button(self.database, text="Inserir animal e animal", command=lambda: WindowInsertMix(self))
+        self.insert = Button(self.database, text='Inserir novo animal', command=lambda: WindowInsertPet(self))
+        self.delete = Button(self.database, text='Apagar animal', command=lambda: WindowDeletePet(self))
         self.change = Button(self.database, text='Alterar entrada')
         self.mix.pack(side=LEFT, padx=(50, 0), pady=20)
         self.insert.pack(side=LEFT, padx=(200, 0), pady=20)

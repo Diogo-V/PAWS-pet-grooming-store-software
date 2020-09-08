@@ -22,7 +22,7 @@ class WindowDeleteClient(Toplevel):
 
         # Creates toplevel window that will be displayed. Sets size and blocks resize
         Toplevel.__init__(self, master)
-        self.title('Deletar cliente')
+        self.title('Apagar cliente')
         self.geometry("1000x500")
         self.resizable(False, False)
         self.transient(master)
