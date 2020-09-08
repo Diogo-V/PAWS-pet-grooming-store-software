@@ -36,31 +36,38 @@ def movesAppointmentsToHistory():
     > Moves past appointments that have been executed to history table. Is executed each time the application is loaded.
     """
 
-    # Creates a connection to our database and a cursor to work with it
-    connection = connect("database/database.sqlite")
-    cursor = connection.cursor()
+    # Creates connections to our databases and cursors to work with it
+    mainDBConn = connect("database/database.sqlite")
+    mainDBCursor = mainDBConn.cursor()
+    historyDBConn = connect("database/history.sqlite")
+    historyDBCursor = historyDBConn.cursor()
 
     try:
 
-        # SQL syntax that moves past appointments into history table
-        queryMoveAppointments = f"""insert into 
-                                        history (services, date, time, price, animalId) 
-                                    select * from 
-                                        appointments 
-                                    where 
-                                        date < '{dateToString(date.today())}'"""
+        # SQL syntax that gets all the past appointments
+        queryGetsPastAppointments = f"select * from appointments where date < '{dateToString(date.today())}'"
 
-        # Executes motion
-        cursor.execute(queryMoveAppointments)
+        # SQL syntax that inserts past appointments in the history table
+        queryInsertHistory = "insert into history (services, date, time, price, animalId) VALUES (?, ?, ?, ?, ?)"
 
         # SQL syntax that deletes past appointments from the appointments table
         queryDeleteAppointments = f"delete from appointments where date < '{dateToString(date.today())}'"
 
-        # Executes deletion
-        cursor.execute(queryDeleteAppointments)
+        # Executes query and gets all the appointments that should be moved
+        pastApp = mainDBCursor.execute(queryGetsPastAppointments).fetchall()
 
-        # Writes changes in the database
-        connection.commit()
+        # Insert all the results inside our history database. Validates if we only found one match or multiple
+        if type(pastApp) is list and pastApp != []:
+            historyDBCursor.executemany(queryInsertHistory, pastApp)
+        elif type(pastApp) is tuple and pastApp != []:
+            historyDBCursor.execute(queryInsertHistory, pastApp)
+
+        # Executes deletion
+        mainDBCursor.execute(queryDeleteAppointments)
+
+        # Writes changes in both databases
+        mainDBConn.commit()
+        historyDBConn.commit()
 
     except Error:
 
@@ -69,8 +76,10 @@ def movesAppointmentsToHistory():
         print(Error.args)
         print(Error)
 
-        connection.rollback()  # Removes any change made during execution
+        mainDBConn.rollback()  # Removes any change made during execution
+        historyDBConn.rollback()  # Removes any change made during execution
 
     finally:
 
-        connection.close()  # Closes connection with our database
+        mainDBConn.close()  # Closes connection with our database
+        historyDBConn.close()  # Closes connection with our database

@@ -121,7 +121,7 @@ def deleteRecordHistory(identifier):
     """
 
     # Creates a connection to our database and a cursor to work with it
-    connection = connect("database/database.sqlite")
+    connection = connect("database/history.sqlite")
     cursor = connection.cursor()
 
     try:

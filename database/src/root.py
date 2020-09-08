@@ -23,12 +23,20 @@ def initDatabase():
 
 def deleteAllTables():
     """Deletes all existing tables inside our database."""
-    connection = connect("database/database.sqlite")
-    cursor = connection.cursor()
-    cursor.execute("DROP TABLE animals")
-    cursor.execute("DROP TABLE clients")
-    cursor.execute("DROP TABLE petsClientsLink")
-    cursor.execute("DROP TABLE appointments")
-    cursor.execute("DROP TABLE history")
-    connection.commit()
-    connection.close()
+
+    # Creates connections to our databases and cursors to work with it
+    mainDBConn = connect("database/database.sqlite")
+    mainDBCursor = mainDBConn.cursor()
+    historyDBConn = connect("database/history.sqlite")
+    historyDBCursor = historyDBConn.cursor()
+
+    mainDBCursor.execute("DROP TABLE animals")
+    mainDBCursor.execute("DROP TABLE clients")
+    mainDBCursor.execute("DROP TABLE petsClientsLink")
+    mainDBCursor.execute("DROP TABLE appointments")
+    historyDBCursor.execute("DROP TABLE history")
+
+    mainDBConn.commit()
+    historyDBConn.commit()
+    mainDBConn.close()
+    historyDBConn.close()

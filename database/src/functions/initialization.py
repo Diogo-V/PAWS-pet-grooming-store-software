@@ -91,7 +91,7 @@ def createsHistoryTable():
     > price: amount paid -> double
     > animalId: animal that holds this appointment -> integer
     """
-    connection = connect("database/database.sqlite")
+    connection = connect("database/history.sqlite")
     cursor = connection.cursor()
     cursor.execute("""CREATE TABLE IF NOT EXISTS history (
         services varchar(255) default '',
