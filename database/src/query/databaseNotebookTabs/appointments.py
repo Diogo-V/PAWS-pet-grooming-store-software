@@ -293,3 +293,49 @@ def checksIfPetHasAnOwner(petID):
     finally:
 
         connection.close()  # Closes connection with our database
+
+
+def getsAppointmentsForDayAppTree(myDate):
+    """
+    Description:
+    > Gets a list of tuples that hold all the appointments for the selected day.
+    :param myDate: requested date -> date
+    """
+
+    # Creates a connection to our database and a cursor to work with it
+    connection = connect("database/database.sqlite")
+    cursor = connection.cursor()
+
+    try:
+
+        # SQL syntax that is going to be parsed inside the database console
+        query = f"""
+                select
+                    appointments.ROWID,
+                    appointments.time, 
+                    appointments.services,
+                    animals.name
+                from
+                    appointments
+                inner join 
+                    animals
+                where 
+                    animals.ROWID = appointments.animalId and
+                    appointments.date = {myDate.toordinal()}
+                """
+
+        # Gets list containing the requested information
+        info = cursor.execute(query).fetchall()
+
+        return info
+
+    except Error:
+
+        # Error information and details processing
+        print(type(Error))
+        print(Error.args)
+        print(Error)
+
+    finally:
+
+        connection.close()  # Closes connection with our database
