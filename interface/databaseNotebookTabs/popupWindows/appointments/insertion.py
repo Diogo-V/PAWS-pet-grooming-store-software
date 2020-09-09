@@ -1,11 +1,10 @@
-import datetime
 from operator import itemgetter
 
 import interface
 from database.src.functions.insertion import insertRecordAppointment
 from database.src.query.databaseNotebookTabs.appointments import *
 from database.src.utils.constants import *
-from database.src.utils.converters import dateToString, timeToString, servicesToString
+from database.src.utils.converters import timeToString, servicesToString
 from interface.databaseNotebookTabs.popupWindows.pets.information import WindowPet
 from interface.rootNotebookTabs.popupWindows.appointments.information import *
 
@@ -291,7 +290,7 @@ class WindowInsertAppointment(Toplevel):
                 raise ValueError
 
             # Returns date in a string
-            return dateToString(appDate)
+            return appDate
 
         except:
             return ''

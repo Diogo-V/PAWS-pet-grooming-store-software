@@ -6,7 +6,7 @@ from tkinter.ttk import *
 import interface
 from database.src.functions.insertion import *
 from database.src.utils.constants import typeOfAnimal, services
-from database.src.utils.converters import servicesToString, timeToString, dateToString
+from database.src.utils.converters import servicesToString, timeToString
 
 
 class WindowFirstTimer(Toplevel):
@@ -330,7 +330,7 @@ class WindowFirstTimer(Toplevel):
                 raise ValueError
 
             # Returns date in a string
-            return dateToString(appDate)
+            return appDate
 
         except:
             return ''

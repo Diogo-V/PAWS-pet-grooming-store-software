@@ -1,4 +1,20 @@
+import datetime
 from sqlite3 import *
+
+from database.src.utils.converters import dateToString
+
+
+def transformsIntegerAppointmentDateToString(app, idxOfDate):
+    """
+    Description:
+    > Changes date inside app from integer to a printable string.
+    :param app: tuple with the information about an appointment inside our database -> tuple
+    :param idxOfDate: tuple index where date is located -> integer
+    :return: tuple with our formatted information -> tuple
+    """
+    app = list(app)
+    app[idxOfDate] = dateToString(datetime.date.fromordinal(app[idxOfDate]))
+    return tuple(app)
 
 
 def getsAllAppointments():
@@ -37,6 +53,12 @@ def getsAllAppointments():
 
         # Gets list containing the requested information
         info = cursor.execute(query).fetchall()
+
+        # Converts our date to a string
+        if type(info) is list and info != []:
+            info = list(map(lambda app: transformsIntegerAppointmentDateToString(app, 5), info))
+        elif type(info) is tuple:
+            info = transformsIntegerAppointmentDateToString(info, 5)
 
         return info
 
@@ -113,6 +135,12 @@ def getsRequestedAppointments(queryInfo):
 
         # Gets list containing the requested information
         info = cursor.execute(query).fetchall()
+
+        # Converts our date to a string
+        if type(info) is list and info != []:
+            info = list(map(lambda app: transformsIntegerAppointmentDateToString(app, 5), info))
+        elif type(info) is tuple:
+            info = transformsIntegerAppointmentDateToString(info, 5)
 
         return info
 

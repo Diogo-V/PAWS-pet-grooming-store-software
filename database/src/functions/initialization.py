@@ -60,7 +60,7 @@ def createsAppointmentsTable():
     Database inputs:
     > id: primary key -> integer
     > services: set of services that are going to be provided -> list of strings
-    > date: date of execution -> date
+    > date: date of execution in days past 1/1/0-> integer
     > time: time of the day -> time
     > price: amount paid -> double
     > animalId: animal that holds this appointment -> integer
@@ -69,7 +69,7 @@ def createsAppointmentsTable():
     cursor = connection.cursor()
     cursor.execute("""CREATE TABLE IF NOT EXISTS appointments (
         services varchar(255) default '',
-        date varchar(255) default '',
+        date integer default 0,
         time varchar(255) default '',
         price numeric default 0,
         animalId integer,
@@ -86,7 +86,7 @@ def createsHistoryTable():
     Database inputs:
     > id: primary key -> integer
     > services: set of services that are going to be provided -> list of strings
-    > date: date of execution -> date
+    > date: date of execution in days past 1/1/0-> integer
     > time: time of the day -> time
     > price: amount paid -> double
     > animalId: animal that holds this appointment -> integer
@@ -95,8 +95,8 @@ def createsHistoryTable():
     cursor = connection.cursor()
     cursor.execute("""CREATE TABLE IF NOT EXISTS history (
         services varchar(255) default '',
-        date varchar(255) default NULL,
-        time varchar(255) default NULL,
+        date integer default 0,
+        time varchar(255) default '',
         price numeric default 0,        
         animalId integer,
         FOREIGN KEY(animalId) REFERENCES animals(rowid)

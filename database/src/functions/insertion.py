@@ -1,6 +1,19 @@
 from sqlite3 import *
 
 
+def transformsDateAppointmentToInteger(app, idxOfDate):
+    """
+    Description:
+    > Changes input date into an integer so that we can insert it inside our database.
+    :param app: tuple with the information about an appointment inside our database -> tuple
+    :param idxOfDate: tuple index where date is located -> integer
+    :return: tuple with our formatted information -> tuple
+    """
+    app = list(app)
+    app[idxOfDate] = app[idxOfDate].toordinal()
+    return tuple(app)
+
+
 def insertRecordAnimal(animal):
     """
     Description:
@@ -95,6 +108,9 @@ def insertRecordAppointment(appointment):
     connection = connect("database/database.sqlite")
     cursor = connection.cursor()
 
+    # Transforms date into an integer so that it can be stored in our database
+    appointment = transformsDateAppointmentToInteger(appointment, 1)
+
     try:
 
         # SQL syntax that is going to be parsed inside the database console
@@ -131,6 +147,9 @@ def insertRecordHistory(history):
     # Creates a connection to our database and a cursor to work with it
     connection = connect("database/history.sqlite")
     cursor = connection.cursor()
+
+    # Transforms date into an integer so that it can be stored in our database
+    history = transformsDateAppointmentToInteger(history, 1)
 
     try:
 

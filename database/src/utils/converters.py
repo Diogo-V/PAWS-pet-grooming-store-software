@@ -45,13 +45,13 @@ def movesAppointmentsToHistory():
     try:
 
         # SQL syntax that gets all the past appointments
-        queryGetsPastAppointments = f"select * from appointments where date < '{dateToString(date.today())}'"
+        queryGetsPastAppointments = f"select * from appointments where date < {date.today().toordinal()}"
 
         # SQL syntax that inserts past appointments in the history table
         queryInsertHistory = "insert into history (services, date, time, price, animalId) VALUES (?, ?, ?, ?, ?)"
 
         # SQL syntax that deletes past appointments from the appointments table
-        queryDeleteAppointments = f"delete from appointments where date < '{dateToString(date.today())}'"
+        queryDeleteAppointments = f"delete from appointments where date < {date.today().toordinal()}"
 
         # Executes query and gets all the appointments that should be moved
         pastApp = mainDBCursor.execute(queryGetsPastAppointments).fetchall()
