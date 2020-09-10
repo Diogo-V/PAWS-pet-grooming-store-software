@@ -172,8 +172,11 @@ class WindowInsertAppointment(Toplevel):
         self.petButton = Button(self.petWindow, text='Procurar', width=8, command=self.updatePetTree)
         self.petButton.grid(column=4, row=0, pady=(10, 10), sticky=E)
 
+        # Columns names that are going to be inserted inside the tree
+        columnsPets = ('', 'Nome', 'Tipo')
+
         # Creates tree that will display all the pets
-        self.treePet = Treeview(self.petWindow, columns=(0, 1, 2), height=19)
+        self.treePet = Treeview(self.petWindow, columns=columnsPets, height=19, show='headings')
         self.treePet.grid(column=0, row=1, columnspan=5, padx=10, pady=10)
 
         # Formats columns
@@ -182,19 +185,21 @@ class WindowInsertAppointment(Toplevel):
         self.treePet.column(1, stretch=NO, anchor='center', width=250)
         self.treePet.column(2, stretch=NO, anchor='center', width=250)
 
-        # Define columns heading
-        self.treePet.heading('#0', text='', anchor='w')
-        self.treePet.heading(0, text='', anchor='w')
-        self.treePet.heading(1, text='Nome', anchor='center')
-        self.treePet.heading(2, text='Tipo', anchor='center')
+        # Define columns heading and sets their sorting function
+        for col in columnsPets:
+            self.treePet.heading(col, text=col, command=lambda _col=col:
+                                 self.treeSortColumn(self.treePet, _col, False), anchor='center')
 
         # Creates a scrollbar for the tree view and then puts it on the screen
         self.scrollbarClients = Scrollbar(self.petWindow, orient="vertical", command=self.treePet.yview)
         self.scrollbarClients.grid(column=5, row=1, sticky=(N, S))
         self.treePet.configure(yscrollcommand=self.scrollbarClients.set)
 
+        # Columns names that are going to be inserted inside the tree
+        columnsApp = ('', 'Hora', 'Serviços', 'Nome do animal')
+
         # Creates tree that will display all the pets
-        self.treeApp = Treeview(self.dayAppWindow, columns=(0, 1, 2, 3), height=13)
+        self.treeApp = Treeview(self.dayAppWindow, columns=columnsApp, height=13, show='headings')
         self.treeApp.grid(column=0, row=2, columnspan=5, padx=10, pady=10)
 
         # Formats columns
@@ -204,12 +209,10 @@ class WindowInsertAppointment(Toplevel):
         self.treeApp.column(2, stretch=NO, anchor='center', width=218)
         self.treeApp.column(3, stretch=NO, anchor='center', width=218)
 
-        # Define columns heading
-        self.treeApp.heading('#0', text='', anchor='w')
-        self.treeApp.heading(0, text='', anchor='w')
-        self.treeApp.heading(1, text='Hora', anchor='center')
-        self.treeApp.heading(2, text='Serviços', anchor='center')
-        self.treeApp.heading(3, text='Nome do animal', anchor='center')
+        # Define columns heading and sets their sorting function
+        for col in columnsApp:
+            self.treeApp.heading(col, text=col, command=lambda _col=col:
+                                 self.treeSortColumn(self.treeApp, _col, False), anchor='center')
 
         # Creates a scrollbar for the tree view and then puts it on the screen
         self.scrollbarAppointments = Scrollbar(self.dayAppWindow, orient="vertical", command=self.treeApp.yview)
@@ -222,6 +225,28 @@ class WindowInsertAppointment(Toplevel):
         # Links double click on a row with a window popup
         self.treePet.bind('<Double 1>', self.displayAppointmentWindow)
         self.treeApp.bind('<Double 1>', self.displayAppointmentWindow)
+
+    def treeSortColumn(self, tv, col, reverse):
+        """
+        Description:
+        > Sorts the clicked column of the tree.
+        :param tv: tree -> TreeView
+        :param col: selected column name -> string
+        :param reverse: checks if we need to reverse it -> boolean
+        """
+
+        # Gets lines from the selected column
+        lines = [(tv.set(k, col), k) for k in tv.get_children('')]
+
+        # Sorts
+        lines.sort(reverse=reverse)
+
+        # rearrange items in sorted positions
+        for index, (val, k) in enumerate(lines):
+            tv.move(k, '', index)
+
+        # reverse sort next time
+        tv.heading(col, text=col, command=lambda _col=col: self.treeSortColumn(tv, _col, not reverse))
 
     def submit(self):
         """

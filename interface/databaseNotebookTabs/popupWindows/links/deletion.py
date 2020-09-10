@@ -90,8 +90,11 @@ class WindowDeleteLink(Toplevel):
         self.petsButton.grid(column=0, row=1, padx=5, columnspan=2)
         self.clientsButton.grid(column=0, row=1, padx=5, columnspan=2)
 
+        # Columns names that are going to be inserted inside the tree
+        columnsPets = ('', 'Nome', 'Tipo')
+
         # Creates tree that will display all the pets information
-        self.treePets = Treeview(self.pets, columns=(0, 1, 2), height=17)
+        self.treePets = Treeview(self.pets, columns=columnsPets, height=17, show='headings')
         self.treePets.pack(side=LEFT, padx=10, pady=10)
 
         # Formats columns
@@ -100,19 +103,21 @@ class WindowDeleteLink(Toplevel):
         self.treePets.column(1, stretch=NO, anchor='center', width=228)
         self.treePets.column(2, stretch=NO, anchor='center', width=130)
 
-        # Define columns heading
-        self.treePets.heading('#0', text='', anchor='w')
-        self.treePets.heading(0, text='', anchor='w')
-        self.treePets.heading(1, text='Nome', anchor='center')
-        self.treePets.heading(2, text='Tipo', anchor='center')
+        # Define columns heading and sets their sorting function
+        for col in columnsPets:
+            self.treePets.heading(col, text=col, command=lambda _col=col:
+                                     self.treeSortColumn(self.treePets, _col, False), anchor='center')
 
         # Creates a scrollbar for the tree view and then puts it on the screen
         self.scrollbarPets = Scrollbar(self.pets, orient="vertical", command=self.treePets.yview)
         self.scrollbarPets.pack(side=RIGHT, fill="y")
         self.treePets.configure(yscrollcommand=self.scrollbarPets.set)
 
+        # Columns names that are going to be inserted inside the tree
+        columnsClients = ('', 'Nome')
+
         # Creates tree that will display all the links
-        self.treeClients = Treeview(self.clients, columns=(0, 1), height=17)
+        self.treeClients = Treeview(self.clients, columns=columnsClients, height=17, show='headings')
         self.treeClients.pack(side=LEFT, padx=10, pady=10)
 
         # Formats columns
@@ -120,10 +125,10 @@ class WindowDeleteLink(Toplevel):
         self.treeClients.column(0, stretch=NO, anchor='center', width=0)
         self.treeClients.column(1, stretch=NO, anchor='center', width=358)
 
-        # Define columns heading
-        self.treeClients.heading('#0', text='', anchor='w')
-        self.treeClients.heading(0, text='', anchor='w')
-        self.treeClients.heading(1, text='Nome', anchor='center')
+        # Define columns heading and sets their sorting function
+        for col in columnsClients:
+            self.treeClients.heading(col, text=col, command=lambda _col=col:
+                                     self.treeSortColumn(self.treeClients, _col, False), anchor='center')
 
         # Creates a scrollbar for the tree view and then puts it on the screen
         self.scrollbarClients = Scrollbar(self.clients, orient="vertical", command=self.treeClients.yview)
@@ -145,6 +150,28 @@ class WindowDeleteLink(Toplevel):
 
         # Updates every 0.2 seconds the status our Label. Used to tell the user if entries are valid
         self.master.after(200, self.updateLinkLabel)
+
+    def treeSortColumn(self, tv, col, reverse):
+        """
+        Description:
+        > Sorts the clicked column of the tree.
+        :param tv: tree -> TreeView
+        :param col: selected column name -> string
+        :param reverse: checks if we need to reverse it -> boolean
+        """
+
+        # Gets lines from the selected column
+        lines = [(tv.set(k, col), k) for k in tv.get_children('')]
+
+        # Sorts
+        lines.sort(reverse=reverse)
+
+        # rearrange items in sorted positions
+        for index, (val, k) in enumerate(lines):
+            tv.move(k, '', index)
+
+        # reverse sort next time
+        tv.heading(col, text=col, command=lambda _col=col: self.treeSortColumn(tv, _col, not reverse))
 
     def getsPetEntries(self):
         """

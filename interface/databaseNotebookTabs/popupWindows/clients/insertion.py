@@ -7,6 +7,7 @@ from database.src.functions.insertion import insertRecordPetClientLink, insertRe
 from database.src.query.databaseNotebookTabs.links import getsPetsForLinksWindow, getsRequestedPets
 from database.src.utils.constants import typeOfAnimal
 from interface.databaseNotebookTabs import clients
+from interface.databaseNotebookTabs.popupWindows.clients.information import WindowClient
 
 
 class WindowInsertClient(Toplevel):
@@ -111,8 +112,11 @@ class WindowInsertClient(Toplevel):
         self.petButton = Button(self.petWindow, text='Procurar', width=8, command=self.updatePetTree)
         self.petButton.grid(column=4, row=0, pady=(20, 10), sticky=E)
 
+        # Columns names that are going to be inserted inside the tree
+        columns = ('', 'Nome', 'Tipo')
+
         # Creates tree that will display all the pets
-        self.treePets = Treeview(self.petWindow, columns=(0, 1, 2), height=15)
+        self.treePets = Treeview(self.petWindow, columns=columns, height=15, show='headings')
         self.treePets.grid(column=0, row=1, columnspan=5, padx=10, pady=10)
 
         # Formats columns
@@ -121,11 +125,10 @@ class WindowInsertClient(Toplevel):
         self.treePets.column(1, stretch=NO, anchor='center', width=225)
         self.treePets.column(2, stretch=NO, anchor='center', width=225)
 
-        # Define columns heading
-        self.treePets.heading('#0', text='', anchor='w')
-        self.treePets.heading(0, text='', anchor='w')
-        self.treePets.heading(1, text='Nome', anchor='center')
-        self.treePets.heading(2, text='Tipo', anchor='center')
+        # Define columns heading and sets their sorting function
+        for col in columns:
+            self.treePets.heading(col, text=col, command=lambda _col=col:
+                                  self.treeSortColumn(self.treePets, _col, False), anchor='center')
 
         # Creates a scrollbar for the tree view and then puts it on the screen
         self.scrollbarClients = Scrollbar(self.petWindow, orient="vertical", command=self.treePets.yview)
@@ -134,6 +137,31 @@ class WindowInsertClient(Toplevel):
 
         # Populates tree
         self.refreshTreePets()
+
+        # Links double click on a row with a window popup
+        self.treePets.bind('<Double 1>', self.displayClientWindow)
+
+    def treeSortColumn(self, tv, col, reverse):
+        """
+        Description:
+        > Sorts the clicked column of the tree.
+        :param tv: tree -> TreeView
+        :param col: selected column name -> string
+        :param reverse: checks if we need to reverse it -> boolean
+        """
+
+        # Gets lines from the selected column
+        lines = [(tv.set(k, col), k) for k in tv.get_children('')]
+
+        # Sorts
+        lines.sort(reverse=reverse)
+
+        # rearrange items in sorted positions
+        for index, (val, k) in enumerate(lines):
+            tv.move(k, '', index)
+
+        # reverse sort next time
+        tv.heading(col, text=col, command=lambda _col=col: self.treeSortColumn(tv, _col, not reverse))
 
     def submit(self):
         """
@@ -299,6 +327,29 @@ class WindowInsertClient(Toplevel):
             messagebox.showerror('Erro nas entradas',
                                  'Não digitou toda a informação necessária para criar uma entrada!', parent=self.window)
             return False
+
+    def displayClientWindow(self, event):
+        """
+        Description:
+        > Displays toplevel window with the information about the selected pet.
+
+        :param event: event of clicking a button -> event
+        """
+
+        # Gets row that was clicked
+        item = self.treePets.identify_row(event.y)
+
+        # If the user didn't click on a blank space, shows the toplevel window else, does nothing
+        if item:
+
+            # Gets row information
+            info = self.treePets.item(item, 'values')
+
+            # Since we only need the client id to query trough the database, we discard the rest
+            clientID = info[0]
+
+            # Creates toplevel window that will display the information about this client
+            WindowClient(self, clientID)
 
     @staticmethod
     def validateString(self, action, index, valueIfAllowed,

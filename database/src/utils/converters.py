@@ -7,6 +7,12 @@ def dateToString(myDate):
     return myDate.strftime('%d/%m/%Y')
 
 
+def stringToDate(myDate):
+    """Converts a string date into a datetime.date object."""
+    [day, month, year] = myDate.split("/")
+    return date(int(year), int(month), int(day))
+
+
 def timeToString(myDate):
     """Converts a time to a string. Used to serialize dates for the database."""
     return myDate.strftime('%H-%M-%S')

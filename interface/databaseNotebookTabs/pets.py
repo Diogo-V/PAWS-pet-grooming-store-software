@@ -77,8 +77,11 @@ class Pets(Frame):
         self.button = Button(self.search, text='Procurar', command=self.updateTree)
         self.button.pack(side=RIGHT, padx=(10, 25), pady=20)
 
+        # Columns names that are going to be inserted inside the tree
+        columns = ('', 'Nome do animal', 'Nome do cliente', 'Tipo de animal', 'Peso', 'Tipo de pelo')
+
         # Creates tree that will display all the links
-        self.tree = Treeview(self.display, columns=(0, 1, 2, 3, 4, 5), height=900)
+        self.tree = Treeview(self.display, columns=columns, height=900, show='headings')
         self.tree.pack(side=LEFT, padx=10, pady=10)
 
         # Formats columns
@@ -90,14 +93,10 @@ class Pets(Frame):
         self.tree.column(4, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/5 - 17))
         self.tree.column(5, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/5 - 17))
 
-        # Define columns heading
-        self.tree.heading('#0', text='', anchor='w')
-        self.tree.heading(0, text='', anchor='w')
-        self.tree.heading(1, text='Nome do animal', anchor='center')
-        self.tree.heading(2, text='Nome do cliente', anchor='center')
-        self.tree.heading(3, text='Tipo de animal', anchor='center')
-        self.tree.heading(4, text='Peso', anchor='center')
-        self.tree.heading(5, text='Tipo de pelo', anchor='center')
+        # Define columns heading and sets their sorting function
+        for col in columns:
+            self.tree.heading(col, text=col,
+                              command=lambda _col=col: self.treeSortColumn(self.tree, _col, False), anchor='center')
 
         # Creates a scrollbar for the tree view and then puts it on the screen
         self.scrollbar = Scrollbar(self.display, orient="vertical", command=self.tree.yview)
@@ -109,6 +108,28 @@ class Pets(Frame):
 
         # Links double click on a row with a window popup
         self.tree.bind('<Double 1>', self.displayPetWindow)
+
+    def treeSortColumn(self, tv, col, reverse):
+        """
+        Description:
+        > Sorts the clicked column of the tree.
+        :param tv: tree -> TreeView
+        :param col: selected column name -> string
+        :param reverse: checks if we need to reverse it -> boolean
+        """
+
+        # Gets lines from the selected column
+        lines = [(tv.set(k, col), k) for k in tv.get_children('')]
+
+        # Sorts
+        lines.sort(reverse=reverse)
+
+        # rearrange items in sorted positions
+        for index, (val, k) in enumerate(lines):
+            tv.move(k, '', index)
+
+        # reverse sort next time
+        tv.heading(col, text=col, command=lambda _col=col: self.treeSortColumn(tv, _col, not reverse))
 
     def getsEntries(self):
         """
