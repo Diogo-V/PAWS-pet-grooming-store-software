@@ -172,28 +172,34 @@ class WindowInsertClient(Toplevel):
         # Gets tuple with the selected pet
         pet = self.treePets.selection()
 
-        # If no pet was selected, we ask if the user still wants to submit
-        if pet == ():
+        # If the user selected more than one pet. Throws error and interrupts
+        if len(pet) != 1:
+            messagebox.showerror("Erro", "Selecione um e é só animal antes de continuar!", parent=self.window)
+            return
 
-            # Gets confirmation from user
-            msg = messagebox.askyesno('Confirmar submissão', 'Deseja inserir o cliente sem animal?', parent=self.window)
+        # Gets confirmation from user
+        msg = messagebox.askyesno('Confirmar submissão?', 'Deseja submeter os dados inseridos?', parent=self.window)
 
-            # If the user selected more than one pet. Throws error and interrupts
-            if len(pet) != 1:
-                messagebox.showerror("Erro", "Selecione apenas uma animal antes de continuar!", parent=self.window)
-                return
+        # Checks the answer from the user. If answer was 'no', we stop execution
+        if msg:
 
-            # Checks the answer from the user. If answer was 'no', we stop execution
-            if msg:
+            # Gets pet info. Can be empty if it has an error
+            clientInfo = self.getsClientEntries()
 
-                # Gets pet info. Can be empty if it has an error
-                clientInfo = self.getsClientEntries()
+            # If everything is alright
+            if clientInfo != ():
 
-                # If everything is alright
-                if clientInfo != ():
+                # Inserts values inside our database. Also gets rowid of the newly inserted client
+                clientID = insertRecordClient(clientInfo)
 
-                    # Inserts values inside our database
-                    insertRecordClient(clientInfo)
+                # Checks if insertion went well
+                if clientID is not None:
+
+                    # Gets pet's id
+                    petID = self.treePets.item(pet[0], "values")[0]
+
+                    # Creates a link between the client and the pet
+                    insertRecordPetClientLink((petID, clientID))
 
                     # Refreshes main tree
                     clients.Clients.refreshTree(self.master)
@@ -201,37 +207,15 @@ class WindowInsertClient(Toplevel):
                     # Eliminates window
                     self.destroy()
 
-        else:
+                # Since we had an error while inserting the client, we need to prompt the user
+                else:
+                    messagebox.showerror("Erro", "Aconteceu um erro ao tentar inserir o cliente na base de dados. "
+                                                 "Tente de novo!", parent=self.window)
 
-            # Gets confirmation from user
-            msg = messagebox.askyesno('Confirmar submissão?', 'Deseja submeter os dados inseridos?', parent=self.window)
-
-            # Checks the answer from the user. If answer was 'no', we stop execution
-            if msg:
-
-                # Gets pet info. Can be empty if it has an error
-                clientInfo = self.getsClientEntries()
-
-                # If everything is alright
-                if clientInfo != ():
-
-                    # Inserts values inside our database. Also gets rowid of the newly inserted client
-                    clientID = insertRecordClient(clientInfo)
-
-                    # Checks if insertion went well
-                    if clientID is not None:
-
-                        # Gets pet's id
-                        petID = self.treePets.item(pet[0], "values")[0]
-
-                        # Creates a link between the client and the pet
-                        insertRecordPetClientLink((petID, clientID))
-
-                        # Refreshes main tree
-                        clients.Clients.refreshTree(self.master)
-
-                        # Eliminates window
-                        self.destroy()
+            # Since we had an error while creating the client, we need to prompt the user
+            else:
+                messagebox.showerror("Erro", "Aconteceu um erro ao obter as informações inseridas. Tente de novo!",
+                                     parent=self.window)
 
     def getsClientEntries(self):
         """

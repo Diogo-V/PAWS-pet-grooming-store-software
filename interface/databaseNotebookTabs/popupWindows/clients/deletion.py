@@ -133,40 +133,34 @@ class WindowDeleteClient(Toplevel):
 
         # If the user selected more than one client. Throws error and interrupts
         if len(client) != 1:
-            messagebox.showerror("Erro", "Selecione apenas uma cliente antes de continuar!", parent=self.window)
+            messagebox.showerror("Erro", "Selecione um e apenas um cliente antes de continuar!", parent=self.window)
             return
 
-        # Gets if an entry was selected
-        if client != ():
+        # Confirms if the user wants to eliminate this entry
+        msg = messagebox.askyesno('Confirmar remoção', 'Deseja remover a entrada selecionada? '
+                                                       'Todos os animais associados também seram eliminados',
+                                  parent=self.window)
 
-            # Confirms if the user wants to eliminate this entry
-            msg = messagebox.askyesno('Confirmar remoção', 'Deseja remover a entrada selecionada?', parent=self.window)
+        # If the user agreed, deletes it
+        if msg:
 
-            # If the user agreed, deletes it
-            if msg:
+            # Gets client row id
+            clientID = self.tree.item(client[0], "values")[0]
 
-                # Gets client row id
-                clientID = self.tree.item(client[0], "values")[0]
+            # Removes clients from database
+            deleteRecordClient(clientID)
 
-                # Removes clients from database
-                deleteRecordClient(clientID)
+            # Deletes associated pets
+            deleteClientsPets(clientID)
 
-                # Asks if the user wants to eliminate all the associated pets. if so, does it
-                if messagebox.askyesno('Remover animais', 'Deseja remover os animais associados?', parent=self.window):
-                    deleteClientsPets(clientID)
+            # Removes associated links
+            deleteClientsLinks(clientID)
 
-                # Removes associated links
-                deleteClientsLinks(clientID)
+            # Refreshes main tree
+            clients.Clients.refreshTree(self.master)
 
-                # Refreshes main tree
-                clients.Clients.refreshTree(self.master)
-
-                # Eliminates window
-                self.destroy()
-
-        # If a client was not selected and the button was still pressed, we throw an error
-        else:
-            messagebox.showerror('Erro', 'Selecione um cliente antes de tentar remover!', parent=self.window)
+            # Eliminates window
+            self.destroy()
 
     def getsEntries(self):
         """

@@ -280,8 +280,7 @@ def deleteClientsPets(identifier):
                     animals
                 where
                     animals.ROWID in (select animals.ROWID from animals inner join clients, petsClientsLink where 
-                                      animals.ROWID = petsClientsLink.petId and petsClientsLink.clientId = {identifier}
-                                     )
+                                      animals.ROWID = petsClientsLink.petId and petsClientsLink.clientId = {identifier})
                 """
 
         # Executes command
@@ -324,8 +323,7 @@ def deletePetsClients(identifier):
                     clients
                 where
                     clients.ROWID in (select clients.ROWID from clients inner join animals, petsClientsLink where 
-                                      animals.ROWID = {identifier} and petsClientsLink.clientId = clients.ROWID
-                                     )
+                                      animals.ROWID = {identifier} and petsClientsLink.clientId = clients.ROWID)
                 """
 
         # Executes command

@@ -133,42 +133,36 @@ class WindowDeletePet(Toplevel):
         # Gets tuple with the selected pet. If none were selected, gets an empty tuple
         pet = self.tree.selection()
 
-        # Gets if an entry was selected
-        if pet != ():
+        # Checks if an entry was selected and if it was only one. If not, prompts the user and interrupts
+        if len(pet) != 1:
+            messagebox.showerror('Erro', 'Precisa de selecionar um e um só animal antes de tentar remover!',
+                                 parent=self.window)
+            return
 
-            # Confirms if the user wants to eliminate this entry
-            msg = messagebox.askyesno('Confirmar remoção', 'Deseja remover a entrada selecionada?', parent=self.window)
+        # Confirms if the user wants to eliminate this entry
+        msg = messagebox.askyesno('Confirmar remoção', 'Deseja remover a entrada selecionada? Ao fazê-lo, todos os '
+                                                       'clientes associados seram eliminados!', parent=self.window)
 
-            # Makes sure that the user only selected one pet
-            if len(pet) != 1:
-                messagebox.showerror("Erro", "Selecione apenas um animal antes de continuar!", parent=self.window)
-                return
+        # If the user agreed, we continue
+        if msg:
 
-            # If the user agreed, deletes it
-            if msg:
+            # Gets pet row id
+            petId = self.tree.item(pet[0], "values")[0]
 
-                # Gets pet row id
-                petId = self.tree.item(pet[0], "values")[0]
+            # Removes from database
+            deleteRecordAnimal(petId)
 
-                # Removes from database
-                deleteRecordAnimal(petId)
+            # Eliminates owners of the animal
+            deletePetsClients(petId)
 
-                # Asks if the user wants to eliminate all the associated clients. if so, does it
-                if messagebox.askyesno('Remover cliente', 'Deseja remover os clientes associados?', parent=self.window):
-                    deletePetsClients(petId)
+            # Removes associated links
+            deletePetsLinks(petId)
 
-                # Removes associated links
-                deletePetsLinks(petId)
+            # Refreshes main tree
+            pets.Pets.refreshTree(self.master)
 
-                # Refreshes main tree
-                pets.Pets.refreshTree(self.master)
-
-                # Eliminates window
-                self.destroy()
-
-        # If a pet was not selected and the button was still pressed, we throw an error
-        else:
-            messagebox.showerror('Erro', 'Precisa de selecionar um animal antes de tentar remover!', parent=self.window)
+            # Eliminates window
+            self.destroy()
 
     def getsEntries(self):
         """

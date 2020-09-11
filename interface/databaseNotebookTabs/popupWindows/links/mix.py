@@ -146,8 +146,15 @@ class WindowInsertMix(Toplevel):
         client = self.getsClientEntries()
 
         # Validates if everything is alright. If not, interrupts
-        if pet == () or client == ():
+        if pet == ():
+            messagebox.showerror("Erro", "Falha ao criar o animal! Reveja a informação digitada e tente de novo!",
+                                 parent=self.window)
             return
+
+        # Validates if everything is alright. If not, interrupts
+        if client == ():
+            messagebox.showerror("Erro", "Falha ao criar o cliente! Reveja a informação digitada e tente de novo!",
+                                 parent=self.window)
 
         # Prompts the user and asks for his confirmation
         msg = messagebox.askyesno("Confirmar", "Deseja inserir este animal + cliente?", parent=self.window)
@@ -172,12 +179,12 @@ class WindowInsertMix(Toplevel):
                 # Something went wrong when inserting our client so, we nee to rollback any changes and warn the user
                 else:
                     deleteRecordAnimal(petID)
-                    messagebox.showerror("Erro", "Ocurreu um erro e não possivel inserir a entrada!",
+                    messagebox.showerror("Erro", "Ocurreu um erro e não possivel inserir o cliente!",
                                          parent=self.window)
 
             # Something went wrong so, we need to prompt the user about such error
             else:
-                messagebox.showerror("Erro", "Ocurreu um erro e não possivel inserir a entrada!", parent=self.window)
+                messagebox.showerror("Erro", "Ocurreu um erro e não possivel inserir o animal!", parent=self.window)
 
     def getsPetEntries(self):
         """

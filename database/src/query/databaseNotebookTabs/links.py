@@ -391,3 +391,99 @@ def getsInfoForLinkWindow(linkID):
     finally:
 
         connection.close()  # Closes connection with our database
+
+
+def checksIfPetHasMoreThanOneOwner(petID):
+    """
+    Description:
+    > Checks if the input pet more than one owner.
+    :param petID: rowid of a pet -> integer
+    :return: boolean
+    """
+
+    # Creates a connection to our database and a cursor to work with it
+    connection = connect("database/database.sqlite")
+    cursor = connection.cursor()
+
+    try:
+
+        # SQL syntax that is going to be parsed inside the database console
+        query = f"""
+                select
+                    clients.ROWID
+                from
+                    clients
+                inner join
+                    petsClientsLink
+                where
+                    petsClientsLink.clientId = clients.ROWID and 
+                    petsClientsLink.petId = {petID}
+                """
+
+        # Gets list containing the requested information
+        info = cursor.execute(query).fetchall()
+
+        # Checks we had more than one owner
+        if len(info) >= 2:
+            return True
+        else:
+            return False
+
+    except Error:
+
+        # Error information and details processing
+        print(type(Error))
+        print(Error.args)
+        print(Error)
+
+    finally:
+
+        connection.close()  # Closes connection with our database
+
+
+def checksIfClientHasMoreThanOnePet(clientID):
+    """
+    Description:
+    > Checks if the input client has more than one pet.
+    :param clientID: rowid of a client -> integer
+    :return: boolean
+    """
+
+    # Creates a connection to our database and a cursor to work with it
+    connection = connect("database/database.sqlite")
+    cursor = connection.cursor()
+
+    try:
+
+        # SQL syntax that is going to be parsed inside the database console
+        query = f"""
+                select
+                    animals.ROWID
+                from
+                    animals
+                inner join
+                    petsClientsLink
+                where
+                    petsClientsLink.petId = animals.ROWID and 
+                    petsClientsLink.clientId = {clientID}
+                """
+
+        # Gets list containing the requested information
+        info = cursor.execute(query).fetchall()
+
+        # Checks we had more than one owner
+        if len(info) >= 2:
+            return True
+        else:
+            return False
+
+    except Error:
+
+        # Error information and details processing
+        print(type(Error))
+        print(Error.args)
+        print(Error)
+
+    finally:
+
+        connection.close()  # Closes connection with our database

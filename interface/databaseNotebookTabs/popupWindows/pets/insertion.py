@@ -157,34 +157,39 @@ class WindowInsertPet(Toplevel):
     def submit(self):
         """
         Description:
-        > Inserts an animal in the database. Gets required info and checks if we want to link it to an owner.
+        > Inserts an animal in the database. Gets required info and links it to an owner.
         """
 
         # Gets tuple with the selected owner
         owner = self.treeClients.selection()
 
-        # If no owner was selected, we ask if the user still wants to submit
-        if owner == ():
+        # Checks if the user selected an owner and if it was only one. If not, prompts the user and interrupts execution
+        if len(owner) != 1:
+            messagebox.showerror("Erro", "Selecione um e um só cliente antes de continuar!", parent=self.window)
+            return
 
-            # Gets confirmation from user
-            msg = messagebox.askyesno('Confirmar submissão', 'Deseja inserir o animal sem dono?', parent=self.window)
+        # Gets confirmation from user
+        msg = messagebox.askyesno('Confirmar submissão?', 'Deseja submeter os dados inseridos?', parent=self.window)
 
-            # Makes sure that the user only selected one client
-            if len(owner) != 1:
-                messagebox.showerror("Erro", "Selecione apenas um cliente antes de continuar!", parent=self.window)
-                return
+        # If user agreed, continues
+        if msg:
 
-            # Checks the answer from the user. If answer was 'no', we stop execution
-            if msg:
+            # Gets pet info. Can be empty if it has an error
+            petInfo = self.getsPetEntries()
 
-                # Gets pet info. Can be empty if it has an error
-                petInfo = self.getsPetEntries()
+            # If everything is alright
+            if petInfo != ():
 
-                # If everything is alright
-                if petInfo != ():
+                # Inserts values inside our database. Also gets rowid of the animal
+                animalID = insertRecordAnimal(petInfo)
 
-                    # Inserts values inside our database
-                    insertRecordAnimal(petInfo)
+                # Checks if insertion went well
+                if animalID is not None:
+                    # Gets owner's id
+                    ownerId = self.treeClients.item(owner[0], "values")[0]
+
+                    # Creates a link between the client and the pet
+                    insertRecordPetClientLink((animalID, ownerId))
 
                     # Refreshes main tree
                     pets.Pets.refreshTree(self.master)
@@ -192,37 +197,10 @@ class WindowInsertPet(Toplevel):
                     # Eliminates window
                     self.destroy()
 
-        else:
-
-            # Gets confirmation from user
-            msg = messagebox.askyesno('Confirmar submissão?', 'Deseja submeter os dados inseridos?', parent=self.window)
-
-            # Checks the answer from the user. If answer was 'no', we stop execution
-            if msg:
-
-                # Gets pet info. Can be empty if it has an error
-                petInfo = self.getsPetEntries()
-
-                # If everything is alright
-                if petInfo != ():
-
-                    # Inserts values inside our database. Also gets rowid of the animal
-                    animalID = insertRecordAnimal(petInfo)
-
-                    # Checks if insertion went well
-                    if animalID is not None:
-
-                        # Gets owner's id
-                        ownerId = self.treeClients.item(owner[0], "values")[0]
-
-                        # Creates a link between the client and the pet
-                        insertRecordPetClientLink((animalID, ownerId))
-
-                        # Refreshes main tree
-                        pets.Pets.refreshTree(self.master)
-
-                        # Eliminates window
-                        self.destroy()
+            # Since an error occurred, we need to warn the user
+            else:
+                messagebox.showerror("Erro", "Aconteceu um erro ao inserir as informações digitadas. Tente de novo!",
+                                     parent=self.window)
 
     def getsPetEntries(self):
         """

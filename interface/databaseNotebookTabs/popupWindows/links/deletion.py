@@ -3,7 +3,7 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter.ttk import *
 
-from database.src.functions.deletion import deleteRecordPetClientLink
+from database.src.functions.deletion import deleteRecordPetClientLink, deleteRecordAnimal, deleteRecordClient
 from database.src.query.databaseNotebookTabs.links import *
 from database.src.utils.constants import typeOfAnimal
 from interface.databaseNotebookTabs import links
@@ -303,9 +303,10 @@ class WindowDeleteLink(Toplevel):
         clients = self.treeClients.selection()
 
         # If entries are valid, we return a tuple of them, else, returns an empty tuple
-        if pets != () and clients != ():
+        if len(pets) == 1 and len(clients) == 1:
             return self.treePets.item(pets[0], "values")[0], self.treeClients.item(clients[0], "values")[0]
         else:
+            messagebox.showerror("Erro", "Selecione um e um só elemento de cada coluna!", parent=self.window)
             return ()
 
     def removeEntries(self):
@@ -326,7 +327,9 @@ class WindowDeleteLink(Toplevel):
             return
 
         # Checks if user really wants to delete this link
-        message = messagebox.askyesno('Deletar', 'Desejar deletar a ligação entre os elementos?', parent=self.window)
+        message = messagebox.askyesno('Deletar', 'Desejar deletar a ligação entre os elementos? '
+                                                 'Se não tiverem mais ligações, os elementos seram eliminados!',
+                                      parent=self.window)
 
         # If the answer was yes, we can process, else, does nothing
         if message:
@@ -334,11 +337,23 @@ class WindowDeleteLink(Toplevel):
             # Gets our tuple of id's. If it got an error, the returned tuple is empty
             tupleOfIDs = self.getsSelectedIDS()
 
-            # Inserts values in our database
-            deleteRecordPetClientLink(tupleOfIDs)
+            # If we didn't have any errors, we can continue
+            if tupleOfIDs != ():
 
-            # Refreshes main tree
-            links.Links.refreshTree(self.master)
+                # Checks if our elements have any more owners/pets, if not, we eliminate them
+                if not checksIfPetHasMoreThanOneOwner(tupleOfIDs[0]):
+                    deleteRecordAnimal(tupleOfIDs[0])
+                if not checksIfClientHasMoreThanOnePet(tupleOfIDs[1]):
+                    deleteRecordClient(tupleOfIDs[1])
+
+                # Inserts values in our database
+                deleteRecordPetClientLink(tupleOfIDs)
+
+                # Refreshes main tree
+                links.Links.refreshTree(self.master)
+
+                # Destroys current window
+                self.destroy()
 
     def updateLinkLabel(self):
         """

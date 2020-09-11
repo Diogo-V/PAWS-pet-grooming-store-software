@@ -1,5 +1,5 @@
 from database.src.functions.initialization import *
-from database.src.utils.converters import *
+from database.src.utils.maintenance import movesAppointmentsToHistory, clearsElementsWithNoLinks
 
 
 def createsAllTables():
@@ -16,6 +16,9 @@ def initDatabase():
 
     # Updates appointments
     movesAppointmentsToHistory()
+
+    # Eliminates unnecessary entries inside our database
+    clearsElementsWithNoLinks()
 
     # Creates tables
     createsAllTables()

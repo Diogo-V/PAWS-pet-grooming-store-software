@@ -340,6 +340,9 @@ class WindowInsertLink(Toplevel):
             # Refreshes main tree
             links.Links.refreshTree(self.master)
 
+            # Destroys current window
+            self.destroy()
+
     def updateLinkLabel(self):
         """
         Description:
