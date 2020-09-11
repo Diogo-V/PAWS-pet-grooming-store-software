@@ -148,6 +148,7 @@ class WindowInsertAppointment(Toplevel):
         # Selects the most provided services for convenience
         self.bath.set(1)
         self.haircut.set(1)
+        self.hygiene.set(1)
 
         # Creates separators to organize our UI
         Separator(self.appInputs, orient=HORIZONTAL).grid(column=0, row=1, sticky=(W, E), columnspan=5)

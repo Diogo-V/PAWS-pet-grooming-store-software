@@ -11,7 +11,3 @@ typeOfHair = ['Pelo muito longo', 'Pelo encaraculado', 'Pelo longo', 'Pelo curto
 # Criar observações para o appointment
 
 # Selecionar donos puchys quando seleciono o animal na aba de deletar
-
-# Poder alterar o preço
-
-# Banho+ tosquia + higiene
