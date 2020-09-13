@@ -8,20 +8,26 @@ def createsAnimalsTable():
     Database inputs:
     > id: primary key -> integer
     > name: animal nickname -> string
-    > typeOfAnimal: type of animal -> string
+    > type: type of animal -> string
+    > breed: type of breed -> string
+    > gender: gender of the animal -> string
     > weight: animal's weight -> double
     > hairType: type of hair -> string
-    > birthDate: animal's birth date -> datetime
+    > hairColor: color of fur -> string
+    > age: animal's age -> integer
     > observations: Notes about the pet -> String
     """
     connection = connect("database/database.sqlite")
     cursor = connection.cursor()
     cursor.execute("""CREATE TABLE IF NOT EXISTS animals (
         name varchar(255) default '', 
-        typeOfAnimal varchar(255) default 'Cão',
+        type varchar(255) default 'Cão',
+        breed varchar(255) default '',
+        gender varchar(255) default '',
         weight numeric default 0,
-        hairType varchar(255) default 'Pelo curto',
-        birthDate varchar(255) default '',
+        hairType varchar(255) default '',
+        hairColor varchar(255) default '',
+        age integer default 0,
         observations varchar(255) default ''
         )""")
     connection.commit()
@@ -63,6 +69,7 @@ def createsAppointmentsTable():
     > date: date of execution in days past 1/1/0-> integer
     > time: time of the day -> time
     > price: amount paid -> double
+    > observations: observations relative to this appointment -> string
     > animalId: animal that holds this appointment -> integer
     """
     connection = connect("database/database.sqlite")
@@ -72,6 +79,7 @@ def createsAppointmentsTable():
         date integer default 0,
         time varchar(255) default '',
         price numeric default 0,
+        observations varchar(255) default '',
         animalId integer,
         FOREIGN KEY(animalId) REFERENCES animals(rowid) on delete cascade 
         )""")
@@ -89,6 +97,7 @@ def createsHistoryTable():
     > date: date of execution in days past 1/1/0-> integer
     > time: time of the day -> time
     > price: amount paid -> double
+    > observations: observations relative to this appointment -> string
     > animalId: animal that holds this appointment -> integer
     """
     connection = connect("database/history.sqlite")
@@ -97,7 +106,8 @@ def createsHistoryTable():
         services varchar(255) default '',
         date integer default 0,
         time varchar(255) default '',
-        price numeric default 0,        
+        price numeric default 0,
+        observations varchar(255) default '',        
         animalId integer,
         FOREIGN KEY(animalId) REFERENCES animals(rowid)
         )""")
