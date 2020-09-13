@@ -30,8 +30,8 @@ def insertRecordAnimal(animal):
     try:
 
         # SQL syntax that is going to be parsed inside the database console
-        query = "insert into animals (name, typeOfAnimal, weight, hairType, birthDate, observations) " \
-                "values (?, ?, ?, ?, ?, ?)"
+        query = "insert into animals (name, type, breed, gender, weight, hairType, hairColor, age, observations) " \
+                "values (?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
         # Executes command
         cursor.execute(query, animal)
@@ -114,7 +114,8 @@ def insertRecordAppointment(appointment):
     try:
 
         # SQL syntax that is going to be parsed inside the database console
-        query = "insert into appointments (services, date, time, price, animalId) VALUES (?, ?, ?, ?, ?)"
+        query = "insert into appointments (services, date, time, price, observations, animalId) " \
+                "values (?, ?, ?, ?, ?, ?)"
 
         # Executes command
         cursor.execute(query, appointment)
@@ -154,7 +155,7 @@ def insertRecordHistory(history):
     try:
 
         # SQL syntax that is going to be parsed inside the database console
-        query = "insert into history (services, date, time, price, animalId) VALUES (?, ?, ?, ?, ?)"
+        query = "insert into history (services, date, time, price, observations, animalId) VALUES (?, ?, ?, ?, ?, ?)"
 
         # Executes command
         cursor.execute(query, history)

@@ -17,8 +17,8 @@ def updateRecordAnimal(animal, identifier):
     try:
 
         # SQL syntax that is going to be parsed inside the database console
-        query = f"update animals set (name, typeOfAnimal, weight, hairType, birthDate, observations) = " \
-                "(?, ?, ?, ?, ?, ?) where ROWID = " + str(identifier)
+        query = f"update animals set (name, type, breed, gender, weight, hairType, hairColor, age, observations) = " \
+                "(?, ?, ?, ?, ?, ?, ?, ?, ?) where ROWID = " + str(identifier)
 
         # Executes command
         cursor.execute(query, animal)
@@ -95,8 +95,8 @@ def updateRecordAppointment(appointment, identifier):
     try:
 
         # SQL syntax that is going to be parsed inside the database console
-        query = f"update appointments set (services, date, time, animalId) = " \
-                "(?, ?, ?, ?) where ROWID = " + str(identifier)
+        query = f"update appointments set (services, date, time, price, observations, animalId) = " \
+                "(?, ?, ?, ?, ?, ?) where ROWID = " + str(identifier)
 
         # Executes command
         cursor.execute(query, appointment)
@@ -134,8 +134,8 @@ def updateRecordHistory(history, identifier):
     try:
 
         # SQL syntax that is going to be parsed inside the database console
-        query = f"update history set (services, date, time, price, animalId) = " \
-                "(?, ?, ?, ?, ?) where ROWID = " + str(identifier)
+        query = f"update history set (services, date, time, price, observations, animalId) = " \
+                "(?, ?, ?, ?, ?, ?) where ROWID = " + str(identifier)
 
         # Executes command
         cursor.execute(query, history)
