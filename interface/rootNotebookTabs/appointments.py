@@ -37,7 +37,7 @@ class DayAppointments(Frame):
         self.display.grid_propagate(False)
 
         # Columns names that are going to be inserted inside the tree
-        columns = ('', 'Nome do animal', 'Nome do cliente', 'Serviços', 'Hora', 'Número de telemóvel', 'Observações')
+        columns = ('', 'Nome do animal', 'Nome do cliente', 'Serviços', 'Hora')
 
         # Creates tree that will display all the appointments for the day
         self.tree = Treeview(self.display, columns=columns, height=900, show='headings')
@@ -46,12 +46,10 @@ class DayAppointments(Frame):
         # Formats columns
         self.tree.column("#0", stretch=NO, anchor='center', width=0)
         self.tree.column(0, stretch=NO, anchor='center', width=0)
-        self.tree.column(1, stretch=NO, anchor='center', width=214)
-        self.tree.column(2, stretch=NO, anchor='center', width=214)
-        self.tree.column(3, stretch=NO, anchor='center', width=214)
-        self.tree.column(4, stretch=NO, anchor='center', width=214)
-        self.tree.column(5, stretch=NO, anchor='center', width=214)
-        self.tree.column(6, stretch=NO, anchor='center', width=214)
+        self.tree.column(1, stretch=NO, anchor='center', width=321)
+        self.tree.column(2, stretch=NO, anchor='center', width=321)
+        self.tree.column(3, stretch=NO, anchor='center', width=321)
+        self.tree.column(4, stretch=NO, anchor='center', width=321)
 
         # Define columns heading and sets their sorting function
         for col in columns:

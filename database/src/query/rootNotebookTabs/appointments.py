@@ -38,9 +38,7 @@ def getsDayAppointments(dateAppointment):
                     animals.name, 
                     clients.name,
                     appointments.services, 
-                    appointments.time,
-                    clients.phone,
-                    animals.observations
+                    appointments.time
                 from
                     animals
                 inner join
