@@ -89,7 +89,7 @@ def getsInfoForAppointmentsWindow(appointmentID):
         # SQL syntax that is going to be parsed inside the database console
         query = f"""
                 select
-                    animals.rowid, animals.name, animals.typeOfAnimal, 
+                    animals.rowid, animals.name, animals.type, 
                     animals.weight, animals.hairType, animals.observations,
                     clients.name, clients.nif, clients.phone,
                     appointments.services, appointments.date, appointments.time, appointments.price

@@ -34,7 +34,7 @@ def getsAllAppointments():
                   select
                       appointments.ROWID,
                       animals.name, 
-                      animals.typeOfAnimal,
+                      animals.type,
                       clients.name,
                       clients.phone,
                       appointments.date,
@@ -95,7 +95,7 @@ def getsRequestedAppointments(queryInfo):
         if petName != '':
             search += f"animals.name like '%{petName}%' and "
         if petType != '':
-            search += f"animals.typeOfAnimal like '%{petType}%' and "
+            search += f"animals.type like '%{petType}%' and "
         if clientName != '':
             search += f"clients.name like '%{clientName}%' and "
         if clientPhone != '':
@@ -115,7 +115,7 @@ def getsRequestedAppointments(queryInfo):
                   select
                       appointments.ROWID,
                       animals.name, 
-                      animals.typeOfAnimal,
+                      animals.type,
                       clients.name,
                       clients.phone,
                       appointments.date,
@@ -171,11 +171,11 @@ def getsRequestedPets(queryInfo):
         [petName, petType] = queryInfo
 
         if petName == '':
-            return f"animals.typeOfAnimal like '%{petType}%'"
+            return f"animals.type like '%{petType}%'"
         elif petType == '':
             return f"animals.name like '%{petName}%'"
         else:
-            return f"animals.name like '%{petName}%' and animals.typeOfAnimal like '%{petType}%'"
+            return f"animals.name like '%{petName}%' and animals.type like '%{petType}%'"
 
     # Creates a connection to our database and a cursor to work with it
     connection = connect("database/database.sqlite")
@@ -186,7 +186,7 @@ def getsRequestedPets(queryInfo):
         # SQL syntax that is going to be parsed inside the database console
         query = f"""
                 select
-                    animals.ROWID, animals.name, animals.typeOfAnimal
+                    animals.ROWID, animals.name, animals.type
                 from
                     animals
                 where
@@ -226,7 +226,7 @@ def getsPetsForAppointmentsWindow():
         query = f"""
                 select
                     animals.ROWID,
-                    animals.name, animals.typeOfAnimal
+                    animals.name, animals.type
                 from
                     animals
                 """

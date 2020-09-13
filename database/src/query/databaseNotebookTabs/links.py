@@ -17,7 +17,7 @@ def getsAllLinks():
         query = f"""
                 select
                     petsClientsLink.ROWID,
-                    animals.name, animals.typeOfAnimal,
+                    animals.name, animals.type,
                     clients.name
                 from
                     petsClientsLink
@@ -64,9 +64,9 @@ def getsRequestedLinks(queryInfo):
             if petType == '':
                 return f"clients.name like '%{clientName}%'"
             elif clientName == '':
-                return f"animals.typeOfAnimal like '%{petType}%'"
+                return f"animals.type like '%{petType}%'"
             else:
-                return f"animals.typeOfAnimal like '%{petType}%' and clients.name like '%{clientName}%'"
+                return f"animals.type like '%{petType}%' and clients.name like '%{clientName}%'"
         else:
             if petType == '':
                 if clientName == '':
@@ -75,9 +75,9 @@ def getsRequestedLinks(queryInfo):
                     return f"animals.name like '%{petName}%' and clients.name like '%{clientName}%'"
             else:
                 if clientName == '':
-                    return f"animals.name like '%{petName}%' and animals.typeOfAnimal like '%{petType}%'"
+                    return f"animals.name like '%{petName}%' and animals.type like '%{petType}%'"
                 else:
-                    return f"animals.name like '%{petName}%' and animals.typeOfAnimals like '%{petType}%' " \
+                    return f"animals.name like '%{petName}%' and animals.type like '%{petType}%' " \
                            f"and clients.name like '%{clientName}%'"
 
     # Creates a connection to our database and a cursor to work with it
@@ -90,7 +90,7 @@ def getsRequestedLinks(queryInfo):
         query = f"""
                 select
                     petsClientsLink.ROWID,
-                    animals.name, animals.typeOfAnimal,
+                    animals.name, animals.type,
                     clients.name
                 from
                     petsClientsLink
@@ -136,7 +136,7 @@ def getsPetsForLinksWindow():
         query = f"""
                 select
                     animals.ROWID,
-                    animals.name, animals.typeOfAnimal
+                    animals.name, animals.type
                 from
                     animals
                 """
@@ -256,11 +256,11 @@ def getsRequestedPets(queryInfo):
         [petName, petType] = queryInfo
 
         if petName == '':
-            return f"animals.typeOfAnimal like '%{petType}%'"
+            return f"animals.type like '%{petType}%'"
         elif petType == '':
             return f"animals.name like '%{petName}%'"
         else:
-            return f"animals.name like '%{petName}%' and animals.typeOfAnimal like '%{petType}%'"
+            return f"animals.name like '%{petName}%' and animals.type like '%{petType}%'"
 
     # Creates a connection to our database and a cursor to work with it
     connection = connect("database/database.sqlite")
@@ -271,7 +271,7 @@ def getsRequestedPets(queryInfo):
         # SQL syntax that is going to be parsed inside the database console
         query = f"""
                 select
-                    animals.ROWID, animals.name, animals.typeOfAnimal
+                    animals.ROWID, animals.name, animals.type
                 from
                     animals
                 where
@@ -362,8 +362,8 @@ def getsInfoForLinkWindow(linkID):
         # SQL syntax that is going to be parsed inside the database console
         query = f"""
                 select
-                    animals.name, animals.typeOfAnimal, animals.weight, 
-                    animals.hairType, animals.birthDate, animals.observations,
+                    animals.name, animals.type, animals.weight, 
+                    animals.hairType, animals.age, animals.observations,
                     clients.name, clients.nif, clients.phone, clients.email, clients.address
                 from
                     animals

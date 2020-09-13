@@ -18,8 +18,8 @@ def getsInfoForClientWindow(clientID):
         # SQL syntax that is going to be parsed inside the database console
         query = f"""
                 select
-                    animals.name, animals.typeOfAnimal, animals.weight, 
-                    animals.hairType, animals.birthDate, animals.observations,
+                    animals.name, animals.type, animals.weight, 
+                    animals.hairType, animals.age, animals.observations,
                     clients.name, clients.nif, clients.phone, clients.email, clients.address
                 from
                     animals
@@ -68,7 +68,7 @@ def getsAllClients():
                     clients.name, 
                     clients.phone,
                     animals.name, 
-                    animals.typeOfAnimal
+                    animals.type
                 from
                     animals
                 inner join
@@ -143,7 +143,7 @@ def getsRequestedClients(queryInfo):
                     clients.name, 
                     clients.phone,
                     animals.name, 
-                    animals.typeOfAnimal
+                    animals.type
                 from
                     petsClientsLink
                 inner join
