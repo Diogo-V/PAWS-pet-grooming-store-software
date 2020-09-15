@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, time
 
 
 def dateToString(myDate):
@@ -12,9 +12,15 @@ def stringToDate(myDate):
     return date(int(year), int(month), int(day))
 
 
-def timeToString(myDate):
+def timeToString(myTime):
     """Converts a time to a string. Used to serialize dates for the database."""
-    return myDate.strftime('%H-%M-%S')
+    return myTime.strftime('%H-%M-%S')
+
+
+def stringToTime(myTime):
+    """Converts a string time into a datetime.time object."""
+    [hours, minutes, seconds] = myTime.split("-")
+    return time(int(hours), int(minutes), int(seconds))
 
 
 def servicesToString(lstServices):

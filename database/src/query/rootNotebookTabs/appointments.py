@@ -87,10 +87,11 @@ def getsInfoForAppointmentsWindow(appointmentID):
         # SQL syntax that is going to be parsed inside the database console
         query = f"""
                 select
-                    animals.rowid, animals.name, animals.type, 
-                    animals.weight, animals.hairType, animals.observations,
-                    clients.name, clients.nif, clients.phone,
-                    appointments.services, appointments.date, appointments.time, appointments.price
+                    animals.rowid, animals.name, animals.type, animals.breed, animals.gender, animals.weight, 
+                    animals.hairType, animals.hairColor, animals.age, animals.observations,
+                    clients.rowid, clients.name, clients.email, clients.phone, clients.nif, clients.address,
+                    appointments.services, appointments.date, appointments.time, 
+                    appointments.price, appointments.observations
                 from
                     appointments
                 inner join
@@ -109,9 +110,9 @@ def getsInfoForAppointmentsWindow(appointmentID):
 
         # Converts our date to a string
         if type(info) is list and info != []:
-            info = list(map(lambda app: transformsIntegerAppointmentDateToString(app, 10), info))
+            info = list(map(lambda app: transformsIntegerAppointmentDateToString(app, 17), info))
         elif type(info) is tuple:
-            info = transformsIntegerAppointmentDateToString(info, 10)
+            info = transformsIntegerAppointmentDateToString(info, 17)
 
         return info
 
