@@ -174,7 +174,8 @@ def getsClientsForLinksWindow():
         query = f"""
                 select
                     clients.ROWID,
-                    clients.name
+                    clients.name,
+                    clients.phone
                 from
                     clients
                 """
@@ -307,10 +308,14 @@ def getsRequestedClients(queryInfo):
         """Checks the type of query that we need to make and gets it."""
 
         # Extracts components
-        [clientName] = queryInfo
+        [clientName, clientPhone] = queryInfo
 
-        # Return our query
-        return f"clients.name like '%{clientName}%'"
+        if clientPhone == '':
+            return f"clients.name like '%{clientName}%'"
+        elif clientName == '':
+            return f"clients.phone like '%{clientPhone}%'"
+        else:
+            return f"clients.name like '%{clientName}%' and clients.phone like '%{clientPhone}%'"
 
     # Creates a connection to our database and a cursor to work with it
     connection = connect("database/database.sqlite")

@@ -5,8 +5,9 @@ from tkinter.ttk import *
 
 from database.src.functions.insertion import insertRecordAnimal, insertRecordPetClientLink
 from database.src.query.databaseNotebookTabs.links import getsRequestedClients, getsClientsForLinksWindow
-from database.src.utils.constants import typeOfAnimal, typeOfHair
+from database.src.utils.constants import *
 from interface.databaseNotebookTabs import pets
+from interface.databaseNotebookTabs.popupWindows.clients.information import WindowClient
 
 
 class WindowInsertPet(Toplevel):
@@ -25,7 +26,7 @@ class WindowInsertPet(Toplevel):
         # Creates toplevel window that will be displayed. Sets size and blocks resize
         Toplevel.__init__(self, master)
         self.title('Inserir novo animal')
-        self.geometry("1000x500")
+        self.geometry("1250x600")
         self.resizable(False, False)
         self.transient(master)
 
@@ -37,8 +38,8 @@ class WindowInsertPet(Toplevel):
         self.master = master
 
         # Creates two labelFrames to organize our UI
-        self.petWindow = LabelFrame(self.window, text=' Animais ', height=500, width=500)
-        self.clientWindow = LabelFrame(self.window, text=' Relacionar com o cliente ', height=400, width=500)
+        self.petWindow = LabelFrame(self.window, text=' Animais ', height=750, width=600)
+        self.clientWindow = LabelFrame(self.window, text=' Relacionar com o cliente ', height=500, width=600)
         self.petWindow.pack(side=LEFT, fill="both", expand=True)
         self.clientWindow.pack(side=TOP, fill="both", expand=True)
 
@@ -51,73 +52,104 @@ class WindowInsertPet(Toplevel):
         self.submit.pack(side=BOTTOM, padx=5, pady=5, expand=True, fill="both")
 
         # Creates animals field description labels
-        self.descPetName = Label(self.petWindow, text='Nome:')
-        self.descPetName.grid(column=0, row=0, padx=(5, 5), pady=10, sticky=W)
-        self.descPetType = Label(self.petWindow, text='Tipo:')
-        self.descPetType.grid(column=0, row=2, padx=(5, 5), pady=10, sticky=W)
-        self.descPetWeight = Label(self.petWindow, text='Peso:')
-        self.descPetWeight.grid(column=0, row=4, padx=(5, 5), pady=10, sticky=W)
-        self.descPetHair = Label(self.petWindow, text='Pelo:')
-        self.descPetHair.grid(column=0, row=6, padx=(5, 5), pady=10, sticky=W)
-        self.descPetBirthDate = Label(self.petWindow, text='Aniversário:')
-        self.descPetBirthDate.grid(column=0, row=8, padx=(5, 5), pady=10, sticky=W)
-        self.descPetObservations = Label(self.petWindow, text='Observações:')
-        self.descPetObservations.grid(column=0, row=10, padx=(5, 5), pady=10, sticky=W)
+        descPetName = Label(self.petWindow, text='Nome:')
+        descPetName.grid(column=0, row=0, padx=(5, 5), pady=10, sticky=W)
+        descPetType = Label(self.petWindow, text='Tipo:')
+        descPetType.grid(column=0, row=2, padx=(5, 5), pady=10, sticky=W)
+        descPetBreed = Label(self.petWindow, text='Raça:')
+        descPetBreed.grid(column=0, row=4, padx=(5, 5), pady=10, sticky=W)
+        descPetGender = Label(self.petWindow, text='Sexo:')
+        descPetGender.grid(column=0, row=6, padx=(5, 5), pady=10, sticky=W)
+        descPetWeight = Label(self.petWindow, text='Peso:')
+        descPetWeight.grid(column=0, row=8, padx=(5, 5), pady=10, sticky=W)
+        descPetHairType = Label(self.petWindow, text='Pelo:')
+        descPetHairType.grid(column=0, row=10, padx=(5, 5), pady=10, sticky=W)
+        descPetHairColor = Label(self.petWindow, text='Cor:')
+        descPetHairColor.grid(column=0, row=12, padx=(5, 5), pady=10, sticky=W)
+        descPetAge = Label(self.petWindow, text='Idade:')
+        descPetAge.grid(column=0, row=14, padx=(5, 5), pady=10, sticky=W)
+        descPetObservations = Label(self.petWindow, text='Observações:')
+        descPetObservations.grid(column=0, row=16, padx=(5, 5), pady=10, sticky=W)
 
         # Creates entry variables
         petName = StringVar()
+        petBreed = StringVar()
+        petGender = StringVar()
         petType = StringVar()
         petWeight = StringVar()
-        petHair = StringVar()
-        petBirth = StringVar()
+        petHairType = StringVar()
+        petHairColor = StringVar()
+        petAge = StringVar()
         clientName = StringVar()
+        clientPhone = StringVar()
 
         # Restriction commands
         validateNumber = (master.register(self.validateNumber), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
+        validateString = (master.register(self.validateString), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
 
         # Creates entry fields
-        self.entryPetName = Entry(self.petWindow, textvariable=petName)
+        self.entryPetName = Entry(self.petWindow, textvariable=petName, width=30)
         self.entryPetName.grid(column=1, row=0, padx=(5, 5), pady=10, sticky=W)
-        self.entryPetType = Combobox(self.petWindow, textvariable=petType, state="readonly", values=typeOfAnimal)
+        self.entryPetType = Combobox(self.petWindow, textvariable=petType, state="readonly",
+                                     values=typeOfAnimal, width=28)
         self.entryPetType.grid(column=1, row=2, padx=(5, 5), pady=10, sticky=W)
+        self.entryPetBreed = Entry(self.petWindow, textvariable=petBreed, validate="focusout",
+                                    validatecommand=validateString, invalidcommand=self.entryError, width=30)
+        self.entryPetBreed.grid(column=1, row=4, padx=(5, 5), pady=10, sticky=W)
+        self.entryPetGender = Combobox(self.petWindow, textvariable=petGender, state="readonly",
+                                       values=gender, width=28)
+        self.entryPetGender.grid(column=1, row=6, padx=(5, 5), pady=10, sticky=W)
         self.entryPetWeight = Entry(self.petWindow, textvariable=petWeight, validate="focusout",
-                                    validatecommand=validateNumber, invalidcommand=self.entryError)
-        self.entryPetWeight.grid(column=1, row=4, padx=(5, 5), pady=10, sticky=W)
-        self.entryPetHair = Combobox(self.petWindow, textvariable=petHair, state="readonly", values=typeOfHair)
-        self.entryPetHair.grid(column=1, row=6, padx=(5, 5), pady=10, sticky=W)
-        self.entryPetBirth = Entry(self.petWindow, textvariable=petBirth)
-        self.entryPetBirth.grid(column=1, row=8, padx=(5, 5), pady=10, sticky=W)
-        self.entryPetObs = Text(self.petWindow, width=60, height=10)
-        self.entryPetObs.grid(column=0, row=11, padx=(5, 5), pady=0, sticky=W, columnspan=2)
+                                    validatecommand=validateNumber, invalidcommand=self.entryError, width=30)
+        self.entryPetWeight.grid(column=1, row=8, padx=(5, 5), pady=10, sticky=W)
+        self.entryPetHairType = Combobox(self.petWindow, textvariable=petHairType, state="readonly",
+                                         values=typeOfHair, width=28)
+        self.entryPetHairType.grid(column=1, row=10, padx=(5, 5), pady=10, sticky=W)
+        self.entryPetHairColor = Entry(self.petWindow, textvariable=petHairColor,validate="focusout",
+                                       validatecommand=validateString, invalidcommand=self.entryError, width=30)
+        self.entryPetHairColor.grid(column=1, row=12, padx=(5, 5), pady=10, sticky=W)
+        self.entryPetAge = Entry(self.petWindow, textvariable=petAge, validate="focusout",
+                                 validatecommand=validateNumber, invalidcommand=self.entryError, width=30)
+        self.entryPetAge.grid(column=1, row=14, padx=(5, 5), pady=10, sticky=W)
+        self.entryPetObs = Text(self.petWindow, width=78, height=10)
+        self.entryPetObs.grid(column=0, row=17, padx=(5, 20), pady=0, sticky=W, columnspan=6)
 
         # Creates separators to better organize our UI
-        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=1, sticky=(W, E), columnspan=2)
-        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=3, sticky=(W, E), columnspan=2)
-        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=5, sticky=(W, E), columnspan=2)
-        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=7, sticky=(W, E), columnspan=2)
-        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=9, sticky=(W, E), columnspan=2)
+        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=1, sticky=(W, E), columnspan=6)
+        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=3, sticky=(W, E), columnspan=6)
+        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=5, sticky=(W, E), columnspan=6)
+        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=7, sticky=(W, E), columnspan=6)
+        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=9, sticky=(W, E), columnspan=6)
+        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=11, sticky=(W, E), columnspan=6)
+        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=13, sticky=(W, E), columnspan=6)
+        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=15, sticky=(W, E), columnspan=6)
 
         # Creates search entry for clients
         self.labelClientName = Label(self.clientWindow, text='Nome:')
         self.labelClientName.grid(column=0, row=0, padx=(5, 0), pady=(20, 10), sticky=W)
         self.entryClientName = Entry(self.clientWindow, textvariable=clientName, width=20)
         self.entryClientName.grid(column=1, row=0, pady=(20, 10), sticky=W)
+        self.labelClientPhone = Label(self.clientWindow, text='Telemóvel:')
+        self.labelClientPhone.grid(column=0, row=1, padx=(5, 0), pady=(0, 10), sticky=W)
+        self.entryClientPhone = Entry(self.clientWindow, textvariable=clientPhone, width=20)
+        self.entryClientPhone.grid(column=1, row=1, pady=(0, 10), sticky=W)
 
         # Creates search buttons for the clients tree
         self.clientsButton = Button(self.clientWindow, text='Procurar', width=20, command=self.updateClientTree)
-        self.clientsButton.grid(column=2, row=0, pady=(20, 10), sticky=E)
+        self.clientsButton.grid(column=2, row=0, pady=(20, 10), rowspan=2)
 
         # Columns names that are going to be inserted inside the tree
-        columns = ('', 'Nome')
+        columns = ('', 'Nome', 'Telemóvel')
 
         # Creates tree that will display all the clients
-        self.treeClients = Treeview(self.clientWindow, columns=columns, height=15, show='headings')
-        self.treeClients.grid(column=0, row=1, columnspan=3, padx=10, pady=10)
+        self.treeClients = Treeview(self.clientWindow, columns=columns, height=19, show='headings')
+        self.treeClients.grid(column=0, row=2, columnspan=3, padx=10, pady=10)
 
         # Formats columns
         self.treeClients.column("#0", stretch=NO, anchor='center', width=0)
         self.treeClients.column(0, stretch=NO, anchor='center', width=0)
-        self.treeClients.column(1, stretch=NO, anchor='center', width=450)
+        self.treeClients.column(1, stretch=NO, anchor='center', width=277)
+        self.treeClients.column(2, stretch=NO, anchor='center', width=277)
 
         # Define columns heading and sets their sorting function
         for col in columns:
@@ -126,11 +158,14 @@ class WindowInsertPet(Toplevel):
 
         # Creates a scrollbar for the tree view and then puts it on the screen
         self.scrollbarClients = Scrollbar(self.clientWindow, orient="vertical", command=self.treeClients.yview)
-        self.scrollbarClients.grid(column=3, row=1, sticky=(N, S))
+        self.scrollbarClients.grid(column=3, row=2, sticky=(N, S))
         self.treeClients.configure(yscrollcommand=self.scrollbarClients.set)
 
         # Populates tree
         self.refreshTreeClients()
+
+        # Links double click on a row with a window popup
+        self.treeClients.bind('<Double 1>', self.displayPetWindow)
 
     def treeSortColumn(self, tv, col, reverse):
         """
@@ -197,9 +232,14 @@ class WindowInsertPet(Toplevel):
                     # Eliminates window
                     self.destroy()
 
+                # Since an error occurred, we need to warn the user
+                else:
+                    messagebox.showerror("Erro", "Aconteceu um erro ao inserir o animal na base de dados! "
+                                                 "Tente de novo", parent=self.window)
             # Since an error occurred, we need to warn the user
             else:
-                messagebox.showerror("Erro", "Aconteceu um erro ao inserir as informações digitadas. Tente de novo!",
+                messagebox.showerror("Erro", "Aconteceu com as entradas digitadas do animal! "
+                                             "Reveja se inserio todas as informações necessárias e tente de novo.",
                                      parent=self.window)
 
     def getsPetEntries(self):
@@ -213,14 +253,20 @@ class WindowInsertPet(Toplevel):
         # Gets entries
         petName = self.entryPetName.get()
         petType = self.entryPetType.get()
+        petBreed = self.entryPetBreed.get()
+        petGender = self.entryPetGender.get()
         petWeight = self.entryPetWeight.get()
-        petHair = self.entryPetHair.get()
-        petBirth = self.entryPetBirth.get()
+        petHairType = self.entryPetHairType.get()
+        petHairColor = self.entryPetHairColor.get()
+        petAge = self.entryPetAge.get()
         petObs = self.entryPetObs.get('1.0', 'end')
 
+        petWeight = eval(petWeight) if petWeight != '' else 0
+        petAge = eval(petAge) if petAge != '' else 0
+
         # Checks if required values were inserted and returns them if so
-        if self.checkRequiredValues((petName, petType)):
-            return petName, petType, eval(petWeight), petHair, petBirth, petObs
+        if petName != '' and petType != '':
+            return petName, petType, petBreed, petGender, petWeight, petHairType, petHairColor, petAge, petObs
         else:
             return ()
 
@@ -231,7 +277,7 @@ class WindowInsertPet(Toplevel):
 
         :return: list containing such info -> list of strings
         """
-        return [self.entryClientName.get()]
+        return [self.entryClientName.get(), self.entryClientPhone.get()]
 
     def updateClientTree(self):
         """
@@ -240,15 +286,15 @@ class WindowInsertPet(Toplevel):
         """
 
         # Gets entries for clients
-        [clientName] = self.getsClientEntries()
+        [clientName, clientPhone] = self.getsClientEntries()
 
         # If no information was typed, just refresh the page
-        if clientName == '':
+        if clientName == '' and clientPhone == '':
             self.refreshTreeClients()
         else:
 
             # Gets requested rows
-            rows = getsRequestedClients([clientName])
+            rows = getsRequestedClients([clientName, clientPhone])
 
             # Displays information on our tree
             self.displayTreeClientsRows(rows)
@@ -283,20 +329,28 @@ class WindowInsertPet(Toplevel):
         for row in rows:
             self.treeClients.insert('', 'end', values=row)
 
-    def checkRequiredValues(self, info):
+    def displayPetWindow(self, event):
         """
         Description:
-        > Checks if all of the required values were inserted. If not, pops an error and stops creation process.
+        > Displays toplevel window with the information about the selected pet.
 
-        :param info: tuple containing all the inserted info -> tuple of strings
-        :return: boolean value
+        :param event: event of clicking a button -> event
         """
-        if info[0] != '' and info[1] != '':
-            return True
-        else:
-            messagebox.showerror('Erro nas entradas',
-                                 'Não digitou toda a informação necessária para criar uma entrada!', parent=self.window)
-            return False
+
+        # Gets row that was clicked
+        item = self.treeClients.identify_row(event.y)
+
+        # If the user didn't click on a blank space, shows the toplevel window else, does nothing
+        if item:
+
+            # Gets row information
+            info = self.treeClients.item(item, 'values')
+
+            # Since we only need the client id to query trough the database, we discard the rest
+            clientID = info[0]
+
+            # Creates toplevel window that will display the information about this client
+            WindowClient(self, clientID)
 
     @staticmethod
     def validateString(self, action, index, valueIfAllowed,
