@@ -124,11 +124,11 @@ class Pets(Frame):
         # Sorts
         lines.sort(reverse=reverse)
 
-        # rearrange items in sorted positions
+        # Rearrange items in sorted positions
         for index, (val, k) in enumerate(lines):
             tv.move(k, '', index)
 
-        # reverse sort next time
+        # Reverse sort next time. Uses the opposite reverse
         tv.heading(col, text=col, command=lambda _col=col: self.treeSortColumn(tv, _col, not reverse))
 
     def getsEntries(self):

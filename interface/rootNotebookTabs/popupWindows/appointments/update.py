@@ -5,7 +5,7 @@ from tkinter.ttk import *
 
 from database.src.functions.update import updateRecordAnimal, updateRecordClient, updateRecordAppointment
 from database.src.query.rootNotebookTabs.appointments import getsInfoForAppointmentsWindow
-from database.src.utils.constants import services
+from database.src.utils.constants import *
 from database.src.utils.converters import *
 
 
@@ -152,15 +152,18 @@ class WindowUpdateAppointment(Toplevel):
         # Creates all the needed entries
         self.entryPetName = Entry(self.petWindow, width=20, textvariable=self.varPetName)
         self.entryPetName.grid(column=1, row=0, sticky=W, pady=15, padx=(0, 100))
-        self.entryPetType = Entry(self.petWindow, width=20, textvariable=self.varPetType)
+        self.entryPetType = Combobox(self.petWindow, textvariable=self.varPetType,
+                                     state="readonly", values=typeOfAnimal, width=19)
         self.entryPetType.grid(column=1, row=2, sticky=W, pady=15, padx=(0, 100))
         self.entryPetBreed = Entry(self.petWindow, width=20, textvariable=self.varPetBreed)
         self.entryPetBreed.grid(column=1, row=4, sticky=W, pady=15, padx=(0, 100))
-        self.entryPetGender = Entry(self.petWindow, width=20, textvariable=self.varPetGender)
+        self.entryPetGender = Combobox(self.petWindow, textvariable=self.varPetGender,
+                                       state="readonly", values=gender, width=19)
         self.entryPetGender.grid(column=1, row=6, sticky=W, pady=15, padx=(0, 100))
         self.entryPetWeight = Entry(self.petWindow, width=20, textvariable=self.varPetWeight)
         self.entryPetWeight.grid(column=1, row=8, sticky=W, pady=15, padx=(0, 100))
-        self.entryPetHairType = Entry(self.petWindow, width=20, textvariable=self.varPetHairType)
+        self.entryPetHairType = Combobox(self.petWindow, textvariable=self.varPetHairType,
+                                         state="readonly", values=typeOfHair, width=19)
         self.entryPetHairType.grid(column=1, row=10, sticky=W, pady=15, padx=(0, 100))
         self.entryPetHairColor = Entry(self.petWindow, width=20, textvariable=self.varPetHairColor)
         self.entryPetHairColor.grid(column=1, row=12, sticky=W, pady=15, padx=(0, 100))
@@ -210,11 +213,11 @@ class WindowUpdateAppointment(Toplevel):
 
         # Inserts the current values inside each entry
         self.entryPetName.insert(END, self.petName)
-        self.entryPetType.insert(END, self.petType)
+        self.entryPetType.current(typeOfAnimal.index(self.petType))
         self.entryPetBreed.insert(END, self.petBreed)
-        self.entryPetGender.insert(END, self.petGender)
+        self.entryPetGender.current(gender.index(self.petGender))
         self.entryPetWeight.insert(END, self.petWeight)
-        self.entryPetHairType.insert(END, self.petHairType)
+        self.entryPetHairType.current(typeOfHair.index(self.petHairType))
         self.entryPetHairColor.insert(END, self.petHairColor)
         self.entryPetAge.insert(END, self.petAge)
         self.entryPetObs.insert(END, self.petObs)
