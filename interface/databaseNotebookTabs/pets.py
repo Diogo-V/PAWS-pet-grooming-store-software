@@ -78,7 +78,7 @@ class Pets(Frame):
         self.button.pack(side=RIGHT, padx=(10, 25), pady=20)
 
         # Columns names that are going to be inserted inside the tree
-        columns = ('', 'Nome do animal', 'Nome do cliente', 'Tipo de animal', 'Peso', 'Tipo de pelo')
+        columns = ('', 'Nome do animal', 'Nome do cliente', 'Tipo de animal', 'Raça', 'Peso', 'Tipo de pelo')
 
         # Creates tree that will display all the links
         self.tree = Treeview(self.display, columns=columns, height=900, show='headings')
@@ -87,11 +87,12 @@ class Pets(Frame):
         # Formats columns
         self.tree.column("#0", stretch=NO, anchor='center', width=0)
         self.tree.column(0, stretch=NO, anchor='center', width=0)
-        self.tree.column(1, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/5 - 17))
-        self.tree.column(2, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/5 - 17))
-        self.tree.column(3, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/5 - 17))
-        self.tree.column(4, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/5 - 17))
-        self.tree.column(5, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/5 - 17))
+        self.tree.column(1, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/6 - 14))
+        self.tree.column(2, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/6 - 14))
+        self.tree.column(3, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/6 - 14))
+        self.tree.column(4, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/6 - 14))
+        self.tree.column(5, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/6 - 14))
+        self.tree.column(6, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/6 - 14))
 
         # Define columns heading and sets their sorting function
         for col in columns:

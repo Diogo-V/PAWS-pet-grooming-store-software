@@ -67,7 +67,9 @@ def getsAllPets():
                     animals.ROWID,
                     animals.name, 
                     clients.name,
-                    animals.type, animals.weight, 
+                    animals.type, 
+                    animals.breed,
+                    animals.weight, 
                     animals.hairType
                 from
                     animals
@@ -142,7 +144,9 @@ def getsRequestedPets(queryInfo):
                     animals.ROWID,
                     animals.name, 
                     clients.name,
-                    animals.type, animals.weight, 
+                    animals.type, 
+                    animals.breed,
+                    animals.weight, 
                     animals.hairType
                 from
                     petsClientsLink
