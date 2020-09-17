@@ -105,7 +105,7 @@ class WindowInsertPet(Toplevel):
         self.entryPetHairType = Combobox(self.petWindow, textvariable=petHairType, state="readonly",
                                          values=typeOfHair, width=28)
         self.entryPetHairType.grid(column=1, row=10, padx=(5, 5), pady=10, sticky=W)
-        self.entryPetHairColor = Entry(self.petWindow, textvariable=petHairColor,validate="focusout",
+        self.entryPetHairColor = Entry(self.petWindow, textvariable=petHairColor, validate="focusout",
                                        validatecommand=validateString, invalidcommand=self.entryError, width=30)
         self.entryPetHairColor.grid(column=1, row=12, padx=(5, 5), pady=10, sticky=W)
         self.entryPetAge = Entry(self.petWindow, textvariable=petAge, validate="focusout",
