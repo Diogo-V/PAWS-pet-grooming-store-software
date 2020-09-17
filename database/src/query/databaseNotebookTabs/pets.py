@@ -110,27 +110,21 @@ def getsRequestedPets(queryInfo):
         """Checks the type of query that we need to make and gets it."""
 
         # Extracts components
-        [petName, petType, clientName] = queryInfo
+        [petName, petType, petBreed, clientName] = queryInfo
 
-        if petName == '':
-            if petType == '':
-                return f"clients.name like '%{clientName}%'"
-            elif clientName == '':
-                return f"animals.type like '%{petType}%'"
-            else:
-                return f"animals.type like '%{petType}%' and clients.name like '%{clientName}%'"
-        else:
-            if petType == '':
-                if clientName == '':
-                    return f"animals.name like '%{petName}%'"
-                else:
-                    return f"animals.name like '%{petName}%' and clients.name like '%{clientName}%'"
-            else:
-                if clientName == '':
-                    return f"animals.name like '%{petName}%' and animals.type like '%{petType}%'"
-                else:
-                    return f"animals.name like '%{petName}%' and animals.type like '%{petType}%' " \
-                           f"and clients.name like '%{clientName}%'"
+        myQuery = ''
+
+        # Gets query
+        if petName != '':
+            myQuery += f"animals.name like '%{petName}%' and "
+        if petType != '':
+            myQuery += f"animals.type like '%{petType}%' and "
+        if petBreed != '':
+            myQuery += f"animals.breed like '%{petBreed}%' and "
+        if clientName != '':
+            myQuery += f"clients.name like '%{clientName}%' and "
+
+        return myQuery[:-5]
 
     # Creates a connection to our database and a cursor to work with it
     connection = connect("database/database.sqlite")
