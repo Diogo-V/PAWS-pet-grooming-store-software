@@ -265,7 +265,7 @@ class WindowInsertPet(Toplevel):
         petAge = eval(petAge) if petAge != '' else 0
 
         # Checks if required values were inserted and returns them if so
-        if petName != '' and petType != '':
+        if petName != '' or petType != '':
             return petName, petType, petBreed, petGender, petWeight, petHairType, petHairColor, petAge, petObs
         else:
             return ()

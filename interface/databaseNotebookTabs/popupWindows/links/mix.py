@@ -4,7 +4,7 @@ from tkinter.ttk import *
 
 from database.src.functions.deletion import deleteRecordAnimal
 from database.src.functions.insertion import insertRecordAnimal, insertRecordPetClientLink, insertRecordClient
-from database.src.utils.constants import typeOfAnimal, typeOfHair
+from database.src.utils.constants import *
 
 
 class WindowInsertMix(Toplevel):
@@ -23,7 +23,7 @@ class WindowInsertMix(Toplevel):
         # Creates toplevel window that will be displayed. Sets size and blocks resize
         Toplevel.__init__(self, master)
         self.title('Inserir animal + cliente')
-        self.geometry("1000x500")
+        self.geometry("1250x600")
         self.resizable(False, False)
         self.transient(master)
 
@@ -31,12 +31,9 @@ class WindowInsertMix(Toplevel):
         self.window = Frame(self, height=500, width=1000)
         self.window.pack(fill='both', expand=True)
 
-        # Creates variable so that it can be used as control
-        self.master = master
-
         # Creates two labelFrames to organize our UI
-        self.petWindow = LabelFrame(self.window, text=' Animal ', height=500, width=500)
-        self.clientWindow = LabelFrame(self.window, text=' Cliente ', height=400, width=500)
+        self.petWindow = LabelFrame(self.window, text=' Animal ', height=600, width=625)
+        self.clientWindow = LabelFrame(self.window, text=' Cliente ', height=500, width=625)
         self.petWindow.pack(side=LEFT, fill="both", expand=True)
         self.clientWindow.pack(side=TOP, fill="both", expand=True)
 
@@ -57,55 +54,76 @@ class WindowInsertMix(Toplevel):
         descPetName.grid(column=0, row=0, padx=(5, 5), pady=10, sticky=W)
         descPetType = Label(self.petWindow, text='Tipo:')
         descPetType.grid(column=0, row=2, padx=(5, 5), pady=10, sticky=W)
+        descPetBreed = Label(self.petWindow, text='Raça:')
+        descPetBreed.grid(column=0, row=4, padx=(5, 5), pady=10, sticky=W)
+        descPetGender = Label(self.petWindow, text='Sexo:')
+        descPetGender.grid(column=0, row=6, padx=(5, 5), pady=10, sticky=W)
         descPetWeight = Label(self.petWindow, text='Peso:')
-        descPetWeight.grid(column=0, row=4, padx=(5, 5), pady=10, sticky=W)
-        descPetHair = Label(self.petWindow, text='Pelo:')
-        descPetHair.grid(column=0, row=6, padx=(5, 5), pady=10, sticky=W)
-        descPetBirthDate = Label(self.petWindow, text='Aniversário:')
-        descPetBirthDate.grid(column=0, row=8, padx=(5, 5), pady=10, sticky=W)
+        descPetWeight.grid(column=0, row=8, padx=(5, 5), pady=10, sticky=W)
+        descPetHairType = Label(self.petWindow, text='Tipo de pelo:')
+        descPetHairType.grid(column=0, row=10, padx=(5, 5), pady=10, sticky=W)
+        descPetHairColor = Label(self.petWindow, text='Cor do pelo:')
+        descPetHairColor.grid(column=0, row=12, padx=(5, 5), pady=10, sticky=W)
+        descPetAge = Label(self.petWindow, text='Idade:')
+        descPetAge.grid(column=0, row=14, padx=(5, 5), pady=10, sticky=W)
         descPetObservations = Label(self.petWindow, text='Observações:')
-        descPetObservations.grid(column=0, row=10, padx=(5, 5), pady=10, sticky=W)
+        descPetObservations.grid(column=0, row=16, padx=(5, 5), pady=10, sticky=W)
 
         # Creates entry variables
         petName = StringVar()
         petType = StringVar()
+        petBreed = StringVar()
+        petGender = StringVar()
         petWeight = StringVar()
-        petHair = StringVar()
-        petBirth = StringVar()
+        petHairType = StringVar()
+        petHairColor = StringVar()
+        petAge = StringVar()
 
         # Creates entry fields
-        self.entryPetName = Entry(self.petWindow, textvariable=petName)
+        self.entryPetName = Entry(self.petWindow, textvariable=petName, width=25)
         self.entryPetName.grid(column=1, row=0, padx=(5, 5), pady=10, sticky=W)
-        self.entryPetType = Combobox(self.petWindow, textvariable=petType, state="readonly", values=typeOfAnimal)
+        self.entryPetType = Combobox(self.petWindow, textvariable=petType, state="readonly",
+                                     values=typeOfAnimal, width=24)
         self.entryPetType.grid(column=1, row=2, padx=(5, 5), pady=10, sticky=W)
+        self.entryPetBreed = Entry(self.petWindow, textvariable=petBreed, width=25)
+        self.entryPetBreed.grid(column=1, row=4, padx=(5, 5), pady=10, sticky=W)
+        self.entryPetGender = Combobox(self.petWindow, textvariable=petGender, state="readonly",
+                                       values=gender, width=24)
+        self.entryPetGender.grid(column=1, row=6, padx=(5, 5), pady=10, sticky=W)
         self.entryPetWeight = Entry(self.petWindow, textvariable=petWeight, validate="focusout",
-                                    validatecommand=validateNumber, invalidcommand=self.entryError)
-        self.entryPetWeight.grid(column=1, row=4, padx=(5, 5), pady=10, sticky=W)
-        self.entryPetHair = Combobox(self.petWindow, textvariable=petHair, state="readonly", values=typeOfHair)
-        self.entryPetHair.grid(column=1, row=6, padx=(5, 5), pady=10, sticky=W)
-        self.entryPetBirth = Entry(self.petWindow, textvariable=petBirth)
-        self.entryPetBirth.grid(column=1, row=8, padx=(5, 5), pady=10, sticky=W)
-        self.entryPetObs = Text(self.petWindow, width=60, height=10)
-        self.entryPetObs.grid(column=0, row=11, padx=(5, 5), pady=0, sticky=W, columnspan=2)
+                                    validatecommand=validateNumber, invalidcommand=self.entryError, width=25)
+        self.entryPetWeight.grid(column=1, row=8, padx=(5, 5), pady=10, sticky=W)
+        self.entryPetHairType = Combobox(self.petWindow, textvariable=petHairType, state="readonly",
+                                         values=typeOfHair, width=24)
+        self.entryPetHairType.grid(column=1, row=10, padx=(5, 5), pady=10, sticky=W)
+        self.entryPetHairColor = Entry(self.petWindow, textvariable=petHairColor, width=25)
+        self.entryPetHairColor.grid(column=1, row=12, padx=(5, 5), pady=10, sticky=W)
+        self.entryPetAge = Entry(self.petWindow, textvariable=petAge, width=25)
+        self.entryPetAge.grid(column=1, row=14, padx=(5, 5), pady=10, sticky=W)
+        self.entryPetObs = Text(self.petWindow, width=75, height=10)
+        self.entryPetObs.grid(column=0, row=17, padx=(5, 30), pady=0, sticky=W, columnspan=6)
 
         # Creates separators to better organize our UI
-        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=1, sticky=(W, E), columnspan=2)
-        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=3, sticky=(W, E), columnspan=2)
-        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=5, sticky=(W, E), columnspan=2)
-        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=7, sticky=(W, E), columnspan=2)
-        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=9, sticky=(W, E), columnspan=2)
+        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=1, sticky=(W, E), columnspan=6)
+        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=3, sticky=(W, E), columnspan=6)
+        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=5, sticky=(W, E), columnspan=6)
+        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=7, sticky=(W, E), columnspan=6)
+        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=9, sticky=(W, E), columnspan=6)
+        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=11, sticky=(W, E), columnspan=6)
+        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=13, sticky=(W, E), columnspan=6)
+        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=15, sticky=(W, E), columnspan=6)
 
         # Creates animals field description labels
         descClientName = Label(self.clientWindow, text='Nome:')
-        descClientName.grid(column=0, row=0, padx=(5, 5), pady=30, sticky=W)
+        descClientName.grid(column=0, row=0, padx=(5, 5), pady=40, sticky=W)
         descClientEmail = Label(self.clientWindow, text='Email:')
-        descClientEmail.grid(column=0, row=2, padx=(5, 5), pady=30, sticky=W)
+        descClientEmail.grid(column=0, row=2, padx=(5, 5), pady=40, sticky=W)
         descClientPhone = Label(self.clientWindow, text='Telemóvel:')
-        descClientPhone.grid(column=0, row=4, padx=(5, 5), pady=30, sticky=W)
+        descClientPhone.grid(column=0, row=4, padx=(5, 5), pady=40, sticky=W)
         descClientNIF = Label(self.clientWindow, text='NIF:')
-        descClientNIF.grid(column=0, row=6, padx=(5, 5), pady=30, sticky=W)
+        descClientNIF.grid(column=0, row=6, padx=(5, 5), pady=40, sticky=W)
         descClientAddress = Label(self.clientWindow, text='Morada:')
-        descClientAddress.grid(column=0, row=8, padx=(5, 5), pady=30, sticky=W)
+        descClientAddress.grid(column=0, row=8, padx=(5, 5), pady=40, sticky=W)
 
         # Creates entry variables
         clientName = StringVar()
@@ -147,14 +165,14 @@ class WindowInsertMix(Toplevel):
 
         # Validates if everything is alright. If not, interrupts
         if pet == ():
-            messagebox.showerror("Erro", "Falha ao criar o animal! Reveja a informação digitada e tente de novo!",
-                                 parent=self.window)
+            messagebox.showerror("Erro", "Falha ao criar o animal! Reveja se inseriu toda a informação necessária e se "
+                                         "está correta depois, tente de novo!", parent=self.window)
             return
 
         # Validates if everything is alright. If not, interrupts
         if client == ():
-            messagebox.showerror("Erro", "Falha ao criar o cliente! Reveja a informação digitada e tente de novo!",
-                                 parent=self.window)
+            messagebox.showerror("Erro", "Falha ao criar o cliente! Reveja se inseriu toda a informação necessária e se "
+                                         "está correta depois, tente de novo!", parent=self.window)
 
         # Prompts the user and asks for his confirmation
         msg = messagebox.askyesno("Confirmar", "Deseja inserir este animal + cliente?", parent=self.window)
@@ -179,12 +197,12 @@ class WindowInsertMix(Toplevel):
                 # Something went wrong when inserting our client so, we nee to rollback any changes and warn the user
                 else:
                     deleteRecordAnimal(petID)
-                    messagebox.showerror("Erro", "Ocurreu um erro e não possivel inserir o cliente!",
+                    messagebox.showerror("Erro", "Ocurreu um erro e não foi possivel inserir o cliente!",
                                          parent=self.window)
 
             # Something went wrong so, we need to prompt the user about such error
             else:
-                messagebox.showerror("Erro", "Ocurreu um erro e não possivel inserir o animal!", parent=self.window)
+                messagebox.showerror("Erro", "Ocurreu um erro e não foi possivel inserir o animal!", parent=self.window)
 
     def getsPetEntries(self):
         """
@@ -197,14 +215,21 @@ class WindowInsertMix(Toplevel):
         # Gets entries
         petName = self.entryPetName.get()
         petType = self.entryPetType.get()
+        petBreed = self.entryPetBreed.get()
+        petGender = self.entryPetGender.get()
         petWeight = self.entryPetWeight.get()
-        petHair = self.entryPetHair.get()
-        petBirth = self.entryPetBirth.get()
+        petHairType = self.entryPetHairType.get()
+        petHairColor = self.entryPetHairColor.get()
+        petAge = self.entryPetAge.get()
         petObs = self.entryPetObs.get('1.0', 'end')
 
+        # Formats values
+        petWeight = eval(petWeight) if petWeight != '' else 0
+        petAge = eval(petAge) if petAge != '' else 0
+
         # Checks if required values were inserted and returns them if so
-        if self.checkPetRequiredValues((petName, petType)):
-            return petName, petType, eval(petWeight), petHair, petBirth, petObs
+        if petName != '' or petType != '':
+            return petName, petType, petBreed, petGender, petWeight, petHairType, petHairColor, petAge, petObs
         else:
             return ()
 
@@ -223,40 +248,15 @@ class WindowInsertMix(Toplevel):
         clientNIF = self.entryClientNIF.get()
         clientAddress = self.entryClientAddress.get()
 
-        if self.checkClientRequiredValues((clientName, clientPhone)):
+        # Formats values
+        clientPhone = eval(clientPhone) if clientPhone != '' else 0
+        clientNIF = eval(clientNIF) if clientNIF != '' else 0
+
+        # Checks if required values were inserted and returns them if so
+        if clientName != '' or clientPhone != '':
             return clientName, clientEmail, clientPhone, clientNIF, clientAddress
         else:
             return ()
-
-    def checkPetRequiredValues(self, info):
-        """
-        Description:
-        > Checks if all of the required values were inserted. If not, pops an error and stops creation process.
-
-        :param info: tuple containing all the inserted info -> tuple of strings
-        :return: boolean value
-        """
-        if info[0] != '' and info[1] != '':
-            return True
-        else:
-            messagebox.showerror('Erro nas entradas',
-                                 'Não digitou toda a informação necessária para criar um animal!', parent=self.window)
-            return False
-
-    def checkClientRequiredValues(self, info):
-        """
-        Description:
-        > Checks if all of the required values were inserted. If not, pops an error and stops creation process.
-
-        :param info: tuple containing all the inserted info -> tuple of strings
-        :return: boolean value
-        """
-        if info[0] != '' and info[1]:
-            return True
-        else:
-            messagebox.showerror('Erro nas entradas',
-                                 'Não digitou toda a informação necessária para criar um cliente!', parent=self.window)
-            return False
 
     @staticmethod
     def validateString(self, action, index, valueIfAllowed,
