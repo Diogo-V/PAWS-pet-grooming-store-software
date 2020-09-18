@@ -195,7 +195,7 @@ class WindowInsertLink(Toplevel):
 
         :return: list containing such info -> list of strings
         """
-        return [self.entryPetName.get(), self.entryPetType.get()]
+        return [self.entryPetName.get(), self.entryPetType.get(), self.entryPetBreed.get()]
 
     def getsClientEntries(self):
         """
@@ -204,7 +204,7 @@ class WindowInsertLink(Toplevel):
 
         :return: list containing such info -> list of strings
         """
-        return [self.entryClientName.get()]
+        return [self.entryClientName.get(), self.entryClientPhone.get()]
 
     def updatePetTree(self):
         """
@@ -213,15 +213,15 @@ class WindowInsertLink(Toplevel):
         """
 
         # Gets entries for pets
-        [petName, petType] = self.getsPetEntries()
+        [petName, petType, petBreed] = self.getsPetEntries()
 
         # If no information was typed, just refresh the page
-        if petName == '' and petType == '':
+        if petName == '' and petType == '' and petBreed == '':
             self.refreshTreePets()
         else:
 
             # Gets requested rows
-            rows = getsRequestedPets([petName, petType])
+            rows = getsRequestedPets([petName, petType, petBreed])
 
             # Displays information on our tree
             self.displayTreePetsRows(rows)
@@ -233,15 +233,15 @@ class WindowInsertLink(Toplevel):
         """
 
         # Gets entries for clients
-        [clientName] = self.getsClientEntries()
+        [clientName, clientPhone] = self.getsClientEntries()
 
         # If no information was typed, just refresh the page
-        if clientName == '':
+        if clientName == '' and clientPhone == '':
             self.refreshTreeClients()
         else:
 
             # Gets requested rows
-            rows = getsRequestedClients([clientName])
+            rows = getsRequestedClients([clientName, clientPhone])
 
             # Displays information on our tree
             self.displayTreeClientsRows(rows)

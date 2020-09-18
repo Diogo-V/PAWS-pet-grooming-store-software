@@ -256,14 +256,19 @@ def getsRequestedPets(queryInfo):
         """Checks the type of query that we need to make and gets it."""
 
         # Extracts components
-        [petName, petType] = queryInfo
+        [petName, petType, petBreed] = queryInfo
 
-        if petName == '':
-            return f"animals.type like '%{petType}%'"
-        elif petType == '':
-            return f"animals.name like '%{petName}%'"
-        else:
-            return f"animals.name like '%{petName}%' and animals.type like '%{petType}%'"
+        myQuery = ''
+
+        # Gets query
+        if petName != '':
+            myQuery += f"animals.name like '%{petName}%' and "
+        if petType != '':
+            myQuery += f"animals.type like '%{petType}%' and "
+        if petBreed != '':
+            myQuery += f"animals.breed like '%{petBreed}%' and "
+
+        return myQuery[:-5]
 
     # Creates a connection to our database and a cursor to work with it
     connection = connect("database/database.sqlite")
@@ -274,7 +279,7 @@ def getsRequestedPets(queryInfo):
         # SQL syntax that is going to be parsed inside the database console
         query = f"""
                 select
-                    animals.ROWID, animals.name, animals.type
+                    animals.ROWID, animals.name, animals.type, animals.breed
                 from
                     animals
                 where
@@ -328,7 +333,7 @@ def getsRequestedClients(queryInfo):
         # SQL syntax that is going to be parsed inside the database console
         query = f"""
                 select
-                    clients.ROWID, clients.name
+                    clients.ROWID, clients.name, clients.phone
                 from
                     clients
                 where
