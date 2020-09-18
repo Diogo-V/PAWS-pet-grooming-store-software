@@ -136,7 +136,9 @@ def getsPetsForLinksWindow():
         query = f"""
                 select
                     animals.ROWID,
-                    animals.name, animals.type
+                    animals.name, 
+                    animals.type,
+                    animals.breed
                 from
                     animals
                 """

@@ -27,7 +27,7 @@ class WindowInsertLink(Toplevel):
         # Creates toplevel window that will be displayed. Sets size and blocks resize
         Toplevel.__init__(self, master)
         self.title('Selecionar a relação entre animal e dono que deseja inserir')
-        self.geometry("1000x500")
+        self.geometry("1250x600")
         self.resizable(False, False)
         self.transient(master)
 
@@ -39,12 +39,12 @@ class WindowInsertLink(Toplevel):
         self.window.pack(fill='both', expand=True)
 
         # Creates 2 LabelFrames that will hold our search buttons for each section
-        self.petsSearch = LabelFrame(self.window, text=' Procurar animais ', width=400, height=120)
-        self.clientsSearch = LabelFrame(self.window, text=' Procurar clientes ', width=400, height=120)
+        self.petsSearch = LabelFrame(self.window, text=' Procurar animais ', width=500, height=120)
+        self.clientsSearch = LabelFrame(self.window, text=' Procurar clientes ', width=500, height=120)
 
         # Creates 2 LabelFrames that will hold our pets and clients' trees, respectively
-        self.pets = LabelFrame(self.window, text=' Animais ', width=400, height=370)
-        self.clients = LabelFrame(self.window, text=' Clientes ', width=400, height=370)
+        self.pets = LabelFrame(self.window, text=' Animais ', width=500, height=370)
+        self.clients = LabelFrame(self.window, text=' Clientes ', width=500, height=370)
 
         # Puts our labelFrames on the screen
         self.petsSearch.grid(column=0, row=0)
@@ -59,49 +59,63 @@ class WindowInsertLink(Toplevel):
         self.clients.grid_propagate(False)
 
         # Creates link button and puts it on the screen
-        self.link = Button(self.window, text='Relacionar', command=self.linkEntries)
-        self.link.grid(column=1, row=2, padx=58)
+        auxFrame = Frame(self.window)
+        auxFrame.grid(column=1, row=2, sticky=(W, S, N, E))
+        auxFrame.grid_propagate(False)
+        self.link = Button(auxFrame, text='Relacionar', command=self.linkEntries, width=30)
+        self.link.pack(side=LEFT, fill="both", expand=True, padx=10)
 
         # Creates needed entry variables
         petName = StringVar(self.petsSearch)
         petType = StringVar(self.petsSearch)
+        petBreed = StringVar(self.petsSearch)
         clientName = StringVar(self.clientsSearch)
+        clientPhone = StringVar(self.clientsSearch)
 
         # Creates search fields for pets
         self.labelPetName = Label(self.petsSearch, text='Nome:')
         self.labelPetName.grid(column=0, row=0, padx=(5, 5), pady=(20, 10), sticky=W)
-        self.entryPetName = Entry(self.petsSearch, textvariable=petName, width=15)
+        self.entryPetName = Entry(self.petsSearch, textvariable=petName, width=13)
         self.entryPetName.grid(column=1, row=0, padx=(0, 5), pady=(20, 10), sticky=W)
         self.labelPetType = Label(self.petsSearch, text='Tipo:')
         self.labelPetType.grid(column=2, row=0, padx=(5, 5), pady=(20, 10))
         self.entryPetType = Combobox(self.petsSearch, textvariable=petType, state="readonly",
                                      values=[''] + typeOfAnimal, width=10)
-        self.entryPetType.grid(column=4, row=0, padx=(0, 5), pady=(20, 10))
+        self.entryPetType.grid(column=4, row=0, padx=(0, 5), pady=(20, 10), sticky=W)
+        self.labelPetBreed = Label(self.petsSearch, text='Raça:')
+        self.labelPetBreed.grid(column=5, row=0, padx=(5, 5), pady=(20, 10), sticky=W)
+        self.entryPetBreed = Entry(self.petsSearch, textvariable=petBreed, width=13)
+        self.entryPetBreed.grid(column=6, row=0, padx=(0, 5), pady=(20, 10), sticky=W)
 
         # Creates search filed for clients
         self.labelClientName = Label(self.clientsSearch, text='Nome:')
         self.labelClientName.grid(column=0, row=0, padx=(5, 5), pady=(20, 10), sticky=W)
         self.entryClientName = Entry(self.clientsSearch, textvariable=clientName, width=15)
         self.entryClientName.grid(column=1, row=0, padx=(0, 5), pady=(20, 10), sticky=W)
+        self.labelClientPhone = Label(self.clientsSearch, text='Telemóvel:')
+        self.labelClientPhone.grid(column=2, row=0, padx=(30, 5), pady=(20, 10), sticky=W)
+        self.entryClientPhone = Entry(self.clientsSearch, textvariable=clientPhone, width=15)
+        self.entryClientPhone.grid(column=3, row=0, padx=(0, 5), pady=(20, 10), sticky=W)
 
         # Creates search buttons for each section
         self.petsButton = Button(self.petsSearch, text='Procurar', width=20, command=self.updatePetTree)
         self.clientsButton = Button(self.clientsSearch, text='Procurar', width=20, command=self.updateClientTree)
-        self.petsButton.grid(column=0, row=1, padx=5, columnspan=2)
+        self.petsButton.grid(column=0, row=1, padx=5, columnspan=3)
         self.clientsButton.grid(column=0, row=1, padx=5, columnspan=2)
 
         # Columns names that are going to be inserted inside the tree
-        columnsPets = ('', 'Nome', 'Tipo')
+        columnsPets = ('', 'Nome', 'Tipo', 'Raça')
 
         # Creates tree that will display all the pets information
-        self.treePets = Treeview(self.pets, columns=columnsPets, height=17, show='headings')
+        self.treePets = Treeview(self.pets, columns=columnsPets, height=21, show='headings')
         self.treePets.pack(side=LEFT, padx=10, pady=10)
 
         # Formats columns
         self.treePets.column("#0", stretch=NO, anchor='center', width=0)
         self.treePets.column(0, stretch=NO, anchor='center', width=0)
-        self.treePets.column(1, stretch=NO, anchor='center', width=228)
-        self.treePets.column(2, stretch=NO, anchor='center', width=130)
+        self.treePets.column(1, stretch=NO, anchor='center', width=153)
+        self.treePets.column(2, stretch=NO, anchor='center', width=153)
+        self.treePets.column(3, stretch=NO, anchor='center', width=153)
 
         # Define columns heading and sets their sorting function
         for col in columnsPets:
@@ -114,16 +128,17 @@ class WindowInsertLink(Toplevel):
         self.treePets.configure(yscrollcommand=self.scrollbarPets.set)
 
         # Columns names that are going to be inserted inside the tree
-        columnsClients = ('', 'Nome')
+        columnsClients = ('', 'Nome', 'Telemóvel')
 
         # Creates tree that will display all the links
-        self.treeClients = Treeview(self.clients, columns=columnsClients, height=17, show='headings')
+        self.treeClients = Treeview(self.clients, columns=columnsClients, height=21, show='headings')
         self.treeClients.pack(side=LEFT, padx=10, pady=10)
 
         # Formats columns
         self.treeClients.column("#0", stretch=NO, anchor='center', width=0)
         self.treeClients.column(0, stretch=NO, anchor='center', width=0)
-        self.treeClients.column(1, stretch=NO, anchor='center', width=358)
+        self.treeClients.column(1, stretch=NO, anchor='center', width=228)
+        self.treeClients.column(2, stretch=NO, anchor='center', width=228)
 
         # Define columns heading and sets their sorting function
         for col in columnsClients:
@@ -142,7 +157,7 @@ class WindowInsertLink(Toplevel):
         # Creates a Label that tells the user if link already exists or not
         self.statusVar = StringVar(value="Entradas invalidas")
         self.status = Label(self.window, textvariable=self.statusVar)
-        self.status.grid(column=1, row=0)
+        self.status.grid(column=1, row=0, padx=64)
 
         # Links double click on a row with a window popup
         self.treePets.bind('<Double 1>', self.displayPetWindow)
