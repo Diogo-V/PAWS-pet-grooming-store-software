@@ -57,6 +57,7 @@ class Clients(Frame):
         clientName = StringVar(self.search)
         clientPhone = StringVar(self.search)
         petName = StringVar(self.search)
+        petBreed = StringVar(self.search)
 
         # Creates labels and entry fields and puts them on the screen
         self.labelClientName = Label(self.search, text='Nome do cliente:')
@@ -71,13 +72,17 @@ class Clients(Frame):
         self.labelPetName.pack(side=LEFT, padx=(10, 5), pady=20)
         self.entryPetName = Entry(self.search, textvariable=petName)
         self.entryPetName.pack(side=LEFT, padx=(0, 15), pady=20)
+        self.labelPetBreed = Label(self.search, text='Raça:')
+        self.labelPetBreed.pack(side=LEFT, padx=(10, 5), pady=20)
+        self.entryPetBreed = Entry(self.search, textvariable=petBreed)
+        self.entryPetBreed.pack(side=LEFT, padx=(0, 15), pady=20)
 
         # Creates search button and puts it on the screen
         self.button = Button(self.search, text='Procurar', command=self.updateTree)
         self.button.pack(side=RIGHT, padx=(10, 25), pady=20)
 
         # Columns names that are going to be inserted inside the tree
-        columns = ('', 'Nome do cliente', 'Telemóvel', 'Nome do animal', 'Tipo de animal')
+        columns = ('', 'Nome do cliente', 'Telemóvel', 'Nome do animal', 'Tipo de animal', 'Raça')
 
         # Creates tree that will display all the links
         self.tree = Treeview(self.display, columns=columns, height=900, show='headings')
@@ -86,10 +91,11 @@ class Clients(Frame):
         # Formats columns
         self.tree.column("#0", stretch=NO, anchor='center', width=0)
         self.tree.column(0, stretch=NO, anchor='center', width=0)
-        self.tree.column(1, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/4 - 21))
-        self.tree.column(2, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/4 - 21))
-        self.tree.column(3, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/4 - 21))
-        self.tree.column(4, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/4 - 21))
+        self.tree.column(1, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/5 - 17))
+        self.tree.column(2, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/5 - 17))
+        self.tree.column(3, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/5 - 17))
+        self.tree.column(4, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/5 - 17))
+        self.tree.column(5, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/5 - 17))
 
         # Define columns heading and sets their sorting function
         for col in columns:
@@ -134,7 +140,8 @@ class Clients(Frame):
         Description:
         > Gets values inside each entry box and creates a list with those values.
         """
-        return [self.entryClientName.get(), self.entryClientPhone.get(), self.entryPetName.get()]
+        return [self.entryClientName.get(), self.entryClientPhone.get(),
+                self.entryPetName.get(), self.entryPetBreed.get()]
 
     def updateTree(self):
         """
@@ -143,15 +150,15 @@ class Clients(Frame):
         """
 
         # Gets information in entries
-        [clientName, clientPhone, petName] = self.getsEntries()
+        [clientName, clientPhone, petName, petBreed] = self.getsEntries()
 
         # If no information was typed, just refresh page
-        if clientName == '' and clientPhone == '' and petName == '':
+        if clientName == '' and clientPhone == '' and petName == '' and petBreed == '':
             self.refreshTree()
         else:
 
             # Gets rows that are going to be displayed
-            rows = getsRequestedClients([clientName, clientPhone, petName])
+            rows = getsRequestedClients([clientName, clientPhone, petName, petBreed])
 
             # Displays our queried rows
             self.displayTreeRows(rows)

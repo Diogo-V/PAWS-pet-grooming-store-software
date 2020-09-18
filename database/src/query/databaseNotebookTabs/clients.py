@@ -68,7 +68,8 @@ def getsAllClients():
                     clients.name, 
                     clients.phone,
                     animals.name, 
-                    animals.type
+                    animals.type,
+                    animals.breed
                 from
                     animals
                 inner join
@@ -108,27 +109,20 @@ def getsRequestedClients(queryInfo):
         """Checks the type of query that we need to make and gets it."""
 
         # Extracts components
-        [clientName, clientPhone, petName] = queryInfo
+        [clientName, clientPhone, petName, petBreed] = queryInfo
 
-        if clientName == '':
-            if clientPhone == '':
-                return f"animals.name like '%{petName}%'"
-            elif petName == '':
-                return f"clients.phone like '%{clientPhone}%'"
-            else:
-                return f"clients.phone like '%{clientPhone}%' and animals.name like '%{petName}%'"
-        else:
-            if clientPhone == '':
-                if petName == '':
-                    return f"clients.name like '%{clientName}%'"
-                else:
-                    return f"clients.name like '%{clientName}%' and animals.name like '%{petName}%'"
-            else:
-                if petName == '':
-                    return f"clients.name like '%{clientName}%' and clients.phone like '%{clientPhone}%'"
-                else:
-                    return f"clients.name like '%{clientName}%' and clients.phone like '%{clientPhone}%' " \
-                           f"and animals.name like '%{petName}%'"
+        myQuery = ''
+
+        if petName != '':
+            myQuery += f"animals.name like '%{petName}%' and "
+        if clientName != '':
+            myQuery += f"clients.name like '%{clientName}%' and "
+        if clientPhone != '':
+            myQuery += f"clients.phone like '%{clientPhone}%' and "
+        if petBreed != '':
+            myQuery += f"animals.breed like '%{petBreed}%' and "
+
+        return myQuery[:-5]
 
     # Creates a connection to our database and a cursor to work with it
     connection = connect("database/database.sqlite")
@@ -143,7 +137,8 @@ def getsRequestedClients(queryInfo):
                     clients.name, 
                     clients.phone,
                     animals.name, 
-                    animals.type
+                    animals.type,
+                    animals.breed
                 from
                     petsClientsLink
                 inner join
