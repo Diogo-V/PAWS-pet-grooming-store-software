@@ -62,7 +62,7 @@ class WindowDeleteLink(Toplevel):
         auxFrame = Frame(self.window)
         auxFrame.grid(column=1, row=2, sticky=(W, S, N, E))
         auxFrame.grid_propagate(False)
-        self.link = Button(auxFrame, text='Relacionar', command=self.removeEntries, width=30)
+        self.link = Button(auxFrame, text='Remover', command=self.removeEntries, width=30)
         self.link.pack(side=LEFT, fill="both", expand=True, padx=10)
 
         # Creates needed entry variables
@@ -195,7 +195,7 @@ class WindowDeleteLink(Toplevel):
 
         :return: list containing such info -> list of strings
         """
-        return [self.entryPetName.get(), self.entryPetType.get()]
+        return [self.entryPetName.get(), self.entryPetType.get(), self.entryPetBreed.get()]
 
     def getsClientEntries(self):
         """
@@ -204,7 +204,7 @@ class WindowDeleteLink(Toplevel):
 
         :return: list containing such info -> list of strings
         """
-        return [self.entryClientName.get()]
+        return [self.entryClientName.get(), self.entryClientPhone.get()]
 
     def updatePetTree(self):
         """
@@ -213,15 +213,15 @@ class WindowDeleteLink(Toplevel):
         """
 
         # Gets entries for pets
-        [petName, petType] = self.getsPetEntries()
+        [petName, petType, petBreed] = self.getsPetEntries()
 
         # If no information was typed, just refresh the page
-        if petName == '' and petType == '':
+        if petName == '' and petType == '' and petBreed == '':
             self.refreshTreePets()
         else:
 
             # Gets requested rows
-            rows = getsRequestedPets([petName, petType])
+            rows = getsRequestedPets([petName, petType, petBreed])
 
             # Displays information on our tree
             self.displayTreePetsRows(rows)
@@ -233,15 +233,15 @@ class WindowDeleteLink(Toplevel):
         """
 
         # Gets entries for clients
-        [clientName] = self.getsClientEntries()
+        [clientName, clientPhone] = self.getsClientEntries()
 
         # If no information was typed, just refresh the page
-        if clientName == '':
+        if clientName == '' and clientPhone == '':
             self.refreshTreeClients()
         else:
 
             # Gets requested rows
-            rows = getsRequestedClients([clientName])
+            rows = getsRequestedClients([clientName, clientPhone])
 
             # Displays information on our tree
             self.displayTreeClientsRows(rows)
@@ -321,7 +321,6 @@ class WindowDeleteLink(Toplevel):
         if len(pets) == 1 and len(clients) == 1:
             return self.treePets.item(pets[0], "values")[0], self.treeClients.item(clients[0], "values")[0]
         else:
-            messagebox.showerror("Erro", "Selecione um e um só elemento de cada coluna!", parent=self.window)
             return ()
 
     def removeEntries(self):
@@ -435,12 +434,12 @@ class WindowDeleteLink(Toplevel):
             WindowClient(self, clientID)
 
     @staticmethod
-    def checksIfTupleOfIdsIsValid(Ids):
+    def checksIfTupleOfIdsIsValid(tupleOfIds):
         """
         Description:
         > Checks if tuple is not empty (invalid).
 
-        :param Ids: tuple of RowIds inside our database -> tuple
+        :param tupleOfIds: tuple of RowIds inside our database -> tuple
         :return: boolean value according to the findings -> boolean
         """
-        return Ids != ()
+        return tupleOfIds != ()
