@@ -317,12 +317,14 @@ def getsRequestedClients(queryInfo):
         # Extracts components
         [clientName, clientPhone] = queryInfo
 
-        if clientPhone == '':
-            return f"clients.name like '%{clientName}%'"
-        elif clientName == '':
-            return f"clients.phone like '%{clientPhone}%'"
-        else:
-            return f"clients.name like '%{clientName}%' and clients.phone like '%{clientPhone}%'"
+        search = ''
+
+        if clientName != '':
+            search += f"clients.name like '%{clientName}%' and "
+        if clientPhone != '':
+            search += f"clients.phone like '%{clientPhone}%' and "
+
+        return search[:-5]
 
     # Creates a connection to our database and a cursor to work with it
     connection = connect("database/database.sqlite")
