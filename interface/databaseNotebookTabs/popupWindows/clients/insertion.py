@@ -7,7 +7,7 @@ from database.src.functions.insertion import insertRecordPetClientLink, insertRe
 from database.src.query.databaseNotebookTabs.links import getsPetsForLinksWindow, getsRequestedPets
 from database.src.utils.constants import typeOfAnimal
 from interface.databaseNotebookTabs import clients
-from interface.databaseNotebookTabs.popupWindows.clients.information import WindowClient
+from interface.databaseNotebookTabs.popupWindows.pets.information import WindowPet
 
 
 class WindowInsertClient(Toplevel):
@@ -26,7 +26,7 @@ class WindowInsertClient(Toplevel):
         # Creates toplevel window that will be displayed. Sets size and blocks resize
         Toplevel.__init__(self, master)
         self.title('Inserir novo cliente')
-        self.geometry("1000x500")
+        self.geometry("1250x600")
         self.resizable(False, False)
         self.transient(master)
 
@@ -38,10 +38,10 @@ class WindowInsertClient(Toplevel):
         self.master = master
 
         # Creates two labelFrames to organize our UI
-        self.clientWindow = LabelFrame(self.window, text=' Cliente ', height=500, width=500)
-        self.petWindow = LabelFrame(self.window, text=' Relacionar com o animal ', height=400, width=500)
-        self.clientWindow.pack(side=LEFT, fill="both", expand=True)
-        self.petWindow.pack(side=TOP, fill="both", expand=True)
+        self.clientWindow = LabelFrame(self.window, text=' Cliente ', height=500, width=625)
+        self.petWindow = LabelFrame(self.window, text=' Relacionar com o animal ', height=600, width=625)
+        self.clientWindow.grid(column=0, row=0, rowspan=5)
+        self.petWindow.grid(column=1, row=0, rowspan=6)
 
         # Blocks resizing for each labelFrame
         self.clientWindow.grid_propagate(False)
@@ -49,7 +49,7 @@ class WindowInsertClient(Toplevel):
 
         # Creates a submit button
         self.createClient = Button(self.window, text='Submter', command=self.submit)
-        self.createClient.pack(side=BOTTOM, padx=5, pady=5, expand=True, fill="both")
+        self.createClient.grid(column=0, row=5, padx=5, pady=5, sticky=(W, S, N, E))
 
         # Creates clients field description labels
         self.descClientName = Label(self.clientWindow, text='Nome:')
@@ -71,6 +71,7 @@ class WindowInsertClient(Toplevel):
         clientAddress = StringVar()
         petName = StringVar()
         petType = StringVar()
+        petBreed = StringVar()
 
         # Restriction commands
         validateString = (master.register(self.validateString), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
@@ -99,31 +100,36 @@ class WindowInsertClient(Toplevel):
 
         # Creates search entry for pets
         self.labelPetName = Label(self.petWindow, text='Nome:')
-        self.labelPetName.grid(column=0, row=0, padx=(5, 0), pady=(20, 10), sticky=W)
-        self.entryPetName = Entry(self.petWindow, textvariable=petName, width=20)
+        self.labelPetName.grid(column=0, row=0, pady=(20, 10), sticky=W)
+        self.entryPetName = Entry(self.petWindow, textvariable=petName, width=13)
         self.entryPetName.grid(column=1, row=0, pady=(20, 10), sticky=W)
         self.labelPetType = Label(self.petWindow, text='Tipo:')
-        self.labelPetType.grid(column=2, row=0, padx=(5, 0), pady=(20, 10), sticky=W)
+        self.labelPetType.grid(column=2, row=0, pady=(20, 10), sticky=W)
         self.boxPetType = Combobox(self.petWindow, textvariable=petType, state="readonly",
                                    values=[''] + typeOfAnimal, width=10)
-        self.boxPetType.grid(column=3, row=0, padx=(5, 0), pady=(20, 10), sticky=W)
+        self.boxPetType.grid(column=3, row=0, pady=(20, 10), sticky=W)
+        self.labelPetBreed = Label(self.petWindow, text='Raça:')
+        self.labelPetBreed.grid(column=4, row=0, pady=(20, 10), sticky=W)
+        self.entryPetBreed = Entry(self.petWindow, textvariable=petBreed, width=13)
+        self.entryPetBreed.grid(column=5, row=0, pady=(20, 10), sticky=W)
 
         # Creates search buttons for the pets tree
         self.petButton = Button(self.petWindow, text='Procurar', width=8, command=self.updatePetTree)
-        self.petButton.grid(column=4, row=0, pady=(20, 10), sticky=E)
+        self.petButton.grid(column=0, row=1, pady=(20, 10), columnspan=3, sticky=(W, E), padx=8)
 
         # Columns names that are going to be inserted inside the tree
-        columns = ('', 'Nome', 'Tipo')
+        columns = ('', 'Nome', 'Tipo', 'Raça')
 
         # Creates tree that will display all the pets
-        self.treePets = Treeview(self.petWindow, columns=columns, height=15, show='headings')
-        self.treePets.grid(column=0, row=1, columnspan=5, padx=10, pady=10)
+        self.treePets = Treeview(self.petWindow, columns=columns, height=21, show='headings')
+        self.treePets.grid(column=0, row=2, columnspan=6, padx=10, pady=10)
 
         # Formats columns
         self.treePets.column("#0", stretch=NO, anchor='center', width=0)
         self.treePets.column(0, stretch=NO, anchor='center', width=0)
-        self.treePets.column(1, stretch=NO, anchor='center', width=225)
-        self.treePets.column(2, stretch=NO, anchor='center', width=225)
+        self.treePets.column(1, stretch=NO, anchor='center', width=193)
+        self.treePets.column(2, stretch=NO, anchor='center', width=193)
+        self.treePets.column(3, stretch=NO, anchor='center', width=193)
 
         # Define columns heading and sets their sorting function
         for col in columns:
@@ -132,7 +138,7 @@ class WindowInsertClient(Toplevel):
 
         # Creates a scrollbar for the tree view and then puts it on the screen
         self.scrollbarClients = Scrollbar(self.petWindow, orient="vertical", command=self.treePets.yview)
-        self.scrollbarClients.grid(column=6, row=1, sticky=(N, S))
+        self.scrollbarClients.grid(column=7, row=2, sticky=(N, S))
         self.treePets.configure(yscrollcommand=self.scrollbarClients.set)
 
         # Populates tree
@@ -214,7 +220,8 @@ class WindowInsertClient(Toplevel):
 
             # Since we had an error while creating the client, we need to prompt the user
             else:
-                messagebox.showerror("Erro", "Aconteceu um erro ao obter as informações inseridas. Tente de novo!",
+                messagebox.showerror("Erro", "Aconteceu um erro ao obter as informações inseridas. "
+                                             "Verifique que inserio toda a informação necessária e tente de novo!",
                                      parent=self.window)
 
     def getsClientEntries(self):
@@ -232,9 +239,12 @@ class WindowInsertClient(Toplevel):
         clientNIF = self.entryClientNIF.get()
         clientAddress = self.entryClientAddress.get()
 
+        clientPhone = eval(clientPhone) if clientPhone != '' else 0
+        clientNIF = eval(clientNIF) if clientNIF != '' else 0
+
         # Checks if required values were inserted and returns them if so
-        if self.checkRequiredValues((clientName, clientPhone)):
-            return clientName, clientEmail, eval(clientPhone), eval(clientNIF), clientAddress
+        if clientName != '' and clientPhone != 0:
+            return clientName, clientEmail, clientPhone, clientNIF, clientAddress
         else:
             return ()
 
@@ -245,7 +255,7 @@ class WindowInsertClient(Toplevel):
 
         :return: list containing such info -> list of strings
         """
-        return [self.entryPetName.get(), self.boxPetType.get()]
+        return [self.entryPetName.get(), self.boxPetType.get(), self.entryPetBreed.get()]
 
     def updatePetTree(self):
         """
@@ -254,15 +264,15 @@ class WindowInsertClient(Toplevel):
         """
 
         # Gets entries for clients
-        [petName, petType] = self.getsPetEntries()
+        [petName, petType, petBreed] = self.getsPetEntries()
 
         # If no information was typed, just refresh the page
-        if petName == '' and petType == '':
+        if petName == '' and petType == '' and petBreed == '':
             self.refreshTreePets()
         else:
 
             # Gets requested rows
-            rows = getsRequestedPets([petName, petType])
+            rows = getsRequestedPets([petName, petType, petBreed])
 
             # Displays information on our tree
             self.displayTreePetsRows(rows)
@@ -297,21 +307,6 @@ class WindowInsertClient(Toplevel):
         for row in rows:
             self.treePets.insert('', 'end', values=row)
 
-    def checkRequiredValues(self, info):
-        """
-        Description:
-        > Checks if all of the required values were inserted. If not, pops an error and stops creation process.
-
-        :param info: tuple containing all the inserted info -> tuple of strings
-        :return: boolean value
-        """
-        if info[0] != '' and info[1] != '':
-            return True
-        else:
-            messagebox.showerror('Erro nas entradas',
-                                 'Não digitou toda a informação necessária para criar uma entrada!', parent=self.window)
-            return False
-
     def displayClientWindow(self, event):
         """
         Description:
@@ -329,11 +324,11 @@ class WindowInsertClient(Toplevel):
             # Gets row information
             info = self.treePets.item(item, 'values')
 
-            # Since we only need the client id to query trough the database, we discard the rest
-            clientID = info[0]
+            # Since we only need the pet id to query trough the database, we discard the rest
+            petID = info[0]
 
-            # Creates toplevel window that will display the information about this client
-            WindowClient(self, clientID)
+            # Creates toplevel window that will display the information about this pet
+            WindowPet(self, petID)
 
     @staticmethod
     def validateString(self, action, index, valueIfAllowed,
