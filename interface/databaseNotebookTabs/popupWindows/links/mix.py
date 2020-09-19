@@ -23,6 +23,7 @@ class WindowInsertMix(Toplevel):
         # Creates toplevel window that will be displayed. Sets size and blocks resize
         Toplevel.__init__(self, master)
         self.title('Inserir animal + cliente')
+        self.tk.call('wm', 'iconphoto', self._w, PhotoImage(file='images/paw.ico'))  # Puts icon
         self.geometry("1250x600")
         self.resizable(False, False)
         self.transient(master)

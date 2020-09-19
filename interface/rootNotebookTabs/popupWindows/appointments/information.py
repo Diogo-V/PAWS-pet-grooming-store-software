@@ -27,6 +27,7 @@ class WindowAppointment(Toplevel):
         Toplevel.__init__(self, master)
         self.title('Informações sobre a marcação')
         self.geometry("1250x600")
+        self.tk.call('wm', 'iconphoto', self._w, PhotoImage(file='images/paw.ico'))  # Puts icon
         self.resizable(False, False)
 
         # Creates frame (used to put widgets in it) for our toplevel window and puts it on the screen
