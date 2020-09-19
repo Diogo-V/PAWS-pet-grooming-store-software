@@ -93,7 +93,8 @@ class WindowAppointment(Toplevel):
         descClientAddress = Label(self.clientWindow, text=f'Morada:  {self.clientAdr}', width=100)
         descClientAddress.grid(column=0, row=8, sticky=W, pady=15)
 
-        descAppServices = Label(self.appointmentWindow, text=f'Serviços:  {self.appServices}', width=100)
+        descAppServices = Label(self.appointmentWindow, text=f'Serviços:  {self.appServices}', width=100,
+                                justify=LEFT, wraplength=415)
         descAppServices.grid(column=0, row=0, sticky=W, pady=15)
         descAppDate = Label(self.appointmentWindow, text=f'Dia:  {self.appDate}')
         descAppDate.grid(column=0, row=2, sticky=W, pady=15)

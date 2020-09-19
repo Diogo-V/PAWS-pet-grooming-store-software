@@ -172,14 +172,18 @@ def getsRequestedPets(queryInfo):
         """Checks the type of query that we need to make and gets it."""
 
         # Extracts components
-        [petName, petType] = queryInfo
+        [petName, petBreed, clientName] = queryInfo
 
-        if petName == '':
-            return f"animals.type like '%{petType}%'"
-        elif petType == '':
-            return f"animals.name like '%{petName}%'"
-        else:
-            return f"animals.name like '%{petName}%' and animals.type like '%{petType}%'"
+        search = ''
+
+        if petName != '':
+            search += f"animals.name like '%{petName}%' and "
+        if petBreed != '':
+            search += f"animals.breed like '%{petBreed}%' and "
+        if clientName != '':
+            search += f"clients.name like '%{clientName}%' and "
+
+        return search[:-5]
 
     # Creates a connection to our database and a cursor to work with it
     connection = connect("database/database.sqlite")
@@ -190,10 +194,16 @@ def getsRequestedPets(queryInfo):
         # SQL syntax that is going to be parsed inside the database console
         query = f"""
                 select
-                    animals.ROWID, animals.name, animals.type
+                    animals.ROWID,
+                    animals.name, animals.breed, clients.name
                 from
                     animals
-                where
+                inner join 
+                    clients, 
+                    petsClientsLink
+                where 
+                    animals.ROWID = petsClientsLink.petId and 
+                    clients.ROWID = petsClientsLink.clientId and 
                     {getQuery()}
                 """
 
@@ -230,9 +240,15 @@ def getsPetsForAppointmentsWindow():
         query = f"""
                 select
                     animals.ROWID,
-                    animals.name, animals.type
+                    animals.name, animals.breed, clients.name
                 from
                     animals
+                inner join 
+                    clients, 
+                    petsClientsLink
+                where 
+                    animals.ROWID = petsClientsLink.petId and 
+                    clients.ROWID = petsClientsLink.clientId
                 """
 
         # Gets list containing the requested information

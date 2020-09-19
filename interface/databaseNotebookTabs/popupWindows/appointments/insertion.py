@@ -61,11 +61,13 @@ class WindowInsertAppointment(Toplevel):
 
         # Creates labels to describe each of the entries
         self.labelDate = Label(self.appInputs, text='Data:')
-        self.labelDate.grid(row=0, column=0, padx=5, pady=30, sticky=W)
+        self.labelDate.grid(row=0, column=0, padx=5, pady=10, sticky=W)
         self.labelTime = Label(self.appInputs, text='Hora:')
-        self.labelTime.grid(row=2, column=0, padx=5, pady=30, sticky=W)
+        self.labelTime.grid(row=2, column=0, padx=5, pady=10, sticky=W)
         self.labelPrice = Label(self.appInputs, text='Preço:')
-        self.labelPrice.grid(row=4, column=0, padx=5, pady=30, sticky=W)
+        self.labelPrice.grid(row=4, column=0, padx=5, pady=10, sticky=W)
+        self.labelObservations = Label(self.appInputs, text='Observações:')
+        self.labelObservations.grid(row=6, column=0, padx=5, pady=10, sticky=W)
         self.labelServices = Label(self.appServices, text='Serviços:')
         self.labelServices.grid(row=0, column=0, padx=(23, 5), pady=(30, 10), sticky=W)
 
@@ -104,14 +106,16 @@ class WindowInsertAppointment(Toplevel):
         self.entryPrice = Entry(self.appInputs, textvariable=appPrice, validate="focusout",
                                 validatecommand=validateNumber, invalidcommand=self.entryError, width=10)
         self.entryPrice.grid(row=4, column=1, padx=5, pady=10, columnspan=2)
+        self.entryObservations = Text(self.appInputs, height=3, width=49)
+        self.entryObservations.grid(row=7, column=0, sticky=W, columnspan=5, padx=5, pady=(0, 10))
 
         # Creates a button that will update all the appointments displayed inside our treeApp
         self.appButton = Button(self.appInputs, text='Ir', width=5, command=self.updateAppTree)
-        self.appButton.grid(row=0, column=4, pady=10, padx=5)
+        self.appButton.grid(row=0, column=4, pady=10, padx=(5, 0))
 
         # Creates a frame to insert our services. Mainly used to organize the UI
         self.services = Frame(self.appServices)
-        self.services.grid(row=1, column=0, columnspan=4, padx=(5, 100), sticky=W)
+        self.services.grid(row=1, column=0, columnspan=4, padx=(5, 17), sticky=W)
 
         # Separates entries for the date
         Label(self.appInputs, text='/').grid(column=1, row=0, padx=(57, 0))
@@ -153,38 +157,44 @@ class WindowInsertAppointment(Toplevel):
         # Creates separators to organize our UI
         Separator(self.appInputs, orient=HORIZONTAL).grid(column=0, row=1, sticky=(W, E), columnspan=5)
         Separator(self.appInputs, orient=HORIZONTAL).grid(column=0, row=3, sticky=(W, E), columnspan=5)
+        Separator(self.appInputs, orient=HORIZONTAL).grid(column=0, row=5, sticky=(W, E), columnspan=5)
 
         # Creates variables so that we have a place to store our input information
         petName = StringVar()
-        petType = StringVar()
+        clientName = StringVar()
+        petBreed = StringVar()
 
         # Creates search entry for pets
         self.labelPetName = Label(self.petWindow, text='Nome:')
         self.labelPetName.grid(column=0, row=0, padx=(5, 0), pady=(10, 10), sticky=W)
-        self.entryPetName = Entry(self.petWindow, textvariable=petName, width=20)
+        self.entryPetName = Entry(self.petWindow, textvariable=petName, width=10)
         self.entryPetName.grid(column=1, row=0, pady=(10, 10), sticky=W, padx=5)
-        self.labelPetType = Label(self.petWindow, text='Tipo:')
-        self.labelPetType.grid(column=2, row=0, padx=(15, 5), pady=(10, 10), sticky=W)
-        self.boxPetType = Combobox(self.petWindow, textvariable=petType, state="readonly",
-                                   values=[''] + typeOfAnimal, width=11)
-        self.boxPetType.grid(column=3, row=0, padx=(5, 50), pady=(10, 10), sticky=W)
+        self.labelPetBreed = Label(self.petWindow, text='Raça:')
+        self.labelPetBreed.grid(column=2, row=0, pady=(10, 10), sticky=W)
+        self.entryPetBreed = Entry(self.petWindow, textvariable=petBreed, width=10)
+        self.entryPetBreed.grid(column=3, row=0, pady=(10, 10), sticky=W, padx=5)
+        self.labelClientName = Label(self.petWindow, text='Cliente:')
+        self.labelClientName.grid(column=4, row=0, pady=(10, 10), sticky=W)
+        self.entryClientName = Entry(self.petWindow, textvariable=clientName, width=10)
+        self.entryClientName.grid(column=5, row=0, pady=(10, 10), sticky=W, padx=5)
 
         # Creates search buttons for the pets tree
         self.petButton = Button(self.petWindow, text='Procurar', width=8, command=self.updatePetTree)
-        self.petButton.grid(column=4, row=0, pady=(10, 10), sticky=E)
+        self.petButton.grid(column=6, row=0, pady=(10, 10), sticky=E)
 
         # Columns names that are going to be inserted inside the tree
-        columnsPets = ('', 'Nome', 'Tipo')
+        columnsPets = ('', 'Nome', 'Raça', 'Cliente')
 
         # Creates tree that will display all the pets
         self.treePet = Treeview(self.petWindow, columns=columnsPets, height=19, show='headings')
-        self.treePet.grid(column=0, row=1, columnspan=5, padx=10, pady=10)
+        self.treePet.grid(column=0, row=1, columnspan=7, padx=10, pady=10)
 
         # Formats columns
         self.treePet.column("#0", stretch=NO, anchor='center', width=0)
         self.treePet.column(0, stretch=NO, anchor='center', width=0)
-        self.treePet.column(1, stretch=NO, anchor='center', width=250)
-        self.treePet.column(2, stretch=NO, anchor='center', width=250)
+        self.treePet.column(1, stretch=NO, anchor='center', width=168)
+        self.treePet.column(2, stretch=NO, anchor='center', width=168)
+        self.treePet.column(3, stretch=NO, anchor='center', width=168)
 
         # Define columns heading and sets their sorting function
         for col in columnsPets:
@@ -193,7 +203,7 @@ class WindowInsertAppointment(Toplevel):
 
         # Creates a scrollbar for the tree view and then puts it on the screen
         self.scrollbarClients = Scrollbar(self.petWindow, orient="vertical", command=self.treePet.yview)
-        self.scrollbarClients.grid(column=5, row=1, sticky=(N, S))
+        self.scrollbarClients.grid(column=7, row=1, sticky=(N, S))
         self.treePet.configure(yscrollcommand=self.scrollbarClients.set)
 
         # Columns names that are going to be inserted inside the tree
@@ -279,6 +289,7 @@ class WindowInsertAppointment(Toplevel):
                 appDate = self.getsDate()
                 appTime = self.getsTime()
                 appPrice = self.getsPrice()
+                appObs = self.entryObservations.get('1.0', 'end')
                 appPetID = self.treePet.item(appSelectedPet[0], "values")[0]
 
                 # Validates date
@@ -303,7 +314,7 @@ class WindowInsertAppointment(Toplevel):
                     return
 
                 # Creates info that is going to be inserted
-                info = (appServices, appDate, appTime, appPrice, appPetID)
+                info = (appServices, appDate, appTime, appPrice, appObs, appPetID)
 
                 # Creates appointment with the provided info
                 insertRecordAppointment(info)
@@ -454,7 +465,7 @@ class WindowInsertAppointment(Toplevel):
 
         :return: list containing such info -> list of strings
         """
-        return [self.entryPetName.get(), self.boxPetType.get()]
+        return [self.entryPetName.get(), self.entryPetBreed.get(), self.entryClientName.get()]
 
     def refreshTreePets(self):
         """
@@ -502,11 +513,11 @@ class WindowInsertAppointment(Toplevel):
             # Gets row information
             info = self.treePet.item(item, 'values')
 
-            # Since we only need the pet id to query trough the database, we discard the rest
-            petID = info[0]
+            # Since we only need the appointment id to query trough the database, we discard the rest
+            appID = info[0]
 
-            # Creates toplevel window that will display the information about this pet
-            WindowPet(self, petID)
+            # Creates toplevel window that will display the information about this appointment
+            WindowAppointment(self, appID)
 
     def updatePetTree(self):
         """
@@ -515,15 +526,15 @@ class WindowInsertAppointment(Toplevel):
         """
 
         # Gets entries for clients
-        [petName, petType] = self.getsPetEntries()
+        [petName, petBreed, clientName] = self.getsPetEntries()
 
         # If no information was typed, just refresh the page
-        if petName == '' and petType == '':
+        if petName == '' and clientName == '' and petBreed == '':
             self.refreshTreePets()
         else:
 
             # Gets requested rows
-            rows = getsRequestedPets([petName, petType])
+            rows = getsRequestedPets([petName, petBreed, clientName])
 
             # Displays information on our tree
             self.displayTreePetsRows(rows)
