@@ -58,19 +58,25 @@ class Appointments(Frame):
         # Allocates memory for the entry values
         petName = StringVar(self.search)
         petType = StringVar(self.search)
+        petBreed = StringVar(self.search)
         clientName = StringVar(self.search)
         clientPhone = StringVar(self.search)
 
         # Creates labels and entry fields and puts them on the screen. Used to search inside the database
-        self.labelPetName = Label(self.search, text='Nome do animal:')
+        self.labelPetName = Label(self.search, text='Animal:')
         self.labelPetName.pack(side=LEFT, padx=(25, 5), pady=20)
         self.entryPetName = Entry(self.search, textvariable=petName)
         self.entryPetName.pack(side=LEFT, padx=(0, 5), pady=20)
-        self.labelPetType = Label(self.search, text='Tipo de animal:')
+        self.labelPetType = Label(self.search, text='Tipo:')
         self.labelPetType.pack(side=LEFT, padx=(10, 5), pady=20)
-        self.boxPetType = Combobox(self.search, textvariable=petType, state="readonly", values=[''] + typeOfAnimal)
+        self.boxPetType = Combobox(self.search, textvariable=petType, state="readonly",
+                                   values=[''] + typeOfAnimal, width=9)
         self.boxPetType.pack(side=LEFT, padx=(0, 5), pady=20)
-        self.labelClientName = Label(self.search, text='Nome do cliente:')
+        self.labelPetBreed = Label(self.search, text='Raça:')
+        self.labelPetBreed.pack(side=LEFT, padx=(10, 5), pady=20)
+        self.entryPetBreed = Entry(self.search, textvariable=petBreed)
+        self.entryPetBreed.pack(side=LEFT, padx=(0, 5), pady=20)
+        self.labelClientName = Label(self.search, text='Cliente:')
         self.labelClientName.pack(side=LEFT, padx=(10, 5), pady=20)
         self.entryClientName = Entry(self.search, textvariable=clientName)
         self.entryClientName.pack(side=LEFT, padx=(0, 5), pady=20)
@@ -84,7 +90,7 @@ class Appointments(Frame):
         self.button.pack(side=RIGHT, padx=(10, 25), pady=20)
 
         # Columns names that are going to be inserted inside the tree
-        columns = ('', 'Nome do animal', 'Tipo de animal', 'Nome do cliente', 'Telemóvel', 'Dia', 'Hora')
+        columns = ('', 'Nome do animal', 'Tipo de animal', 'Raça', 'Nome do cliente', 'Telemóvel', 'Dia', 'Hora')
 
         # Creates tree that will display all the links
         self.tree = Treeview(self.display, columns=columns, height=900, show='headings')
@@ -93,12 +99,13 @@ class Appointments(Frame):
         # Formats columns
         self.tree.column("#0", stretch=NO, anchor='center', width=0)
         self.tree.column(0, stretch=NO, anchor='center', width=0)
-        self.tree.column(1, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/6 - 14))
-        self.tree.column(2, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/6 - 14))
-        self.tree.column(3, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/6 - 14))
-        self.tree.column(4, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/6 - 14))
-        self.tree.column(5, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/6 - 14))
-        self.tree.column(6, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/6 - 14))
+        self.tree.column(1, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 10))
+        self.tree.column(2, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 10))
+        self.tree.column(3, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 10))
+        self.tree.column(4, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 10))
+        self.tree.column(5, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 10))
+        self.tree.column(6, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 10))
+        self.tree.column(7, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 10))
 
         # Define columns heading and sets their sorting function
         for col in columns:
@@ -164,7 +171,8 @@ class Appointments(Frame):
         Description:
         > Gets values inside each entry box and creates a list with those values.
         """
-        return [self.entryPetName.get(), self.boxPetType.get(), self.entryClientName.get(), self.entryClientPhone.get()]
+        return [self.entryPetName.get(), self.boxPetType.get(), self.entryPetBreed.get(),
+                self.entryClientName.get(), self.entryClientPhone.get()]
 
     def updateTree(self):
         """
@@ -173,15 +181,15 @@ class Appointments(Frame):
         """
 
         # Gets information in entries
-        [petName, petType, clientName, clientPhone] = self.getsEntries()
+        [petName, petType, petBreed, clientName, clientPhone] = self.getsEntries()
 
         # If no information was typed, just refresh page
-        if petName == '' and petType == '' and clientName == '' and clientPhone == '':
+        if petName == '' and petType == '' and petBreed == '' and clientName == '' and clientPhone == '':
             self.refreshTree()
         else:
 
             # Gets rows that are going to be displayed
-            rows = getsRequestedAppointments([petName, petType, clientName, clientPhone])
+            rows = getsRequestedAppointments([petName, petType, petBreed, clientName, clientPhone])
 
             # Displays our queried rows
             self.displayTreeRows(rows)

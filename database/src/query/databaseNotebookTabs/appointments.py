@@ -35,6 +35,7 @@ def getsAllAppointments():
                       appointments.ROWID,
                       animals.name, 
                       animals.type,
+                      animals.breed,
                       clients.name,
                       clients.phone,
                       appointments.date,
@@ -56,9 +57,9 @@ def getsAllAppointments():
 
         # Converts our date to a string
         if type(info) is list and info != []:
-            info = list(map(lambda app: transformsIntegerAppointmentDateToString(app, 5), info))
+            info = list(map(lambda app: transformsIntegerAppointmentDateToString(app, 6), info))
         elif type(info) is tuple:
-            info = transformsIntegerAppointmentDateToString(info, 5)
+            info = transformsIntegerAppointmentDateToString(info, 6)
 
         return info
 
@@ -86,7 +87,7 @@ def getsRequestedAppointments(queryInfo):
         """Checks the type of query that we need to make and gets it."""
 
         # Extracts components
-        [petName, petType, clientName, clientPhone] = queryInfo
+        [petName, petType, petBreed, clientName, clientPhone] = queryInfo
 
         # Holds our query search arguments. Has a space to separate from previous 'and'
         search = " "
@@ -96,6 +97,8 @@ def getsRequestedAppointments(queryInfo):
             search += f"animals.name like '%{petName}%' and "
         if petType != '':
             search += f"animals.type like '%{petType}%' and "
+        if petBreed != '':
+            search += f"animals.breed like '%{petBreed}%' and "
         if clientName != '':
             search += f"clients.name like '%{clientName}%' and "
         if clientPhone != '':
@@ -116,6 +119,7 @@ def getsRequestedAppointments(queryInfo):
                       appointments.ROWID,
                       animals.name, 
                       animals.type,
+                      animals.breed,
                       clients.name,
                       clients.phone,
                       appointments.date,
@@ -138,9 +142,9 @@ def getsRequestedAppointments(queryInfo):
 
         # Converts our date to a string
         if type(info) is list and info != []:
-            info = list(map(lambda app: transformsIntegerAppointmentDateToString(app, 5), info))
+            info = list(map(lambda app: transformsIntegerAppointmentDateToString(app, 6), info))
         elif type(info) is tuple:
-            info = transformsIntegerAppointmentDateToString(info, 5)
+            info = transformsIntegerAppointmentDateToString(info, 6)
 
         return info
 
