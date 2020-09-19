@@ -24,7 +24,7 @@ class WindowDeleteAppointment(Toplevel):
         # Creates toplevel window that will be displayed. Sets size and blocks resize
         Toplevel.__init__(self, master)
         self.title('Remover marcação')
-        self.geometry("1000x500")
+        self.geometry("1250x600")
         self.resizable(False, False)
         self.transient(master)
 
@@ -50,6 +50,7 @@ class WindowDeleteAppointment(Toplevel):
         # Allocates memory for the entry values
         petName = StringVar()
         petType = StringVar()
+        petBreed = StringVar()
         clientName = StringVar()
         clientPhone = StringVar()
 
@@ -63,6 +64,10 @@ class WindowDeleteAppointment(Toplevel):
         self.boxPetType = Combobox(self.search, textvariable=petType,
                                    state="readonly", values=[''] + typeOfAnimal, width=11)
         self.boxPetType.pack(side=LEFT, padx=(0, 15), pady=10)
+        self.labelPetBreed = Label(self.search, text='Raça:')
+        self.labelPetBreed.pack(side=LEFT, padx=(10, 5), pady=10)
+        self.entryPetBreed = Entry(self.search, textvariable=petBreed, width=16)
+        self.entryPetBreed.pack(side=LEFT, padx=(0, 15), pady=10)
         self.labelClientName = Label(self.search, text='Cliente:')
         self.labelClientName.pack(side=LEFT, padx=(10, 5), pady=10)
         self.entryClientName = Entry(self.search, textvariable=clientName, width=16)
@@ -77,21 +82,22 @@ class WindowDeleteAppointment(Toplevel):
         self.button.pack(side=LEFT, padx=(25, 50), pady=10)
 
         # Columns names that are going to be inserted inside the tree
-        columns = ('', 'Nome do animal', 'Tipo de animal', 'Nome do cliente', 'Telemóvel', 'Dia', 'Hora')
+        columns = ('', 'Nome do animal', 'Tipo de animal', 'Raça', 'Nome do cliente', 'Telemóvel', 'Dia', 'Hora')
 
         # Creates tree that will display all the links
-        self.tree = Treeview(self.display, columns=columns, height=13, show='headings')
+        self.tree = Treeview(self.display, columns=columns, height=18, show='headings')
         self.tree.pack(side=LEFT, padx=10, pady=10)
 
         # Formats columns
         self.tree.column("#0", stretch=NO, anchor='center', width=0)
         self.tree.column(0, stretch=NO, anchor='center', width=0)
-        self.tree.column(1, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/6 - 71))
-        self.tree.column(2, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/6 - 71))
-        self.tree.column(3, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/6 - 71))
-        self.tree.column(4, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/6 - 71))
-        self.tree.column(5, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/6 - 71))
-        self.tree.column(6, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/6 - 71))
+        self.tree.column(1, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 25))
+        self.tree.column(2, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 25))
+        self.tree.column(3, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 25))
+        self.tree.column(4, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 25))
+        self.tree.column(5, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 25))
+        self.tree.column(6, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 25))
+        self.tree.column(7, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 25))
 
         # Define columns heading and sets their sorting function
         for col in columns:
@@ -196,7 +202,8 @@ class WindowDeleteAppointment(Toplevel):
         Description:
         > Gets values inside each entry box and creates a list with those values.
         """
-        return [self.entryPetName.get(), self.boxPetType.get(), self.entryClientName.get(), self.entryClientPhone.get()]
+        return [self.entryPetName.get(), self.boxPetType.get(), self.entryPetBreed.get(),
+                self.entryClientName.get(), self.entryClientPhone.get()]
 
     def updateTree(self):
         """
@@ -205,15 +212,15 @@ class WindowDeleteAppointment(Toplevel):
         """
 
         # Gets information in entries
-        [petName, petType, clientName, clientPhone] = self.getsEntries()
+        [petName, petType, petBreed, clientName, clientPhone] = self.getsEntries()
 
         # If no information was typed, just refresh page
-        if petName == '' and petType == '' and clientName == '' and clientPhone == '':
+        if petName == '' and petType == '' and clientName == '' and clientPhone == '' and petBreed == '':
             self.refreshTree()
         else:
 
             # Gets rows that are going to be displayed
-            rows = getsRequestedAppointments([petName, petType, clientName, clientPhone])
+            rows = getsRequestedAppointments([petName, petType, petBreed, clientName, clientPhone])
 
             # Displays our queried rows
             self.displayTreeRows(rows)
