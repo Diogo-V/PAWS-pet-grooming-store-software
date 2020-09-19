@@ -46,8 +46,8 @@ class Links(Frame):
         # Creates buttons to insert, delete and update our entries inside the database
         self.insert = Button(self.database, text='Inserir ', command=lambda: WindowInsertLink(self))
         self.delete = Button(self.database, text='Apagar', command=lambda: WindowDeleteLink(self))
-        self.insert.pack(side=LEFT, padx=(310, 250), pady=20)
-        self.delete.pack(side=LEFT, padx=(125, 125), pady=20)
+        self.insert.pack(side=LEFT, padx=(345, 250), pady=20)
+        self.delete.pack(side=LEFT, padx=(208, 125), pady=20)
 
         # Allocates memory for the entry values
         petName = StringVar(self.search)

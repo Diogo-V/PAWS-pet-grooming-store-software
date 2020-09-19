@@ -50,10 +50,10 @@ class Appointments(Frame):
         self.insert = Button(self.database, text='Inserir', command=lambda: WindowInsertAppointment(self))
         self.delete = Button(self.database, text='Apagar', command=lambda: WindowDeleteAppointment(self))
         self.change = Button(self.database, text='Alterar')
-        self.firstTimer.pack(side=LEFT, padx=(50, 0), pady=20)
-        self.insert.pack(side=LEFT, padx=(150, 0), pady=20)
-        self.delete.pack(side=LEFT, padx=(115, 0), pady=20)
-        self.change.pack(side=LEFT, padx=(125, 125), pady=20)
+        self.firstTimer.pack(side=LEFT, padx=(200, 0), pady=20)
+        self.insert.pack(side=LEFT, padx=(180, 0), pady=20)
+        self.delete.pack(side=LEFT, padx=(185, 0), pady=20)
+        self.change.pack(side=LEFT, padx=(205, 125), pady=20)
 
         # Allocates memory for the entry values
         petName = StringVar(self.search)

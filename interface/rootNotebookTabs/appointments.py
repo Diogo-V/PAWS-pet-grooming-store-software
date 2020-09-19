@@ -78,7 +78,7 @@ class DayAppointments(Frame):
         self.labelYear = Label(self.search, text='Ano:')
         self.labelYear.pack(side=LEFT, padx=(10, 5), pady=20)
         self.entryYear = Entry(self.search, textvariable=year)
-        self.entryYear.pack(side=LEFT, padx=(0, 15), pady=20)
+        self.entryYear.pack(side=LEFT, padx=(0, 100), pady=20)
 
         # Creates refresh button and puts it on the screen
         self.refresh = Button(self.search, text='Hoje', command=lambda: self.refreshTree(self))

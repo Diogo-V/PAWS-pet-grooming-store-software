@@ -48,10 +48,10 @@ class Clients(Frame):
         self.insert = Button(self.database, text='Inserir novo cliente', command=lambda: WindowInsertClient(self))
         self.delete = Button(self.database, text='Apagar cliente', command=lambda: WindowDeleteClient(self))
         self.change = Button(self.database, text='Alterar entrada')
-        self.mix.pack(side=LEFT, padx=(50, 0), pady=20)
-        self.insert.pack(side=LEFT, padx=(200, 0), pady=20)
-        self.delete.pack(side=LEFT, padx=(115, 0), pady=20)
-        self.change.pack(side=LEFT, padx=(125, 125), pady=20)
+        self.mix.pack(side=LEFT, padx=(160, 0), pady=20)
+        self.insert.pack(side=LEFT, padx=(125, 0), pady=20)
+        self.delete.pack(side=LEFT, padx=(150, 0), pady=20)
+        self.change.pack(side=LEFT, padx=(175, 125), pady=20)
 
         # Allocates memory for the entry values
         clientName = StringVar(self.search)

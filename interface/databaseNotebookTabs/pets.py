@@ -49,10 +49,10 @@ class Pets(Frame):
         self.insert = Button(self.database, text='Inserir novo animal', command=lambda: WindowInsertPet(self))
         self.delete = Button(self.database, text='Apagar animal', command=lambda: WindowDeletePet(self))
         self.change = Button(self.database, text='Alterar entrada')
-        self.mix.pack(side=LEFT, padx=(50, 0), pady=20)
-        self.insert.pack(side=LEFT, padx=(200, 0), pady=20)
-        self.delete.pack(side=LEFT, padx=(115, 0), pady=20)
-        self.change.pack(side=LEFT, padx=(125, 125), pady=20)
+        self.mix.pack(side=LEFT, padx=(160, 0), pady=20)
+        self.insert.pack(side=LEFT, padx=(125, 0), pady=20)
+        self.delete.pack(side=LEFT, padx=(150, 0), pady=20)
+        self.change.pack(side=LEFT, padx=(175, 125), pady=20)
 
         # Allocates memory for the entry values
         petName = StringVar(self.search)
