@@ -36,10 +36,10 @@ class WindowFirstTimer(Toplevel):
         self.window.pack(fill='both', expand=True)
 
         # Creates 3 small LabelFrame for each part of the description
-        self.petWindow = LabelFrame(self.window, text=' Sobre o animal ', height=500, width=311)
-        self.clientWindow = LabelFrame(self.window, text=' Sobre o cliente ', height=500, width=311)
+        self.petWindow = LabelFrame(self.window, text=' Sobre o animal ', height=500, width=276)
+        self.clientWindow = LabelFrame(self.window, text=' Sobre o cliente ', height=500, width=276)
         self.appointmentWindow = LabelFrame(self.window, text=' Sobre a marcação ', height=250, width=625)
-        self.dayAppWindow = LabelFrame(self.window, text=' Marcações para o dia selecionado ', height=325, width=625)
+        self.dayAppWindow = LabelFrame(self.window, text=' Marcações para o dia selecionado ', height=325, width=699)
 
         # Puts everything on the screen
         self.petWindow.grid(column=1, row=0, rowspan=5)
@@ -71,33 +71,40 @@ class WindowFirstTimer(Toplevel):
 
         # Creates labels to describe each entry field of the to be inserted pet
         labelPetName = Label(self.petWindow, text="Nome:")
-        labelPetName.grid(row=0, column=0, padx=(5, 0), pady=30, sticky=W)
+        labelPetName.grid(row=0, column=0, padx=(5, 0), pady=20, sticky=W)
         labelPetType = Label(self.petWindow, text="Tipo:")
-        labelPetType.grid(row=2, column=0, padx=(5, 0), pady=30, sticky=W)
+        labelPetType.grid(row=2, column=0, padx=(5, 0), pady=20, sticky=W)
+        labelPetType = Label(self.petWindow, text="Raça:")
+        labelPetType.grid(row=4, column=0, padx=(5, 0), pady=20, sticky=W)
         labelPetObservations = Label(self.petWindow, text="Observações:")
-        labelPetObservations.grid(row=4, column=0, padx=5, pady=30, sticky=W)
+        labelPetObservations.grid(row=6, column=0, padx=5, pady=20, sticky=W)
 
         # Creates needed pet variables
         petName = StringVar()
         petType = StringVar()
+        petBreed = StringVar()
 
         # Creates entries for pets
-        self.entryPetName = Entry(self.petWindow, textvariable=petName)
+        self.entryPetName = Entry(self.petWindow, textvariable=petName, width=18)
         self.entryPetName.grid(column=1, row=0, padx=(0, 5), pady=10, sticky=W)
-        self.entryPetType = Combobox(self.petWindow, textvariable=petType, state="readonly", values=typeOfAnimal)
+        self.entryPetType = Combobox(self.petWindow, textvariable=petType, state="readonly",
+                                     values=typeOfAnimal, width=18)
         self.entryPetType.grid(column=1, row=2, padx=(0, 5), pady=10, sticky=W)
-        self.entryPetObs = Text(self.petWindow, width=36, height=13)
-        self.entryPetObs.grid(column=0, row=5, padx=5, pady=0, sticky=W, columnspan=2)
+        self.entryPetBreed = Entry(self.petWindow, textvariable=petBreed, width=18)
+        self.entryPetBreed.grid(column=1, row=4, padx=(0, 5), pady=10, sticky=W)
+        self.entryPetObs = Text(self.petWindow, width=32, height=13)
+        self.entryPetObs.grid(column=0, row=7, padx=5, pady=0, sticky=W, columnspan=4)
 
         # Creates separators to better organize our pets frame
-        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=1, sticky=(W, E), columnspan=2)
-        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=3, sticky=(W, E), columnspan=2)
+        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=1, sticky=(W, E), columnspan=4)
+        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=3, sticky=(W, E), columnspan=4)
+        Separator(self.petWindow, orient=HORIZONTAL).grid(column=0, row=5, sticky=(W, E), columnspan=4)
 
         # Creates labels to describe each entry field of the to be inserted client
         labelClientName = Label(self.clientWindow, text="Nome:")
-        labelClientName.grid(row=0, column=0, padx=(5, 0), pady=30, sticky=W)
+        labelClientName.grid(row=0, column=0, padx=(5, 0), pady=20, sticky=W)
         labelClientPhone = Label(self.clientWindow, text="Telemóvel:")
-        labelClientPhone.grid(row=2, column=0, padx=(5, 0), pady=30, sticky=W)
+        labelClientPhone.grid(row=2, column=0, padx=(5, 0), pady=20, sticky=W)
 
         # Creates needed client variables
         clientName = StringVar()
@@ -116,18 +123,20 @@ class WindowFirstTimer(Toplevel):
         Separator(self.clientWindow, orient=HORIZONTAL).grid(column=0, row=3, sticky=(W, E), columnspan=2)
 
         # Creates 2 separate frames inside our appointments frames. Used to organize our UI
-        self.appInputs = Frame(self.appointmentWindow, height=250, width=313, borderwidth=2, relief=RIDGE)
-        self.appServices = Frame(self.appointmentWindow, height=297, width=313, borderwidth=2, relief=RIDGE)
+        self.appInputs = Frame(self.appointmentWindow, height=250, width=350, borderwidth=2, relief=RIDGE)
+        self.appServices = Frame(self.appointmentWindow, height=297, width=350, borderwidth=2, relief=RIDGE)
         self.appInputs.pack(side=LEFT, fill='both', expand=True, pady=(0, 8), padx=(8, 0))
         self.appServices.pack(side=LEFT, fill='both', expand=True, pady=(0, 8), padx=(0, 8))
 
         # Creates labels to describe each of the entries
         self.labelDate = Label(self.appInputs, text='Data:')
-        self.labelDate.grid(row=0, column=0, padx=5, pady=30, sticky=W)
+        self.labelDate.grid(row=0, column=0, padx=5, pady=10, sticky=W)
         self.labelTime = Label(self.appInputs, text='Hora:')
-        self.labelTime.grid(row=2, column=0, padx=5, pady=30, sticky=W)
+        self.labelTime.grid(row=2, column=0, padx=5, pady=10, sticky=W)
         self.labelPrice = Label(self.appInputs, text='Preço:')
-        self.labelPrice.grid(row=4, column=0, padx=5, pady=30, sticky=W)
+        self.labelPrice.grid(row=4, column=0, padx=5, pady=10, sticky=W)
+        self.labelObservations = Label(self.appInputs, text='Observações:')
+        self.labelObservations.grid(row=6, column=0, padx=5, pady=10, sticky=W)
         self.labelServices = Label(self.appServices, text='Serviços:')
         self.labelServices.grid(row=0, column=0, padx=(23, 5), pady=(30, 10), sticky=W)
 
@@ -158,14 +167,16 @@ class WindowFirstTimer(Toplevel):
         self.entryPrice = Entry(self.appInputs, textvariable=appPrice, validate="focusout",
                                 validatecommand=validateNumber, invalidcommand=self.entryError, width=10)
         self.entryPrice.grid(row=4, column=1, padx=5, pady=10, columnspan=2)
+        self.entryObservations = Text(self.appInputs, height=3, width=49)
+        self.entryObservations.grid(row=7, column=0, sticky=W, columnspan=5, padx=5, pady=(0, 10))
 
         # Creates a button that will update all the appointments displayed inside our treeApp
         self.appButton = Button(self.appInputs, text='Ir', width=5, command=self.updateAppTree)
-        self.appButton.grid(row=0, column=4, pady=10, padx=5)
+        self.appButton.grid(row=0, column=4, pady=10, padx=(5, 0))
 
         # Creates a frame to insert our services. Mainly used to organize the UI
         self.services = Frame(self.appServices)
-        self.services.grid(row=1, column=0, columnspan=4, padx=(5, 28), sticky=W)
+        self.services.grid(row=1, column=0, columnspan=4, padx=(5, 17), sticky=W)
 
         # Separates entries for the date
         Label(self.appInputs, text='/').grid(column=1, row=0, padx=(57, 0))
@@ -207,6 +218,7 @@ class WindowFirstTimer(Toplevel):
         # Creates separators to organize our UI
         Separator(self.appInputs, orient=HORIZONTAL).grid(column=0, row=1, sticky=(W, E), columnspan=5)
         Separator(self.appInputs, orient=HORIZONTAL).grid(column=0, row=3, sticky=(W, E), columnspan=5)
+        Separator(self.appInputs, orient=HORIZONTAL).grid(column=0, row=5, sticky=(W, E), columnspan=5)
 
         # Columns names that are going to be inserted inside the tree
         columnsApp = ('', 'Hora', 'Serviços', 'Nome do animal')
@@ -218,9 +230,9 @@ class WindowFirstTimer(Toplevel):
         # Formats columns
         self.treeApp.column("#0", stretch=NO, anchor='center', width=0)
         self.treeApp.column(0, stretch=NO, anchor='center', width=0)
-        self.treeApp.column(1, stretch=NO, anchor='center', width=193)
-        self.treeApp.column(2, stretch=NO, anchor='center', width=193)
-        self.treeApp.column(3, stretch=NO, anchor='center', width=193)
+        self.treeApp.column(1, stretch=NO, anchor='center', width=218)
+        self.treeApp.column(2, stretch=NO, anchor='center', width=218)
+        self.treeApp.column(3, stretch=NO, anchor='center', width=218)
 
         # Define columns heading and sets their sorting function
         for col in columnsApp:
@@ -272,9 +284,9 @@ class WindowFirstTimer(Toplevel):
         if pet != [] and client != [] and appointment != []:
 
             # Gets values inside each array
-            [petName, petType, petObs] = pet
+            [petName, petType, petBreed, petObs] = pet
             [clientName, clientPhone] = client
-            [appServices, appDate, appTime, appPrice] = appointment
+            [appServices, appDate, appTime, appPrice, appObs] = appointment
 
             # Creates a client in our database and gets his rowid
             clientID = insertRecordClient((clientName, '', clientPhone, '', ''))
@@ -283,7 +295,7 @@ class WindowFirstTimer(Toplevel):
             if clientID is not None:
 
                 # Creates a pet in our database and gets it's rowid
-                petID = insertRecordAnimal((petName, petType, 0, '', '', petObs))
+                petID = insertRecordAnimal((petName, petType, petBreed, '', 0, '', '', 0, petObs))
 
                 # Validates previous step. Is mainly done just to avoid errors
                 if petID is not None:
@@ -292,7 +304,7 @@ class WindowFirstTimer(Toplevel):
                     insertRecordPetClientLink((petID, clientID))
 
                     # Creates an appointment
-                    insertRecordAppointment((appServices, appDate, appTime, appPrice, petID))
+                    insertRecordAppointment((appServices, appDate, appTime, appPrice, appObs, petID))
 
                     # Refreshes main tree
                     interface.databaseNotebookTabs.appointments.Appointments.refreshTree(self.master)
@@ -346,11 +358,12 @@ class WindowFirstTimer(Toplevel):
         # Gets values inside each entry
         petName = self.entryPetName.get()
         petType = self.entryPetType.get()
+        petBreed = self.entryPetBreed.get()
         petObs = self.entryPetObs.get('1.0', 'end')
 
         # Checks if required entries were inserted. If an error occurred, returns an empty string
         if petName != '' and petType != '':
-            return [petName, petType, petObs]
+            return [petName, petType, petBreed, petObs]
         else:
             messagebox.showerror("Erro", "As entradas do animal não foram inseridas!", parent=self.window)
             return []
@@ -385,9 +398,10 @@ class WindowFirstTimer(Toplevel):
         appPrice = self.getsPrice()
         appTime = self.getsTime()
         appDate = self.getsDate()
+        appObs = self.entryObservations.get('1.0', 'end')
 
         if appDate != '' and appTime != '' and appServices != '':
-            return [appServices, appDate, appTime, appPrice]
+            return [appServices, appDate, appTime, appPrice, appObs]
         else:
             messagebox.showerror('Erro', 'Insira as entradas necessários na aba das marcações!', parent=self.window)
             return []
