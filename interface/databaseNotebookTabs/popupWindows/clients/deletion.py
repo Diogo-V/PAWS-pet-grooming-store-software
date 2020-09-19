@@ -23,7 +23,7 @@ class WindowDeleteClient(Toplevel):
         # Creates toplevel window that will be displayed. Sets size and blocks resize
         Toplevel.__init__(self, master)
         self.title('Apagar cliente')
-        self.geometry("1000x500")
+        self.geometry("1250x600")
         self.resizable(False, False)
         self.transient(master)
 
@@ -32,8 +32,8 @@ class WindowDeleteClient(Toplevel):
         self.window.pack(fill='both', expand=True)
 
         # Creates a search frame and a display frame and puts them on the screen
-        self.search = LabelFrame(self.window, text=' Pesquisar ', width=1000, height=100)
-        self.display = LabelFrame(self.window, text=' Clientes ', width=1000, height=300)
+        self.search = LabelFrame(self.window, text=' Pesquisar ', width=1250, height=100)
+        self.display = LabelFrame(self.window, text=' Clientes ', width=1250, height=400)
         self.search.pack(padx=10, pady=10, fill="both", expand=True)
         self.display.pack(padx=10, pady=(0, 10), fill="both", expand=True)
 
@@ -50,9 +50,10 @@ class WindowDeleteClient(Toplevel):
         clientName = StringVar()
         clientPhone = StringVar()
         petName = StringVar()
+        petBreed = StringVar()
 
         # Creates labels and entry fields and puts them on the screen
-        self.labelClientName = Label(self.search, text='Nome:')
+        self.labelClientName = Label(self.search, text='Cliente:')
         self.labelClientName.pack(side=LEFT, padx=(25, 5), pady=10)
         self.entryClientName = Entry(self.search, textvariable=clientName)
         self.entryClientName.pack(side=LEFT, padx=(0, 5), pady=10)
@@ -64,25 +65,30 @@ class WindowDeleteClient(Toplevel):
         self.labelPetName.pack(side=LEFT, padx=(10, 5), pady=10)
         self.entryPetName = Entry(self.search, textvariable=petName)
         self.entryPetName.pack(side=LEFT, padx=(0, 15), pady=10)
+        self.labelPetBreed = Label(self.search, text='Raça:')
+        self.labelPetBreed.pack(side=LEFT, padx=(10, 5), pady=10)
+        self.entryPetBreed = Entry(self.search, textvariable=petBreed)
+        self.entryPetBreed.pack(side=LEFT, padx=(0, 15), pady=10)
 
         # Creates search button and puts it on the screen
         self.button = Button(self.search, text='Procurar', command=self.updateTree)
-        self.button.pack(side=LEFT, padx=(100, 50), pady=10)
+        self.button.pack(side=LEFT, padx=(90, 50), pady=10)
 
         # Columns names that are going to be inserted inside the tree
-        columns = ('', 'Nome do cliente', 'Telemóvel', 'Nome do animal', 'Tipo de animal')
+        columns = ('', 'Nome do cliente', 'Telemóvel', 'Nome do animal', 'Tipo de animal', 'Raça')
 
         # Creates tree that will display all the links
-        self.tree = Treeview(self.display, columns=columns, height=13, show='headings')
+        self.tree = Treeview(self.display, columns=columns, height=18, show='headings')
         self.tree.pack(side=LEFT, padx=10, pady=10)
 
         # Formats columns
         self.tree.column("#0", stretch=NO, anchor='center', width=0)
         self.tree.column(0, stretch=NO, anchor='center', width=0)
-        self.tree.column(1, stretch=NO, anchor='center', width=235)
-        self.tree.column(2, stretch=NO, anchor='center', width=235)
-        self.tree.column(3, stretch=NO, anchor='center', width=235)
-        self.tree.column(4, stretch=NO, anchor='center', width=235)
+        self.tree.column(1, stretch=NO, anchor='center', width=238)
+        self.tree.column(2, stretch=NO, anchor='center', width=238)
+        self.tree.column(3, stretch=NO, anchor='center', width=238)
+        self.tree.column(4, stretch=NO, anchor='center', width=238)
+        self.tree.column(5, stretch=NO, anchor='center', width=238)
 
         # Define columns heading and sets their sorting function
         for col in columns:
@@ -167,7 +173,8 @@ class WindowDeleteClient(Toplevel):
         Description:
         > Gets values inside each entry box and creates a list with those values.
         """
-        return [self.entryClientName.get(), self.entryClientPhone.get(), self.entryPetName.get()]
+        return [self.entryClientName.get(), self.entryClientPhone.get(),
+                self.entryPetName.get(), self.entryPetBreed.get()]
 
     def updateTree(self):
         """
@@ -176,15 +183,15 @@ class WindowDeleteClient(Toplevel):
         """
 
         # Gets information in entries
-        [clientName, clientPhone, petName] = self.getsEntries()
+        [clientName, clientPhone, petName, petBreed] = self.getsEntries()
 
         # If no information was typed, just refresh page
-        if clientName == '' and clientPhone == '' and petName == '':
+        if clientName == '' and clientPhone == '' and petName == '' and petBreed == '':
             self.refreshTree()
         else:
 
             # Gets rows that are going to be displayed
-            rows = getsRequestedClients([clientName, clientPhone, petName])
+            rows = getsRequestedClients([clientName, clientPhone, petName, petBreed])
 
             # Displays our queried rows
             self.displayTreeRows(rows)
