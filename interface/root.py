@@ -1,3 +1,4 @@
+from database.src.utils.maintenance import clearsElementsWithNoLinks
 from interface.rootNotebookTabs.appointments import *
 from interface.rootNotebookTabs.database import *
 from interface.rootNotebookTabs.statistics import *
@@ -46,6 +47,7 @@ class MainApplication:
         self.root.mainloop()
 
     def refreshApplication(self):
-        """Refreshes all the trees inside all tabs of our application."""
+        """Refreshes all the trees inside all tabs of our application. Also clears all free entries."""
         self.databaseFrame.refreshAllTabs()
         self.appointmentsFrame.updateTreeDate()
+        clearsElementsWithNoLinks()
