@@ -3,7 +3,6 @@ from operator import itemgetter
 from database.src.functions.deletion import deleteRecordAnimal, deletePetsLinks, deletePetsClients
 from database.src.query.databaseNotebookTabs.pets import getsAllPets, getsRequestedPets
 from database.src.utils.constants import typeOfAnimal
-from interface.databaseNotebookTabs import pets
 from interface.databaseNotebookTabs.popupWindows.pets.information import WindowPet
 from interface.rootNotebookTabs.popupWindows.appointments.information import *
 
@@ -13,12 +12,13 @@ class WindowDeletePet(Toplevel):
     Toplevel window used to search and delete pets.
     """
 
-    def __init__(self, master):
+    def __init__(self, master, root):
         """
         Description:
         > Creates our window.
 
         :param master: root window where is going to be inserted -> notebook
+        :param root: Main application frame window -> Frame
         """
 
         # Creates toplevel window that will be displayed. Sets size and blocks resize
@@ -32,6 +32,9 @@ class WindowDeletePet(Toplevel):
         # Creates tab main window and puts it on the screen
         self.window = Frame(self, height=600, width=1250)
         self.window.pack(fill='both', expand=True)
+
+        # Creates a root variable so that we can access the main application window
+        self.root = root
 
         # Creates a search frame and a display frame and puts them on the screen
         self.search = LabelFrame(self.window, text=' Pesquisar ', width=1250, height=100)
@@ -165,8 +168,8 @@ class WindowDeletePet(Toplevel):
             # Removes associated links
             deletePetsLinks(petId)
 
-            # Refreshes main tree
-            pets.Pets.refreshTree(self.master)
+            # Refreshes all trees of our application
+            self.root.refreshApplication()
 
             # Eliminates window
             self.destroy()

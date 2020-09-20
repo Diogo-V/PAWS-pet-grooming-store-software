@@ -7,7 +7,6 @@ from database.src.functions.deletion import deleteRecordPetClientLink, deleteRec
 from database.src.query.databaseNotebookTabs.links import *
 from database.src.utils.constants import typeOfAnimal
 from database.src.utils.maintenance import clearsElementsWithNoLinks
-from interface.databaseNotebookTabs import links
 from interface.databaseNotebookTabs.popupWindows.clients.information import WindowClient
 from interface.databaseNotebookTabs.popupWindows.pets.information import WindowPet
 
@@ -17,12 +16,13 @@ class WindowDeleteLink(Toplevel):
     Toplevel window used to delete a relationship between an animal and an owner.
     """
 
-    def __init__(self, master):
+    def __init__(self, master, root):
         """
         Description:
         > Creates our window.
 
         :param master: Frame window where is going to be inserted -> Frame
+        :param root: Main application frame window -> Frame
         """
 
         # Creates toplevel window that will be displayed. Sets size and blocks resize
@@ -33,7 +33,8 @@ class WindowDeleteLink(Toplevel):
         self.resizable(False, False)
         self.transient(master)
 
-        # Creates instance variable so that it can be used later on
+        # Creates a root variable so that we can access the main application window
+        self.root = root
         self.master = master
 
         # Creates frame (used to put widgets in it) for our toplevel window and puts it on the screen
@@ -368,8 +369,8 @@ class WindowDeleteLink(Toplevel):
                 # Clears elements that might have been become free of any links
                 clearsElementsWithNoLinks()
 
-                # Refreshes main tree
-                links.Links.refreshTree(self.master)
+                # Refreshes all trees of our application
+                self.root.refreshApplication()
 
                 # Destroys current window
                 self.destroy()

@@ -13,12 +13,13 @@ class Database(Frame):
     Frame that holds buttons and options to access, modify and update each entry of our database.
     """
 
-    def __init__(self, master, **kwargs):
+    def __init__(self, master, root, **kwargs):
         """
         Description:
         > Creates our window.
 
         :param master: root window where is going to be inserted -> Tk
+        :param root: Main application frame window -> Frame
         """
 
         # Creates database tab for the notebook
@@ -34,10 +35,10 @@ class Database(Frame):
         self.notebook.pack(fill='both', expand=True)
 
         # Creates notebook's tabs -> pets, clients, links, appointments and history
-        self.petsFrame = Pets(self.notebook)
-        self.clientsFrame = Clients(self.notebook)
-        self.linkFrame = Links(self.notebook)
-        self.appointmentsFrame = Appointments(self.notebook)
+        self.petsFrame = Pets(self.notebook, root)
+        self.clientsFrame = Clients(self.notebook, root)
+        self.linkFrame = Links(self.notebook, root)
+        self.appointmentsFrame = Appointments(self.notebook, root)
         self.historyFrame = History(self.notebook)
 
         # Adds the previously created tabs to the notebook
@@ -46,3 +47,10 @@ class Database(Frame):
         self.notebook.add(self.linkFrame, text='Relação')
         self.notebook.add(self.appointmentsFrame, text='Marcações')
         self.notebook.add(self.historyFrame, text='Histórico')
+
+    def refreshAllTabs(self):
+        """Refreshes all tree inside each tab of our database."""
+        self.petsFrame.updateTree()
+        self.clientsFrame.updateTree()
+        self.linkFrame.updateTree()
+        self.appointmentsFrame.updateTree()

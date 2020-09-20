@@ -5,7 +5,6 @@ from tkinter.ttk import *
 from database.src.functions.deletion import deleteRecordAppointment
 from database.src.functions.insertion import insertRecordHistory
 from database.src.query.rootNotebookTabs.appointments import getsInfoForAppointmentsWindow
-from interface.rootNotebookTabs import appointments
 from interface.rootNotebookTabs.popupWindows.appointments.update import WindowUpdateAppointment
 
 
@@ -14,13 +13,14 @@ class WindowAppointment(Toplevel):
     Toplevel window that holds all the information about a specific appointment.
     """
 
-    def __init__(self, master, appointmentID):
+    def __init__(self, master, appointmentID, root):
         """
         Description:
         > Creates our window.
 
         :param master: Frame window where is going to be inserted -> Frame
         :param appointmentID: appointment rowid inside the database -> integer
+        :param root: Main application frame window -> Frame
         """
 
         # Creates toplevel window that will be displayed. Sets size and blocks resize
@@ -34,7 +34,8 @@ class WindowAppointment(Toplevel):
         self.window = Frame(self, height=500, width=1000)
         self.window.pack(fill='both', expand=True)
 
-        # Creates class variable so that it can be used as a property
+        # Creates a root variable so that we can access the main application window
+        self.root = root
         self.master = master
         self.appointmentID = appointmentID
 
@@ -167,8 +168,8 @@ class WindowAppointment(Toplevel):
             # Changes database entries
             deleteRecordAppointment(self.appointmentID)
 
-            # Refresh tree because we now have a different display
-            appointments.DayAppointments.refreshTree(self.master)
+            # Refreshes all trees of our application
+            self.root.refreshApplication()
 
             # Eliminates window
             self.destroy()
@@ -186,8 +187,8 @@ class WindowAppointment(Toplevel):
             insertRecordHistory((self.appServices, self.appDate, self.appTime, self.appPrice, self.appObs, self.petID))
             deleteRecordAppointment(self.appointmentID)
 
-            # Refresh tree because we now have a different display
-            appointments.DayAppointments.refreshTree(self.master)
+            # Refreshes all trees of our application
+            self.root.refreshApplication()
 
             # Eliminates window
             self.destroy()
@@ -197,4 +198,4 @@ class WindowAppointment(Toplevel):
         Description:
         > Changes previous entries to the newly provided ones from the user.
         """
-        WindowUpdateAppointment(self, self.appointmentID)
+        WindowUpdateAppointment(self, self.appointmentID, self.root)

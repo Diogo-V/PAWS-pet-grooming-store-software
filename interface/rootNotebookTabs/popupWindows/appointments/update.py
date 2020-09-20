@@ -14,13 +14,14 @@ class WindowUpdateAppointment(Toplevel):
     Toplevel window that allows the refactoring of all the information about this appointment.
     """
 
-    def __init__(self, master, appointmentID):
+    def __init__(self, master, appointmentID, root):
         """
         Description:
         > Creates our window.
 
         :param master: Frame window where is going to be inserted -> Frame
         :param appointmentID: appointment rowid inside the database -> integer
+        :param root: Main application frame window -> Frame
         """
 
         # Creates toplevel window that will be displayed. Sets size and blocks resize
@@ -34,7 +35,8 @@ class WindowUpdateAppointment(Toplevel):
         self.window = Frame(self, height=500, width=1000)
         self.window.pack(fill='both', expand=True)
 
-        # Creates class variable so that it can be used as a property
+        # Creates a root variable so that we can access the main application window
+        self.root = root
         self.master = master
         self.appointmentID = appointmentID
 
@@ -322,6 +324,9 @@ class WindowUpdateAppointment(Toplevel):
                         updateRecordAnimal(pet, self.petID)
                         updateRecordClient(client, self.clientID)
                         updateRecordAppointment(appointment, self.appointmentID)
+
+                        # Refreshes all trees of our application
+                        self.root.refreshApplication()
 
                         # Destroys this window and the one behind
                         self.master.destroy()

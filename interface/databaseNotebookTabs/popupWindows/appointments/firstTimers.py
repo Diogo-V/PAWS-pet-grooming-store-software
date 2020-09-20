@@ -4,7 +4,6 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter.ttk import *
 
-import interface
 from database.src.functions.insertion import *
 from database.src.query.databaseNotebookTabs.appointments import getsAppointmentsForDayAppTree
 from database.src.utils.constants import typeOfAnimal, services
@@ -17,12 +16,13 @@ class WindowFirstTimer(Toplevel):
     Toplevel window that creates a first timer in our database. Creates a pet, client and an appointment.
     """
 
-    def __init__(self, master):
+    def __init__(self, master, root):
         """
         Description:
         > Creates our window.
 
         :param master: Frame window where is going to be inserted -> Frame
+        :param root: Main application frame window -> Frame
         """
 
         # Creates toplevel window that will be displayed. Sets size and blocks resize
@@ -35,6 +35,9 @@ class WindowFirstTimer(Toplevel):
         # Creates frame (used to put widgets in it) for our toplevel window and puts it on the screen
         self.window = Frame(self, height=600, width=1250)
         self.window.pack(fill='both', expand=True)
+
+        # Creates a root variable so that we can access the main application window
+        self.root = root
 
         # Creates 3 small LabelFrame for each part of the description
         self.petWindow = LabelFrame(self.window, text=' Sobre o animal ', height=500, width=276)
@@ -307,8 +310,8 @@ class WindowFirstTimer(Toplevel):
                     # Creates an appointment
                     insertRecordAppointment((appServices, appDate, appTime, appPrice, appObs, petID))
 
-                    # Refreshes main tree
-                    interface.databaseNotebookTabs.appointments.Appointments.refreshTree(self.master)
+                    # Refreshes all trees of our application
+                    self.root.refreshApplication()
 
                     # Eliminates window
                     self.destroy()

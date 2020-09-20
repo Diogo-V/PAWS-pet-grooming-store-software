@@ -10,12 +10,13 @@ class DayAppointments(Frame):
     Frame that holds appointments for the day.
     """
 
-    def __init__(self, master, **kwargs):
+    def __init__(self, master, root, **kwargs):
         """
         Description:
         > Creates our window.
 
         :param master: root window where is going to be inserted -> Tk
+        :param root: Main application frame window -> Frame
         """
 
         # Creates appointments tab for the notebook
@@ -25,6 +26,9 @@ class DayAppointments(Frame):
         # Creates tab main window and puts it on the screen
         self.window = Frame(self, height=self.winfo_screenheight(), width=self.winfo_screenwidth())
         self.window.pack(fill='both', expand=True)
+
+        # Creates a root variable so that we can access the main application window
+        self.root = root
 
         # Creates a search frame and a display frame and puts them on the screen
         self.search = LabelFrame(self.window, text=' Pesquisar dia ', width=1500, height=100)
@@ -81,7 +85,7 @@ class DayAppointments(Frame):
         self.entryYear.pack(side=LEFT, padx=(0, 100), pady=20)
 
         # Creates refresh button and puts it on the screen
-        self.refresh = Button(self.search, text='Hoje', command=lambda: self.refreshTree(self))
+        self.refresh = Button(self.search, text='Hoje', command=lambda: self.refreshTree)
         self.refresh.pack(side=LEFT, padx=(250, 10), pady=20)
 
         # Creates search button and puts it on the screen
@@ -169,7 +173,7 @@ class DayAppointments(Frame):
             appointmentID = info[0]
 
             # Creates toplevel window that will display the information about this appointment
-            WindowAppointment(self, appointmentID)
+            WindowAppointment(self, appointmentID, self.root)
 
     def displayTreeRows(self, rows):
         """
@@ -189,12 +193,11 @@ class DayAppointments(Frame):
         for row in rows:
             self.tree.insert('', 'end', values=row)
 
-    @staticmethod
-    def refreshTree(treeFrame):
+    def refreshTree(self):
         """Refreshes all the entries inside the tree. Show entries for today's date."""
 
         # Gets rows to be displayed for today
         rows = getsDayAppointments(date.today())
 
         # Puts and displays rows in tree
-        treeFrame.displayTreeRows(rows)
+        self.displayTreeRows(rows)

@@ -12,12 +12,13 @@ class WindowInsertMix(Toplevel):
     Toplevel window used to create a new pet.
     """
 
-    def __init__(self, master):
+    def __init__(self, master, root):
         """
         Description:
         > Creates our window.
 
         :param master: Frame window where is going to be inserted -> Frame
+        :param root: Main application frame window -> Frame
         """
 
         # Creates toplevel window that will be displayed. Sets size and blocks resize
@@ -31,6 +32,9 @@ class WindowInsertMix(Toplevel):
         # Creates frame (used to put widgets in it) for our toplevel window and puts it on the screen
         self.window = Frame(self, height=500, width=1000)
         self.window.pack(fill='both', expand=True)
+
+        # Creates a root variable so that we can access the main application window
+        self.root = root
 
         # Creates two labelFrames to organize our UI
         self.petWindow = LabelFrame(self.window, text=' Animal ', height=600, width=625)
@@ -191,6 +195,9 @@ class WindowInsertMix(Toplevel):
 
                     # Insert link between them
                     insertRecordPetClientLink((petID, clientID))
+
+                    # Refreshes all trees of our application
+                    self.root.refreshApplication()
 
                     # Eliminates window
                     self.destroy()

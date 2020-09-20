@@ -14,12 +14,13 @@ class Links(Frame):
     Frame that holds information about links. Also has button to update our database and a TreeView to show our entries.
     """
 
-    def __init__(self, master, **kwargs):
+    def __init__(self, master, root, **kwargs):
         """
         Description:
         > Creates our window.
 
         :param master: root window where is going to be inserted -> notebook
+        :param root: Main application frame window -> Frame
         """
 
         # Creates appointments tab for the notebook
@@ -44,8 +45,8 @@ class Links(Frame):
         self.display.grid_propagate(False)
 
         # Creates buttons to insert, delete and update our entries inside the database
-        self.insert = Button(self.database, text='Inserir ', command=lambda: WindowInsertLink(self))
-        self.delete = Button(self.database, text='Apagar', command=lambda: WindowDeleteLink(self))
+        self.insert = Button(self.database, text='Inserir ', command=lambda: WindowInsertLink(self, root))
+        self.delete = Button(self.database, text='Apagar', command=lambda: WindowDeleteLink(self, root))
         self.insert.pack(side=LEFT, padx=(345, 250), pady=20)
         self.delete.pack(side=LEFT, padx=(208, 125), pady=20)
 

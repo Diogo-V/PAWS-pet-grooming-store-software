@@ -1,11 +1,9 @@
 from operator import itemgetter
 
-import interface
 from database.src.functions.insertion import insertRecordAppointment
 from database.src.query.databaseNotebookTabs.appointments import *
 from database.src.utils.constants import *
 from database.src.utils.converters import timeToString, servicesToString
-from interface.databaseNotebookTabs.popupWindows.pets.information import WindowPet
 from interface.rootNotebookTabs.popupWindows.appointments.information import *
 
 
@@ -14,12 +12,13 @@ class WindowInsertAppointment(Toplevel):
     Toplevel window used to insert a new appointment in the database.
     """
 
-    def __init__(self, master):
+    def __init__(self, master, root):
         """
         Description:
         > Creates our window.
 
         :param master: root window where is going to be inserted -> notebook
+        :param root: Main application frame window -> Frame
         """
 
         # Creates toplevel window that will be displayed. Sets size and blocks resize
@@ -33,6 +32,9 @@ class WindowInsertAppointment(Toplevel):
         # Creates tab main window and puts it on the screen
         self.window = Frame(self, height=500, width=1000)
         self.window.pack(fill='both', expand=True)
+
+        # Creates a root variable so that we can access the main application window
+        self.root = root
 
         # Creates 3 labelFrames to organize our UI
         self.appointmentWindow = LabelFrame(self.window, text=' Sobre a marcação ', height=250, width=700)
@@ -320,8 +322,8 @@ class WindowInsertAppointment(Toplevel):
                 # Creates appointment with the provided info
                 insertRecordAppointment(info)
 
-                # Refreshes main tree
-                interface.databaseNotebookTabs.appointments.Appointments.refreshTree(self.master)
+                # Refreshes all trees of our application
+                self.root.refreshApplication()
 
                 # Eliminates window
                 self.destroy()

@@ -14,12 +14,13 @@ class Clients(Frame):
     Frame that holds information about clients. Also has buttons to update our database and a tree to show our entries.
     """
 
-    def __init__(self, master, **kwargs):
+    def __init__(self, master, root, **kwargs):
         """
         Description:
         > Creates our window.
 
         :param master: root window where is going to be inserted -> notebook
+        :param root: Main application frame window -> Frame
         """
 
         # Creates appointments tab for the notebook
@@ -44,9 +45,9 @@ class Clients(Frame):
         self.display.grid_propagate(False)
 
         # Creates buttons to insert, delete and update our entries inside the database
-        self.mix = Button(self.database, text="Inserir animal e cliente", command=lambda: WindowInsertMix(self))
-        self.insert = Button(self.database, text='Inserir novo cliente', command=lambda: WindowInsertClient(self))
-        self.delete = Button(self.database, text='Apagar cliente', command=lambda: WindowDeleteClient(self))
+        self.mix = Button(self.database, text="Inserir animal e cliente", command=lambda: WindowInsertMix(self, root))
+        self.insert = Button(self.database, text='Inserir novo cliente', command=lambda: WindowInsertClient(self, root))
+        self.delete = Button(self.database, text='Apagar cliente', command=lambda: WindowDeleteClient(self, root))
         self.change = Button(self.database, text='Alterar entrada')
         self.mix.pack(side=LEFT, padx=(160, 0), pady=20)
         self.insert.pack(side=LEFT, padx=(125, 0), pady=20)

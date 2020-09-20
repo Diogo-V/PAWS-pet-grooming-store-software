@@ -29,14 +29,14 @@ class MainApplication:
         self.notebook.pack(fill='both', expand=True)
 
         # Creates notebook's rootNotebookTabs
-        appointmentsFrame = DayAppointments(self.notebook)
-        databaseFrame = Database(self.notebook)
-        statisticsFrame = Statistics(self.notebook)
+        self.appointmentsFrame = DayAppointments(self.notebook, self)
+        self.databaseFrame = Database(self.notebook, self)
+        self.statisticsFrame = Statistics(self.notebook)
 
         # Adds our rootNotebookTabs to the notebook. The spaces fill the rest of the tab's space
-        self.notebook.add(appointmentsFrame, text='                    Marcações                    ')
-        self.notebook.add(databaseFrame, text='                    Base de dados                    ')
-        self.notebook.add(statisticsFrame, text='                    Estatísticas                    ')
+        self.notebook.add(self.appointmentsFrame, text='                    Marcações                    ')
+        self.notebook.add(self.databaseFrame, text='                    Base de dados                    ')
+        self.notebook.add(self.statisticsFrame, text='                    Estatísticas                    ')
 
         # Puts notebook on the screen
         self.notebook.pack()
@@ -44,3 +44,8 @@ class MainApplication:
     def run(self):
         """Runs our application."""
         self.root.mainloop()
+
+    def refreshApplication(self):
+        """Refreshes all the trees inside all tabs of our application."""
+        self.databaseFrame.refreshAllTabs()
+        self.appointmentsFrame.updateTreeDate()

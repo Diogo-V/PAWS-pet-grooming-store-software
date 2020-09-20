@@ -1,7 +1,6 @@
 from math import floor
 from operator import itemgetter
 
-import interface
 from database.src.query.databaseNotebookTabs.appointments import *
 from database.src.utils.constants import typeOfAnimal
 from database.src.utils.converters import stringToDate
@@ -13,12 +12,13 @@ class WindowDeleteAppointment(Toplevel):
     Toplevel window used to delete existing appointments.
     """
 
-    def __init__(self, master):
+    def __init__(self, master, root):
         """
         Description:
         > Creates our window.
 
         :param master: root window where is going to be inserted -> notebook
+        :param root: Main application frame window -> Frame
         """
 
         # Creates toplevel window that will be displayed. Sets size and blocks resize
@@ -32,6 +32,9 @@ class WindowDeleteAppointment(Toplevel):
         # Creates tab main window and puts it on the screen
         self.window = Frame(self, height=500, width=1000)
         self.window.pack(fill='both', expand=True)
+
+        # Creates a root variable so that we can access the main application window
+        self.root = root
 
         # Creates a search frame and a display frame and puts them on the screen
         self.search = LabelFrame(self.window, text=' Pesquisar ', width=1000, height=100)
@@ -188,8 +191,8 @@ class WindowDeleteAppointment(Toplevel):
                 # Removes appointment from database
                 deleteRecordAppointment(appointmentID)
 
-                # Refreshes main tree
-                interface.databaseNotebookTabs.appointments.Appointments.refreshTree(self.master)
+                # Refreshes all trees of our application
+                self.root.refreshApplication()
 
                 # Eliminates window
                 self.destroy()

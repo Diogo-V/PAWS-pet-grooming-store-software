@@ -6,7 +6,6 @@ from tkinter.ttk import *
 from database.src.functions.insertion import insertRecordAnimal, insertRecordPetClientLink
 from database.src.query.databaseNotebookTabs.links import getsRequestedClients, getsClientsForLinksWindow
 from database.src.utils.constants import *
-from interface.databaseNotebookTabs import pets
 from interface.databaseNotebookTabs.popupWindows.clients.information import WindowClient
 
 
@@ -15,12 +14,13 @@ class WindowInsertPet(Toplevel):
     Toplevel window used to create a new pet.
     """
 
-    def __init__(self, master):
+    def __init__(self, master, root):
         """
         Description:
         > Creates our window.
 
         :param master: Frame window where is going to be inserted -> Frame
+        :param root: Main application frame window -> Frame
         """
 
         # Creates toplevel window that will be displayed. Sets size and blocks resize
@@ -35,7 +35,8 @@ class WindowInsertPet(Toplevel):
         self.window = Frame(self, height=500, width=1000)
         self.window.pack(fill='both', expand=True)
 
-        # Creates variable so that it can be used as control
+        # Creates a root variable so that we can access the main application window
+        self.root = root
         self.master = master
 
         # Creates two labelFrames to organize our UI
@@ -227,8 +228,8 @@ class WindowInsertPet(Toplevel):
                     # Creates a link between the client and the pet
                     insertRecordPetClientLink((animalID, ownerId))
 
-                    # Refreshes main tree
-                    pets.Pets.refreshTree(self.master)
+                    # Refreshes all trees of our application
+                    self.root.refreshApplication()
 
                     # Eliminates window
                     self.destroy()

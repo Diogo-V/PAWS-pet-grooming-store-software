@@ -15,12 +15,13 @@ class Pets(Frame):
     Frame that holds information about pets. Also has buttons to update our database and a TreeView to show our entries.
     """
 
-    def __init__(self, master, **kwargs):
+    def __init__(self, master, root, **kwargs):
         """
         Description:
         > Creates our window.
 
         :param master: root window where is going to be inserted -> notebook
+        :param root: Main application frame window -> Frame
         """
 
         # Creates pets tab for the notebook
@@ -45,9 +46,9 @@ class Pets(Frame):
         self.display.grid_propagate(False)
 
         # Creates buttons to insert, delete and update our entries inside the database
-        self.mix = Button(self.database, text="Inserir animal e cliente", command=lambda: WindowInsertMix(self))
-        self.insert = Button(self.database, text='Inserir novo animal', command=lambda: WindowInsertPet(self))
-        self.delete = Button(self.database, text='Apagar animal', command=lambda: WindowDeletePet(self))
+        self.mix = Button(self.database, text="Inserir animal e cliente", command=lambda: WindowInsertMix(self, root))
+        self.insert = Button(self.database, text='Inserir novo animal', command=lambda: WindowInsertPet(self, root))
+        self.delete = Button(self.database, text='Apagar animal', command=lambda: WindowDeletePet(self, root))
         self.change = Button(self.database, text='Alterar entrada')
         self.mix.pack(side=LEFT, padx=(160, 0), pady=20)
         self.insert.pack(side=LEFT, padx=(125, 0), pady=20)
@@ -72,7 +73,7 @@ class Pets(Frame):
         self.labelPetBreed = Label(self.search, text='Raça:')
         self.labelPetBreed.pack(side=LEFT, padx=(10, 5), pady=20)
         self.entryPetBreed = Entry(self.search, textvariable=petBreed)
-        self.entryPetBreed.pack(side=LEFT, padx=(0,5), pady=20)
+        self.entryPetBreed.pack(side=LEFT, padx=(0, 5), pady=20)
         self.labelClientName = Label(self.search, text='Nome do cliente:')
         self.labelClientName.pack(side=LEFT, padx=(10, 5), pady=20)
         self.entryClientName = Entry(self.search, textvariable=clientName)

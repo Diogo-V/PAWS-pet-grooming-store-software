@@ -16,12 +16,13 @@ class Appointments(Frame):
     Frame that holds information about appointments. Has buttons and a tree that allows interactions with the database.
     """
 
-    def __init__(self, master, **kwargs):
+    def __init__(self, master, root, **kwargs):
         """
         Description:
         > Creates our window.
 
         :param master: root window where is going to be inserted -> notebook
+        :param root: Main application frame window -> Frame
         """
 
         # Creates appointments tab for the notebook
@@ -46,9 +47,9 @@ class Appointments(Frame):
         self.display.grid_propagate(False)
 
         # Creates buttons to insert, delete and update our entries inside the database
-        self.firstTimer = Button(self.database, text='Primeira vez', command=lambda: WindowFirstTimer(self))
-        self.insert = Button(self.database, text='Inserir', command=lambda: WindowInsertAppointment(self))
-        self.delete = Button(self.database, text='Apagar', command=lambda: WindowDeleteAppointment(self))
+        self.firstTimer = Button(self.database, text='Primeira vez', command=lambda: WindowFirstTimer(self, root))
+        self.insert = Button(self.database, text='Inserir', command=lambda: WindowInsertAppointment(self, root))
+        self.delete = Button(self.database, text='Apagar', command=lambda: WindowDeleteAppointment(self, root))
         self.change = Button(self.database, text='Alterar')
         self.firstTimer.pack(side=LEFT, padx=(200, 0), pady=20)
         self.insert.pack(side=LEFT, padx=(180, 0), pady=20)
