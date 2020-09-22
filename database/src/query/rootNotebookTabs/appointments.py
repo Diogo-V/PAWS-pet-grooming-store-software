@@ -70,12 +70,13 @@ def getsDayAppointments(dateAppointment):
         connection.close()  # Closes connection with our database
 
 
-def getsInfoForAppointmentsWindow(appointmentID):
+def getsInfoForAppointmentsWindow(appointmentID, clientName):
     """
     Description:
     Gets a list of the information that is going to be displayed inside the appointments toplevel window.
 
     :param appointmentID: appointment row id -> integer
+    :param clientName: owner's name -> string
     """
 
     # Creates a connection to our database and a cursor to work with it
@@ -99,7 +100,8 @@ def getsInfoForAppointmentsWindow(appointmentID):
                     clients,
                     petsClientsLink
                 where
-                    appointments.ROWID = {appointmentID}
+                    appointments.ROWID = {appointmentID} 
+                    and clients.name = '{clientName}'
                     and appointments.animalId = petsClientsLink.petId
                     and animals.ROWID = petsClientsLink.petId
                     and clients.ROWID = petsClientsLink.clientId

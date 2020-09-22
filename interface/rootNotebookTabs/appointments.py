@@ -169,11 +169,12 @@ class DayAppointments(Frame):
             # Gets row information
             info = self.tree.item(item, 'values')
 
-            # Since we only need the appointment id to query trough the database, we discard the rest
+            # Since we need the appointment id and the client's name to query trough the database, we discard the rest
             appointmentID = info[0]
+            clientName = info[2]
 
             # Creates toplevel window that will display the information about this appointment
-            WindowAppointment(self, appointmentID, self.root)
+            WindowAppointment(self, appointmentID, clientName, self.root)
 
     def displayTreeRows(self, rows):
         """

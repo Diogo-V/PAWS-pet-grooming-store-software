@@ -14,13 +14,14 @@ class WindowUpdateAppointment(Toplevel):
     Toplevel window that allows the refactoring of all the information about this appointment.
     """
 
-    def __init__(self, master, appointmentID, root):
+    def __init__(self, master, appointmentID, clientName, root):
         """
         Description:
         > Creates our window.
 
         :param master: Frame window where is going to be inserted -> Frame
         :param appointmentID: appointment rowid inside the database -> integer
+        :param clientName: owner's name -> string
         :param root: Main application frame window -> Frame
         """
 
@@ -62,7 +63,7 @@ class WindowUpdateAppointment(Toplevel):
         validateMinutes = (master.register(self.validateMinutes), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
 
         # Gets a list containing the information that is going to be displayed
-        self.information = getsInfoForAppointmentsWindow(appointmentID)
+        self.information = getsInfoForAppointmentsWindow(appointmentID, clientName)
 
         # Gets and filters information about the pet, owner and appointment from the information list
         [self.petID, self.petName, self.petType, self.petBreed, self.petGender, self.petWeight, self.petHairType,
@@ -214,16 +215,8 @@ class WindowUpdateAppointment(Toplevel):
         # Separates hours from minutes
         Label(self.frmAppInputs, text='  :').grid(column=1, row=2, padx=(50, 0))
 
-        # Inserts the current values inside each entry
-        self.entryPetName.insert(END, self.petName)
-        self.entryPetType.current(typeOfAnimal.index(self.petType))
-        self.entryPetBreed.insert(END, self.petBreed)
-        self.entryPetGender.current(gender.index(self.petGender))
-        self.entryPetWeight.insert(END, self.petWeight)
-        self.entryPetHairType.current(typeOfHair.index(self.petHairType))
-        self.entryPetHairColor.insert(END, self.petHairColor)
-        self.entryPetAge.insert(END, self.petAge)
-        self.entryPetObs.insert(END, self.petObs)
+        # Puts all the current information inside each entry
+        self.setsPetsEntries()
 
         self.entryClientName.insert(END, self.clientName)
         self.entryClientEmail.insert(END, self.clientEmail)
@@ -521,6 +514,21 @@ class WindowUpdateAppointment(Toplevel):
             self.haircut.set(1)
         if self.entryCheckButtonMisc.cget("text") in self.appServices:
             self.misc.set(1)
+
+    def setsPetsEntries(self):
+        """
+        Description:
+        > Inserts all the current values of the pet inside each entry.
+        """
+        self.entryPetName.insert(END, self.petName)
+        self.entryPetType.current(typeOfAnimal.index(self.petType))
+        self.entryPetBreed.insert(END, self.petBreed)
+        self.entryPetGender.current(gender.index(self.petGender))
+        self.entryPetWeight.insert(END, self.petWeight)
+        self.entryPetHairType.current(typeOfHair.index(self.petHairType))
+        self.entryPetHairColor.insert(END, self.petHairColor)
+        self.entryPetAge.insert(END, self.petAge)
+        self.entryPetObs.insert(END, self.petObs)
 
     def getsServices(self):
         """

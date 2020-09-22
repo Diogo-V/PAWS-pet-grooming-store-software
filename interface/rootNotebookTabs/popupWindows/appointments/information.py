@@ -13,13 +13,14 @@ class WindowAppointment(Toplevel):
     Toplevel window that holds all the information about a specific appointment.
     """
 
-    def __init__(self, master, appointmentID, root):
+    def __init__(self, master, appointmentID, clientName, root):
         """
         Description:
         > Creates our window.
 
         :param master: Frame window where is going to be inserted -> Frame
         :param appointmentID: appointment rowid inside the database -> integer
+        :param clientName: owner's name -> string
         :param root: Main application frame window -> Frame
         """
 
@@ -53,7 +54,7 @@ class WindowAppointment(Toplevel):
         self.appointmentWindow.grid_propagate(False)
 
         # Gets a list containing the information that is going to be displayed
-        self.information = getsInfoForAppointmentsWindow(appointmentID)
+        self.information = getsInfoForAppointmentsWindow(appointmentID, clientName)
 
         # Gets and filters information about the pet, owner and appointment from the information list
         [self.petID, self.petName, self.petType, self.petBreed, self.petGender, self.petWeight, self.petHairType,
@@ -198,4 +199,4 @@ class WindowAppointment(Toplevel):
         Description:
         > Changes previous entries to the newly provided ones from the user.
         """
-        WindowUpdateAppointment(self, self.appointmentID, self.root)
+        WindowUpdateAppointment(self, self.appointmentID, self.clientName, self.root)
