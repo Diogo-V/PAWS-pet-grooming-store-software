@@ -273,11 +273,12 @@ class WindowDeleteAppointment(Toplevel):
             # Gets row information
             info = self.tree.item(item, 'values')
 
-            # Since we only need the appointment id to query trough the database, we discard the rest
+            # Since we need the appointment id and the owner's name to query trough the database, we discard the rest
             appointmentID = info[0]
+            clientName = info[4]
 
             # Creates toplevel window that will display the information about this appointment
-            WindowAppointment(self, appointmentID)
+            WindowDayAppointment(self, appointmentID, clientName, self.root)
 
     @staticmethod
     def transformsIntegerAppointmentDateToString(app, idxOfDate):

@@ -46,10 +46,13 @@ class Appointments(Frame):
         self.search.grid_propagate(False)
         self.display.grid_propagate(False)
 
+        # Creates a status variable so that we can use to alter the values of this appointment
+        self.root = root
+
         # Creates buttons to insert, delete and update our entries inside the database
-        self.firstTimer = Button(self.database, text='Primeira vez', command=lambda: WindowFirstTimer(self, root))
-        self.insert = Button(self.database, text='Inserir', command=lambda: WindowInsertAppointment(self, root))
-        self.delete = Button(self.database, text='Apagar', command=lambda: WindowDeleteAppointment(self, root))
+        self.firstTimer = Button(self.database, text='Primeira vez', command=lambda: WindowFirstTimer(self, self.root))
+        self.insert = Button(self.database, text='Inserir', command=lambda: WindowInsertAppointment(self, self.root))
+        self.delete = Button(self.database, text='Apagar', command=lambda: WindowDeleteAppointment(self, self.root))
         self.change = Button(self.database, text='Alterar')
         self.firstTimer.pack(side=LEFT, padx=(200, 0), pady=20)
         self.insert.pack(side=LEFT, padx=(180, 0), pady=20)
@@ -100,13 +103,13 @@ class Appointments(Frame):
         # Formats columns
         self.tree.column("#0", stretch=NO, anchor='center', width=0)
         self.tree.column(0, stretch=NO, anchor='center', width=0)
-        self.tree.column(1, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 10))
-        self.tree.column(2, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 10))
-        self.tree.column(3, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 10))
-        self.tree.column(4, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 10))
-        self.tree.column(5, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 10))
-        self.tree.column(6, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 10))
-        self.tree.column(7, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 10))
+        self.tree.column(1, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 12))
+        self.tree.column(2, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 12))
+        self.tree.column(3, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 12))
+        self.tree.column(4, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 12))
+        self.tree.column(5, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 12))
+        self.tree.column(6, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 12))
+        self.tree.column(7, stretch=NO, anchor='center', width=floor(self.tree.winfo_screenwidth()/7 - 12))
 
         # Define columns heading and sets their sorting function
         for col in columns:
@@ -212,11 +215,12 @@ class Appointments(Frame):
             # Gets row information
             info = self.tree.item(item, 'values')
 
-            # Since we only need the appointment id to query trough the database, we discard the rest
+            # Since we need the appointment id and client's name to query trough the database, we discard the rest
             appointmentID = info[0]
+            clientName = info[4]
 
             # Creates toplevel window that will display the information about this appointment
-            WindowAppointment(self, appointmentID)
+            WindowDayAppointment(self, appointmentID, clientName, self.root)
 
     def displayTreeRows(self, rows):
         """

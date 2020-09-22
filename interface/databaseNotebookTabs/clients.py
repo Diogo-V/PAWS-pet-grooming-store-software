@@ -181,11 +181,12 @@ class Clients(Frame):
             # Gets row information
             info = self.tree.item(item, 'values')
 
-            # Since we only need the client id to query trough the database, we discard the rest
+            # Since we need the client id and the pet's name to query trough the database, we discard the rest
             clientID = info[0]
+            petName = info[3]
 
             # Creates toplevel window that will display the information about this client
-            WindowClient(self, clientID)
+            WindowClient(self, clientID, petName)
 
     def displayTreeRows(self, rows):
         """

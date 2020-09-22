@@ -8,7 +8,7 @@ from database.src.functions.insertion import *
 from database.src.query.databaseNotebookTabs.appointments import getsAppointmentsForDayAppTree
 from database.src.utils.constants import typeOfAnimal, services
 from database.src.utils.converters import servicesToString, timeToString
-from interface.databaseNotebookTabs.popupWindows.pets.information import WindowPet
+from interface.databaseNotebookTabs.popupWindows.appointments.information import WindowAppointment
 
 
 class WindowFirstTimer(Toplevel):
@@ -521,11 +521,11 @@ class WindowFirstTimer(Toplevel):
             # Gets row information
             info = self.treeApp.item(item, 'values')
 
-            # Since we only need the pet id to query trough the database, we discard the rest
-            petID = info[0]
+            # Since we only need the appointment id to query trough the database, we discard the rest
+            appointmentID = info[0]
 
-            # Creates toplevel window that will display the information about this pet
-            WindowPet(self, petID)
+            # Creates toplevel window that will display the information about this appointment
+            WindowAppointment(self, appointmentID)
 
     @staticmethod
     def validateNumber(self, action, index, valueIfAllowed,

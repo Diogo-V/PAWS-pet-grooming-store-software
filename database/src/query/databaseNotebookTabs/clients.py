@@ -1,12 +1,13 @@
 from sqlite3 import *
 
 
-def getsInfoForClientWindow(clientID):
+def getsInfoForClientWindow(clientID, petName):
     """
     Description:
     Gets a list of the information that is going to be displayed inside the client toplevel window.
 
     :param clientID: client row id -> integer
+    :param petName: client's pet name -> string
     """
 
     # Creates a connection to our database and a cursor to work with it
@@ -28,6 +29,7 @@ def getsInfoForClientWindow(clientID):
                     petsClientsLink
                 where
                     clients.ROWID = {clientID}
+                    and animals.name = '{petName}'
                     and animals.ROWID = petsClientsLink.petId
                     and clients.ROWID = petsClientsLink.clientId
                 """

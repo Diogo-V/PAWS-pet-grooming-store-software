@@ -4,7 +4,7 @@ from tkinter import messagebox
 from tkinter.ttk import *
 
 from database.src.functions.update import updateRecordAnimal, updateRecordClient, updateRecordAppointment
-from database.src.query.rootNotebookTabs.appointments import getsInfoForAppointmentsWindow
+from database.src.query.rootNotebookTabs.appointments import getsInfoForDayAppointmentsWindow
 from database.src.utils.constants import *
 from database.src.utils.converters import *
 
@@ -63,7 +63,7 @@ class WindowUpdateAppointment(Toplevel):
         validateMinutes = (master.register(self.validateMinutes), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
 
         # Gets a list containing the information that is going to be displayed
-        self.information = getsInfoForAppointmentsWindow(appointmentID, clientName)
+        self.information = getsInfoForDayAppointmentsWindow(appointmentID, clientName)
 
         # Gets and filters information about the pet, owner and appointment from the information list
         [self.petID, self.petName, self.petType, self.petBreed, self.petGender, self.petWeight, self.petHairType,

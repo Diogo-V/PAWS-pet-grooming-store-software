@@ -70,7 +70,7 @@ def getsDayAppointments(dateAppointment):
         connection.close()  # Closes connection with our database
 
 
-def getsInfoForAppointmentsWindow(appointmentID, clientName):
+def getsInfoForDayAppointmentsWindow(appointmentID, clientName):
     """
     Description:
     Gets a list of the information that is going to be displayed inside the appointments toplevel window.
@@ -102,6 +102,64 @@ def getsInfoForAppointmentsWindow(appointmentID, clientName):
                 where
                     appointments.ROWID = {appointmentID} 
                     and clients.name = '{clientName}'
+                    and appointments.animalId = petsClientsLink.petId
+                    and animals.ROWID = petsClientsLink.petId
+                    and clients.ROWID = petsClientsLink.clientId
+                """
+
+        # Gets list containing the requested information
+        info = cursor.execute(query).fetchall()
+
+        # Converts our date to a string
+        if type(info) is list and info != []:
+            info = list(map(lambda app: transformsIntegerAppointmentDateToString(app, 17), info))
+        elif type(info) is tuple:
+            info = transformsIntegerAppointmentDateToString(info, 17)
+
+        return info
+
+    except Error:
+
+        # Error information and details processing
+        print(type(Error))
+        print(Error.args)
+        print(Error)
+
+    finally:
+
+        connection.close()  # Closes connection with our database
+
+
+def getsInfoForAppointmentsWindow(appointmentID):
+    """
+    Description:
+    Gets a list of the information that is going to be displayed inside the appointments toplevel window.
+
+    :param appointmentID: appointment row id -> integer
+    """
+
+    # Creates a connection to our database and a cursor to work with it
+    connection = connect("database/database.sqlite")
+    cursor = connection.cursor()
+
+    try:
+
+        # SQL syntax that is going to be parsed inside the database console
+        query = f"""
+                select
+                    animals.rowid, animals.name, animals.type, animals.breed, animals.gender, animals.weight, 
+                    animals.hairType, animals.hairColor, animals.age, animals.observations,
+                    clients.rowid, clients.name, clients.email, clients.phone, clients.nif, clients.address,
+                    appointments.services, appointments.date, appointments.time, 
+                    appointments.price, appointments.observations
+                from
+                    appointments
+                inner join
+                    animals,
+                    clients,
+                    petsClientsLink
+                where
+                    appointments.ROWID = {appointmentID} 
                     and appointments.animalId = petsClientsLink.petId
                     and animals.ROWID = petsClientsLink.petId
                     and clients.ROWID = petsClientsLink.clientId

@@ -184,9 +184,10 @@ class Pets(Frame):
 
             # Since we only need the pet id to query trough the database, we discard the rest
             petID = info[0]
+            clientName = info[2]
 
             # Creates toplevel window that will display the information about this pet
-            WindowPet(self, petID)
+            WindowPet(self, petID, clientName)
 
     def displayTreeRows(self, rows):
         """

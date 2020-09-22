@@ -9,13 +9,14 @@ class WindowPet(Toplevel):
     Toplevel window used to show information about this pet.
     """
 
-    def __init__(self, master, animalID):
+    def __init__(self, master, animalID, clientName):
         """
         Description:
         > Creates our window.
 
         :param master: Frame window where is going to be inserted -> Frame
         :param animalID: animal rowid inside the database -> integer
+        :param clientName: owner's name -> string
         """
 
         # Creates toplevel window that will be displayed. Sets size and blocks resize
@@ -41,7 +42,7 @@ class WindowPet(Toplevel):
         self.clientWindow.grid_propagate(False)
 
         # Gets a list containing the information that is going to be displayed
-        self.information = getsInfoForPetWindow(animalID)
+        self.information = getsInfoForPetWindow(animalID, clientName)
 
         # Gets and filters information about the pet and owner from the information list
         [petName, petType, petBreed, petGender, petWeight, petHairType,

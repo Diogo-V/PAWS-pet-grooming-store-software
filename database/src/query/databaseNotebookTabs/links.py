@@ -138,9 +138,15 @@ def getsPetsForLinksWindow():
                     animals.ROWID,
                     animals.name, 
                     animals.type,
-                    animals.breed
+                    animals.breed,
+                    clients.name
                 from
                     animals
+                inner join 
+                    clients, 
+                    petsClientsLink
+                where
+                    animals.ROWID = petsClientsLink.petId and clients.ROWID = petsClientsLink.clientId
                 """
 
         # Gets list containing the requested information
@@ -177,9 +183,14 @@ def getsClientsForLinksWindow():
                 select
                     clients.ROWID,
                     clients.name,
-                    clients.phone
+                    clients.phone,
+                    animals.name
                 from
                     clients
+                inner join 
+                    animals, petsClientsLink
+                where 
+                    petsClientsLink.clientId = clients.ROWID and petsClientsLink.petId = animals.ROWID
                 """
 
         # Gets list containing the requested information
@@ -279,10 +290,13 @@ def getsRequestedPets(queryInfo):
         # SQL syntax that is going to be parsed inside the database console
         query = f"""
                 select
-                    animals.ROWID, animals.name, animals.type, animals.breed
+                    animals.ROWID, animals.name, animals.type, animals.breed, clients.name
                 from
                     animals
+                inner join 
+                    clients, petsClientsLink
                 where
+                    animals.ROWID = petsClientsLink.petId and clients.ROWID = petsClientsLink.clientId and 
                     {getQuery()}
                 """
 
@@ -335,10 +349,14 @@ def getsRequestedClients(queryInfo):
         # SQL syntax that is going to be parsed inside the database console
         query = f"""
                 select
-                    clients.ROWID, clients.name, clients.phone
+                    clients.ROWID, clients.name, clients.phone, animals.name
                 from
                     clients
+                inner join 
+                    animals, 
+                    petsClientsLink
                 where
+                    animals.ROWID = petsClientsLink.petId and clients.ROWID = petsClientsLink.clientId and 
                     {getQuery()}
                 """
 

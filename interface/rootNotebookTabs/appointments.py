@@ -174,7 +174,7 @@ class DayAppointments(Frame):
             clientName = info[2]
 
             # Creates toplevel window that will display the information about this appointment
-            WindowAppointment(self, appointmentID, clientName, self.root)
+            WindowDayAppointment(self, appointmentID, clientName, self.root)
 
     def displayTreeRows(self, rows):
         """

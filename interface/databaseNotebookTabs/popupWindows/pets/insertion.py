@@ -141,7 +141,7 @@ class WindowInsertPet(Toplevel):
         self.clientsButton.grid(column=2, row=0, pady=(20, 10), rowspan=2)
 
         # Columns names that are going to be inserted inside the tree
-        columns = ('', 'Nome', 'Telemóvel')
+        columns = ('', 'Nome', 'Telemóvel', 'Animal')
 
         # Creates tree that will display all the clients
         self.treeClients = Treeview(self.clientWindow, columns=columns, height=19, show='headings')
@@ -150,8 +150,9 @@ class WindowInsertPet(Toplevel):
         # Formats columns
         self.treeClients.column("#0", stretch=NO, anchor='center', width=0)
         self.treeClients.column(0, stretch=NO, anchor='center', width=0)
-        self.treeClients.column(1, stretch=NO, anchor='center', width=277)
-        self.treeClients.column(2, stretch=NO, anchor='center', width=277)
+        self.treeClients.column(1, stretch=NO, anchor='center', width=185)
+        self.treeClients.column(2, stretch=NO, anchor='center', width=185)
+        self.treeClients.column(3, stretch=NO, anchor='center', width=185)
 
         # Define columns heading and sets their sorting function
         for col in columns:
@@ -350,9 +351,10 @@ class WindowInsertPet(Toplevel):
 
             # Since we only need the client id to query trough the database, we discard the rest
             clientID = info[0]
+            petName = info[3]
 
             # Creates toplevel window that will display the information about this client
-            WindowClient(self, clientID)
+            WindowClient(self, clientID, petName)
 
     @staticmethod
     def validateString(self, action, index, valueIfAllowed,

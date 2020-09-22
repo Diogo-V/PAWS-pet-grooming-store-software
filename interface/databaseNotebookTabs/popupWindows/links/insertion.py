@@ -37,7 +37,7 @@ class WindowInsertLink(Toplevel):
         self.master = master
 
         # Creates frame (used to put widgets in it) for our toplevel window and puts it on the screen
-        self.window = Frame(self, height=500, width=1000)
+        self.window = Frame(self, height=600, width=1250)
         self.window.pack(fill='both', expand=True)
 
         # Creates 2 LabelFrames that will hold our search buttons for each section
@@ -61,10 +61,10 @@ class WindowInsertLink(Toplevel):
         self.clients.grid_propagate(False)
 
         # Creates link button and puts it on the screen
-        auxFrame = Frame(self.window)
-        auxFrame.grid(column=1, row=2, sticky=(W, S, N, E))
-        auxFrame.grid_propagate(False)
-        self.link = Button(auxFrame, text='Relacionar', command=self.linkEntries, width=30)
+        auxFrame1 = Frame(self.window)
+        auxFrame1.grid(column=1, row=2, sticky=(W, S, N, E))
+        auxFrame1.grid_propagate(False)
+        self.link = Button(auxFrame1, text='Relacionar', command=self.linkEntries, width=27)
         self.link.pack(side=LEFT, fill="both", expand=True, padx=10)
 
         # Creates needed entry variables
@@ -106,7 +106,7 @@ class WindowInsertLink(Toplevel):
         self.clientsButton.grid(column=0, row=1, padx=5, columnspan=2)
 
         # Columns names that are going to be inserted inside the tree
-        columnsPets = ('', 'Nome', 'Tipo', 'Raça')
+        columnsPets = ('', 'Nome', 'Tipo', 'Raça', 'Cliente')
 
         # Creates tree that will display all the pets information
         self.treePets = Treeview(self.pets, columns=columnsPets, height=21, show='headings')
@@ -115,9 +115,10 @@ class WindowInsertLink(Toplevel):
         # Formats columns
         self.treePets.column("#0", stretch=NO, anchor='center', width=0)
         self.treePets.column(0, stretch=NO, anchor='center', width=0)
-        self.treePets.column(1, stretch=NO, anchor='center', width=153)
-        self.treePets.column(2, stretch=NO, anchor='center', width=153)
-        self.treePets.column(3, stretch=NO, anchor='center', width=153)
+        self.treePets.column(1, stretch=NO, anchor='center', width=115)
+        self.treePets.column(2, stretch=NO, anchor='center', width=115)
+        self.treePets.column(3, stretch=NO, anchor='center', width=115)
+        self.treePets.column(4, stretch=NO, anchor='center', width=115)
 
         # Define columns heading and sets their sorting function
         for col in columnsPets:
@@ -130,7 +131,7 @@ class WindowInsertLink(Toplevel):
         self.treePets.configure(yscrollcommand=self.scrollbarPets.set)
 
         # Columns names that are going to be inserted inside the tree
-        columnsClients = ('', 'Nome', 'Telemóvel')
+        columnsClients = ('', 'Nome', 'Telemóvel', 'Animal')
 
         # Creates tree that will display all the links
         self.treeClients = Treeview(self.clients, columns=columnsClients, height=21, show='headings')
@@ -139,8 +140,9 @@ class WindowInsertLink(Toplevel):
         # Formats columns
         self.treeClients.column("#0", stretch=NO, anchor='center', width=0)
         self.treeClients.column(0, stretch=NO, anchor='center', width=0)
-        self.treeClients.column(1, stretch=NO, anchor='center', width=228)
-        self.treeClients.column(2, stretch=NO, anchor='center', width=228)
+        self.treeClients.column(1, stretch=NO, anchor='center', width=153)
+        self.treeClients.column(2, stretch=NO, anchor='center', width=153)
+        self.treeClients.column(3, stretch=NO, anchor='center', width=153)
 
         # Define columns heading and sets their sorting function
         for col in columnsClients:
@@ -157,9 +159,12 @@ class WindowInsertLink(Toplevel):
         self.refreshTreeClients()
 
         # Creates a Label that tells the user if link already exists or not
+        auxFrame2 = Frame(self.window)
+        auxFrame2.grid(column=1, row=0, sticky=(W, S, N, E), padx=10)
+        auxFrame2.grid_propagate(False)
         self.statusVar = StringVar(value="Entradas invalidas")
-        self.status = Label(self.window, textvariable=self.statusVar)
-        self.status.grid(column=1, row=0, padx=64)
+        self.status = Label(auxFrame2, textvariable=self.statusVar)
+        self.status.pack(side=BOTTOM, anchor="center", pady=(0, 40))
 
         # Links double click on a row with a window popup
         self.treePets.bind('<Double 1>', self.displayPetWindow)
@@ -399,9 +404,10 @@ class WindowInsertLink(Toplevel):
 
             # Since we only need the pet id to query trough the database, we discard the rest
             petID = info[0]
+            clientName = info[4]
 
             # Creates toplevel window that will display the information about this pet
-            WindowPet(self, petID)
+            WindowPet(self, petID, clientName)
 
     def displayClientWindow(self, event):
         """
@@ -420,11 +426,12 @@ class WindowInsertLink(Toplevel):
             # Gets row information
             info = self.treeClients.item(item, 'values')
 
-            # Since we only need the client id to query trough the database, we discard the rest
+            # Since we need the client id and the pet's name to query trough the database, we discard the rest
             clientID = info[0]
+            petName = info[3]
 
             # Creates toplevel window that will display the information about this client
-            WindowClient(self, clientID)
+            WindowClient(self, clientID, petName)
 
     @staticmethod
     def checksIfTupleOfIdsIsValid(Ids):

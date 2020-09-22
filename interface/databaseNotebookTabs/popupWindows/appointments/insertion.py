@@ -1,10 +1,14 @@
 from operator import itemgetter
+from tkinter import *
+from tkinter import messagebox
+from tkinter.ttk import *
 
 from database.src.functions.insertion import insertRecordAppointment
 from database.src.query.databaseNotebookTabs.appointments import *
 from database.src.utils.constants import *
 from database.src.utils.converters import timeToString, servicesToString
-from interface.rootNotebookTabs.popupWindows.appointments.information import *
+from interface.databaseNotebookTabs.popupWindows.appointments.information import WindowAppointment
+from interface.databaseNotebookTabs.popupWindows.pets.information import WindowPet
 
 
 class WindowInsertAppointment(Toplevel):
@@ -237,7 +241,7 @@ class WindowInsertAppointment(Toplevel):
         self.refreshTreePets()
 
         # Links double click on a row with a window popup
-        self.treePet.bind('<Double 1>', self.displayAppointmentWindow)
+        self.treePet.bind('<Double 1>', self.displayPetWindow)
         self.treeApp.bind('<Double 1>', self.displayAppointmentWindow)
 
     def treeSortColumn(self, tv, col, reverse):
@@ -509,6 +513,28 @@ class WindowInsertAppointment(Toplevel):
         """
 
         # Gets row that was clicked
+        item = self.treeApp.identify_row(event.y)
+
+        # If the user didn't click on a blank space, shows the toplevel window else, does nothing
+        if item:
+            # Gets row information
+            info = self.treeApp.item(item, 'values')
+
+            # Since we only need the appointment id to query trough the database, we discard the rest
+            appID = info[0]
+
+            # Creates toplevel window that will display the information about this appointment
+            WindowAppointment(self, appID)
+
+    def displayPetWindow(self, event):
+        """
+        Description:
+        > Displays toplevel window with the information about the selected pet.
+
+        :param event: event of clicking a button -> event
+        """
+
+        # Gets row that was clicked
         item = self.treePet.identify_row(event.y)
 
         # If the user didn't click on a blank space, shows the toplevel window else, does nothing
@@ -516,11 +542,12 @@ class WindowInsertAppointment(Toplevel):
             # Gets row information
             info = self.treePet.item(item, 'values')
 
-            # Since we only need the appointment id to query trough the database, we discard the rest
-            appID = info[0]
+            # Since we only need the pet id and the owner's name to query trough the database, we discard the rest
+            petID = info[0]
+            clientName = info[3]
 
-            # Creates toplevel window that will display the information about this appointment
-            WindowAppointment(self, appID)
+            # Creates toplevel window that will display the information about this pet
+            WindowPet(self, petID, clientName)
 
     def updatePetTree(self):
         """

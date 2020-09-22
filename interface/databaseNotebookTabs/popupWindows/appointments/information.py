@@ -1,27 +1,21 @@
 from tkinter import *
-from tkinter import messagebox
 from tkinter.ttk import *
 
-from database.src.functions.deletion import deleteRecordAppointment
-from database.src.functions.insertion import insertRecordHistory
-from database.src.query.rootNotebookTabs.appointments import getsInfoForDayAppointmentsWindow
-from interface.rootNotebookTabs.popupWindows.appointments.update import WindowUpdateAppointment
+from database.src.query.rootNotebookTabs.appointments import getsInfoForAppointmentsWindow
 
 
-class WindowDayAppointment(Toplevel):
+class WindowAppointment(Toplevel):
     """
     Toplevel window that holds all the information about a specific appointment.
     """
 
-    def __init__(self, master, appointmentID, clientName, root):
+    def __init__(self, master, appointmentID):
         """
         Description:
         > Creates our window.
 
         :param master: Frame window where is going to be inserted -> Frame
         :param appointmentID: appointment rowid inside the database -> integer
-        :param clientName: owner's name -> string
-        :param root: Main application frame window -> Frame
         """
 
         # Creates toplevel window that will be displayed. Sets size and blocks resize
@@ -34,11 +28,6 @@ class WindowDayAppointment(Toplevel):
         # Creates frame (used to put widgets in it) for our toplevel window and puts it on the screen
         self.window = Frame(self, height=500, width=1000)
         self.window.pack(fill='both', expand=True)
-
-        # Creates a root variable so that we can access the main application window
-        self.root = root
-        self.master = master
-        self.appointmentID = appointmentID
 
         # Creates 3 small LabelFrame for each part of the description. Used to organize the information
         self.petWindow = LabelFrame(self.window, text=' Sobre o animal ', height=600, width=416)
@@ -54,7 +43,7 @@ class WindowDayAppointment(Toplevel):
         self.appointmentWindow.grid_propagate(False)
 
         # Gets a list containing the information that is going to be displayed
-        self.information = getsInfoForDayAppointmentsWindow(appointmentID, clientName)
+        self.information = getsInfoForAppointmentsWindow(appointmentID)
 
         # Gets and filters information about the pet, owner and appointment from the information list
         [self.petID, self.petName, self.petType, self.petBreed, self.petGender, self.petWeight, self.petHairType,
@@ -130,18 +119,6 @@ class WindowDayAppointment(Toplevel):
         Separator(self.appointmentWindow, orient=HORIZONTAL).grid(column=0, row=5, sticky=(W, E))
         Separator(self.appointmentWindow, orient=HORIZONTAL).grid(column=0, row=7, sticky=(W, E))
 
-        # Create a button that finalizes appointment by sending it to te history table
-        butFinalize = Button(self.clientWindow, text='Finalizar', command=self.finalizeAppointment)
-        butFinalize.grid(column=0, row=10, pady=150, padx=(30, 0), sticky=W)
-
-        # Create a button that destroys appointment
-        butDestroy = Button(self.clientWindow, text='Remover', command=self.destroyAppointment)
-        butDestroy.grid(column=0, row=10, pady=150, padx=(160, 0), sticky=W)
-
-        # Creates a button that allows the user to change all the entries about the pet, the client and the appointment
-        butChange = Button(self.clientWindow, text='Alterar', command=self.changeInfo)
-        butChange.grid(column=0, row=10, pady=150, padx=(290, 0), sticky=W)
-
     def getsPetInfo(self):
         """Gets and filters information about the pet from the information list.
            We use a zero to only get the first owner of the pet."""
@@ -156,47 +133,3 @@ class WindowDayAppointment(Toplevel):
         """Gets and filters information about the appointments from the information list.
            We use a zero to only get the first owner of the pet."""
         return self.information[0][16:21]
-
-    def destroyAppointment(self):
-        """Checks if user wants to destroy appointment and if so, deletes it from the database."""
-
-        # Shows a popup to confirm destruction of appointments
-        message = messagebox.askquestion('Eliminar', 'Deseja eliminar a marcação?', parent=self.window)
-
-        # If we want to eliminate our appointment, we change our database, else, does nothing
-        if message == 'yes':
-
-            # Changes database entries
-            deleteRecordAppointment(self.appointmentID)
-
-            # Refreshes all trees of our application
-            self.root.refreshApplication()
-
-            # Eliminates window
-            self.destroy()
-
-    def finalizeAppointment(self):
-        """Checks if user wants to finalize appointment and if so, sends it to the history table and refreshes tree."""
-
-        # Shows a popup to confirm finalization
-        message = messagebox.askquestion('Finalizar', 'Deseja finalizar a marcação?', parent=self.window)
-
-        # If we want to finalize our appointment, we change our database, else, does nothing
-        if message == 'yes':
-
-            # Changes database entries
-            insertRecordHistory((self.appServices, self.appDate, self.appTime, self.appPrice, self.appObs, self.petID))
-            deleteRecordAppointment(self.appointmentID)
-
-            # Refreshes all trees of our application
-            self.root.refreshApplication()
-
-            # Eliminates window
-            self.destroy()
-
-    def changeInfo(self):
-        """
-        Description:
-        > Changes previous entries to the newly provided ones from the user.
-        """
-        WindowUpdateAppointment(self, self.appointmentID, self.clientName, self.root)
