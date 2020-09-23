@@ -394,7 +394,7 @@ def getsInfoForLinkWindow(linkID):
         # SQL syntax that is going to be parsed inside the database console
         query = f"""
                 select
-                    animals.name, animals.type, animals.breed, animals.gender, animals.weight, 
+                    animals.rowid, animals.name, animals.type, animals.breed, animals.gender, animals.weight, 
                     animals.hairType, animals.hairColor, animals.age, animals.observations,
                     clients.name, clients.nif, clients.phone, clients.email, clients.address
                 from

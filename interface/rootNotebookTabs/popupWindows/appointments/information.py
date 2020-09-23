@@ -5,6 +5,7 @@ from tkinter.ttk import *
 from database.src.functions.deletion import deleteRecordAppointment
 from database.src.functions.insertion import insertRecordHistory
 from database.src.query.rootNotebookTabs.appointments import getsInfoForDayAppointmentsWindow
+from interface.databaseNotebookTabs.popupWindows.history.petHistory import WindowPetHistory
 from interface.rootNotebookTabs.popupWindows.appointments.update import WindowUpdateAppointment
 
 
@@ -132,15 +133,20 @@ class WindowDayAppointment(Toplevel):
 
         # Create a button that finalizes appointment by sending it to te history table
         butFinalize = Button(self.clientWindow, text='Finalizar', command=self.finalizeAppointment)
-        butFinalize.grid(column=0, row=10, pady=150, padx=(30, 0), sticky=W)
+        butFinalize.grid(column=0, row=10, pady=(150, 0), padx=(30, 0), sticky=W)
 
         # Create a button that destroys appointment
         butDestroy = Button(self.clientWindow, text='Remover', command=self.destroyAppointment)
-        butDestroy.grid(column=0, row=10, pady=150, padx=(160, 0), sticky=W)
+        butDestroy.grid(column=0, row=10, pady=(150, 0), padx=(160, 0), sticky=W)
 
         # Creates a button that allows the user to change all the entries about the pet, the client and the appointment
         butChange = Button(self.clientWindow, text='Alterar', command=self.changeInfo)
-        butChange.grid(column=0, row=10, pady=150, padx=(290, 0), sticky=W)
+        butChange.grid(column=0, row=10, pady=(150, 0), padx=(290, 0), sticky=W)
+
+        # Creates a button that allow the user to see the pet's past appointments
+        butHistory = Button(self.clientWindow, text='Histórico', width=49,
+                            command=lambda: WindowPetHistory(self, self.petID))
+        butHistory.grid(column=0, row=11, pady=(30, 5), padx=(4, 5), sticky=W)
 
     def getsPetInfo(self):
         """Gets and filters information about the pet from the information list.

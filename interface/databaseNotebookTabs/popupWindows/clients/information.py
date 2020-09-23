@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter.ttk import *
 
 from database.src.query.databaseNotebookTabs.clients import getsInfoForClientWindow
+from interface.databaseNotebookTabs.popupWindows.history.petHistory import WindowPetHistory
 
 
 class WindowClient(Toplevel):
@@ -28,14 +29,14 @@ class WindowClient(Toplevel):
         self.transient(master)
 
         # Creates frame (used to put widgets in it) for our toplevel window and puts it on the screen
-        self.window = Frame(self, height=500, width=1000)
+        self.window = Frame(self, height=600, width=1250)
         self.window.pack(fill='both', expand=True)
 
         # Creates 2 small rootNotebookTabs for each part of the description. Used to organize the information
-        self.petWindow = LabelFrame(self.window, text=' Sobre o animal ', height=500, width=500)
-        self.clientWindow = LabelFrame(self.window, text=' Sobre o cliente ', height=500, width=500)
+        self.petWindow = LabelFrame(self.window, text=' Sobre o animal ', height=600, width=625)
+        self.clientWindow = LabelFrame(self.window, text=' Sobre o cliente ', height=400, width=625)
         self.petWindow.pack(side=LEFT, fill='both', expand=True)
-        self.clientWindow.pack(side=LEFT, fill='both', expand=True)
+        self.clientWindow.pack(side=TOP, fill='both', expand=True)
 
         # Blocks resizing for each labelFrame
         self.petWindow.grid_propagate(False)
@@ -45,9 +46,13 @@ class WindowClient(Toplevel):
         self.information = getsInfoForClientWindow(clientID, petName)
 
         # Gets and filters information about the pet and owner from the information list
-        [petName, petType, petBreed, petGender, petWeight, petHairType,
+        [petID, petName, petType, petBreed, petGender, petWeight, petHairType,
          petHairColor, petAge, petObs] = self.getsPetInfo()
         [clientName, clientNIF, clientPhone, clientEmail, clientAdr] = self.getsClientInfo()
+
+        # Creates a button so that we can check pet's past appointments
+        self.history = Button(self.window, text='Histórico', command=lambda: WindowPetHistory(self, petID))
+        self.history.pack(side=BOTTOM, fill="both", expand=True, padx=5, pady=5)
 
         # Creates labels that will describe each field in each section and puts the requested information after it
         descPetName = Label(self.petWindow, text=f'Nome:  {petName}', width=100)
@@ -99,8 +104,8 @@ class WindowClient(Toplevel):
 
     def getsPetInfo(self):
         """Gets and filters information about the pet from the information list."""
-        return self.information[0][0:9]
+        return self.information[0][0:10]
 
     def getsClientInfo(self):
         """Gets and filters information about the client from the information list."""
-        return self.information[0][9:14]
+        return self.information[0][10:15]
