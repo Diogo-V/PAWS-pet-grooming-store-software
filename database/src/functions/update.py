@@ -42,9 +42,7 @@ def updateRecordAnimal(animal, identifier):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: updateRecordAnimal")
 
         connection.rollback()  # Removes any change made during execution
 
@@ -81,9 +79,7 @@ def updateRecordClient(client, identifier):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: updateRecordClient")
 
         connection.rollback()  # Removes any change made during execution
 
@@ -122,9 +118,7 @@ def updateRecordAppointment(appointment, identifier):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: updateRecordAppointment")
 
         connection.rollback()  # Removes any change made during execution
 
@@ -163,9 +157,7 @@ def updateRecordHistory(history, identifier):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: updateRecordHistory")
 
         connection.rollback()  # Removes any change made during execution
 
@@ -201,9 +193,7 @@ def updateRecordPetClientLink(link, identifier):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: updateRecordPetClientLink")
 
         connection.rollback()  # Removes any change made during execution
 

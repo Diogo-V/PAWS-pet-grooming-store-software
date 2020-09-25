@@ -42,9 +42,7 @@ def getsInfoForPetWindow(petID, clientName):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: getsInfoForPetWindow")
 
     finally:
 
@@ -91,9 +89,7 @@ def getsAllPets():
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: getsAllPets")
 
     finally:
 
@@ -163,9 +159,7 @@ def getsRequestedPets(queryInfo):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: getsRequestedPets")
 
     finally:
 

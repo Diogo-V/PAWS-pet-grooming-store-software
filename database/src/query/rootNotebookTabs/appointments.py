@@ -61,9 +61,7 @@ def getsDayAppointments(dateAppointment):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: getsDayAppointments")
 
     finally:
 
@@ -121,9 +119,7 @@ def getsInfoForDayAppointmentsWindow(appointmentID, clientName):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: getsInfoForDayAppointmentsWindow")
 
     finally:
 
@@ -179,9 +175,7 @@ def getsInfoForAppointmentsWindow(appointmentID):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: getsInfoForAppointmentsWindow")
 
     finally:
 

@@ -59,9 +59,7 @@ def getsPetHistory(animalID):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: getsPetHistory")
 
     finally:
 
@@ -110,9 +108,7 @@ def getsInfoForHistoryWindow(historyID):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: getsInfoForHistoryWindow")
 
     finally:
 

@@ -45,9 +45,7 @@ def insertRecordAnimal(animal):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: insertRecordAnimal")
 
         connection.rollback()  # Removes any change made during execution
 
@@ -85,9 +83,7 @@ def insertRecordClient(client):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: insertRecordClient")
 
         connection.rollback()  # Removes any change made during execution
 
@@ -126,9 +122,7 @@ def insertRecordAppointment(appointment):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: insertRecordAppointment")
 
         connection.rollback()  # Removes any change made during execution
 
@@ -166,9 +160,7 @@ def insertRecordHistory(history):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: insertRecordHistory")
 
         connection.rollback()  # Removes any change made during execution
 
@@ -203,9 +195,7 @@ def insertRecordPetClientLink(link):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: insertRecordPetClientLink")
 
         connection.rollback()  # Removes any change made during execution
 

@@ -66,9 +66,7 @@ def getsAllAppointments():
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: getsAllAppointments")
 
     finally:
 
@@ -151,9 +149,7 @@ def getsRequestedAppointments(queryInfo):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: getsRequestedAppointments")
 
     finally:
 
@@ -215,9 +211,7 @@ def getsRequestedPets(queryInfo):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: getsRequestedPets")
 
     finally:
 
@@ -259,9 +253,7 @@ def getsPetsForAppointmentsWindow():
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: getsPetsForAppointmentsWindow")
 
     finally:
 
@@ -306,9 +298,7 @@ def checksIfPetHasAnOwner(petID):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: checksIfPetHasAnOwner")
 
     finally:
 
@@ -352,9 +342,7 @@ def getsAppointmentsForDayAppTree(myDate):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: getsAppointmentsForDayAppTree")
 
     finally:
 

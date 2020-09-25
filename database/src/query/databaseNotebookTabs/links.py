@@ -40,10 +40,7 @@ def getsAllLinks():
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
-
+        print("ERROR: getsAllLinks")
     finally:
 
         connection.close()  # Closes connection with our database
@@ -111,9 +108,7 @@ def getsRequestedLinks(queryInfo):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: getsRequestedLinks")
 
     finally:
 
@@ -157,9 +152,7 @@ def getsPetsForLinksWindow():
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: getsPetsForLinksWindow")
 
     finally:
 
@@ -201,9 +194,7 @@ def getsClientsForLinksWindow():
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: getsClientsForLinksWindow")
 
     finally:
 
@@ -246,9 +237,7 @@ def checksIfLinkIsAlreadyInDatabase(link):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: checksIfLinkIsAlreadyInDatabase")
 
     finally:
 
@@ -308,10 +297,7 @@ def getsRequestedPets(queryInfo):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
-
+        print("ERROR: getsRequestedPets")
     finally:
 
         connection.close()  # Closes connection with our database
@@ -368,9 +354,7 @@ def getsRequestedClients(queryInfo):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: getsRequestedClients")
 
     finally:
 
@@ -416,9 +400,7 @@ def getsInfoForLinkWindow(linkID):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: getsInfoForLinkWindow")
 
     finally:
 
@@ -464,9 +446,7 @@ def checksIfPetHasMoreThanOneOwner(petID):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: checksIfPetHasMoreThanOneOwner")
 
     finally:
 
@@ -512,9 +492,7 @@ def checksIfClientHasMoreThanOnePet(clientID):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: checksIfClientHasMoreThanOnePet")
 
     finally:
 
