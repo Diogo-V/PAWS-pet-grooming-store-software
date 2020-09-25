@@ -13,7 +13,7 @@ def deleteRecordAnimal(identifier):
     connectionDB = connect("database/database.sqlite")
     cursorDB = connectionDB.cursor()
     connectionHistory = connect("database/history.sqlite")
-    cursorHistory = connectionDB.cursor()
+    cursorHistory = connectionHistory.cursor()
 
     try:
 
@@ -21,7 +21,7 @@ def deleteRecordAnimal(identifier):
         query = f"delete from animals where ROWID = {identifier}"
 
         # Deletes pet history inside history.sqlite
-        queryDeleteHistory = f"delete from history where animalId = {identifier}"
+        queryDeleteHistory = f"delete from history where history.animalId = {identifier}"
 
         # Executes commands
         cursorDB.execute(query)
@@ -34,9 +34,7 @@ def deleteRecordAnimal(identifier):
     except Error:
 
         # Error information and details processing
-        print(type(Error))
-        print(Error.args)
-        print(Error)
+        print("ERROR: deleteRecordAnimal")
 
         connectionDB.rollback()  # Removes any change made during execution
         connectionHistory.rollback()  # Removes any change made during execution
@@ -73,6 +71,7 @@ def deleteRecordClient(identifier):
     except Error:
 
         # Error information and details processing
+        print("ERROR: deleteRecordClient")
         print(type(Error))
         print(Error.args)
         print(Error)
@@ -110,6 +109,7 @@ def deleteRecordAppointment(identifier):
     except Error:
 
         # Error information and details processing
+        print("ERROR: deleteRecordAppointment")
         print(type(Error))
         print(Error.args)
         print(Error)
@@ -147,6 +147,7 @@ def deleteRecordHistory(identifier):
     except Error:
 
         # Error information and details processing
+        print("ERROR: deleteRecordHistory")
         print(type(Error))
         print(Error.args)
         print(Error)
@@ -184,6 +185,7 @@ def deleteRecordPetClientLink(tupleOfID):
     except Error:
 
         # Error information and details processing
+        print("ERROR: deleteRecordPetClientLink")
         print(type(Error))
         print(Error.args)
         print(Error)
@@ -221,6 +223,7 @@ def deleteClientsLinks(identifier):
     except Error:
 
         # Error information and details processing
+        print("ERROR: deleteClientsLinks")
         print(type(Error))
         print(Error.args)
         print(Error)
@@ -257,7 +260,8 @@ def deletePetsLinks(identifier):
 
     except Error:
 
-        # Error information and details processing
+        # Error information and details processing7
+        print("ERRO: deletePetsLinks")
         print(type(Error))
         print(Error.args)
         print(Error)
@@ -301,6 +305,7 @@ def deleteClientsPets(identifier):
     except Error:
 
         # Error information and details processing
+        print("ERRO: deleteClientsPets")
         print(type(Error))
         print(Error.args)
         print(Error)
@@ -344,6 +349,7 @@ def deletePetsClients(identifier):
     except Error:
 
         # Error information and details processing
+        print("ERROR: deletePetsClients")
         print(type(Error))
         print(Error.args)
         print(Error)
