@@ -10,19 +10,26 @@ def deleteRecordAnimal(identifier):
     """
 
     # Creates a connection to our database and a cursor to work with it
-    connection = connect("database/database.sqlite")
-    cursor = connection.cursor()
+    connectionDB = connect("database/database.sqlite")
+    cursorDB = connectionDB.cursor()
+    connectionHistory = connect("database/history.sqlite")
+    cursorHistory = connectionDB.cursor()
 
     try:
 
         # SQL syntax that is going to be parsed inside the database console
-        query = f"delete from animals where ROWID = " + str(identifier)
+        query = f"delete from animals where ROWID = {identifier}"
 
-        # Executes command
-        cursor.execute(query)
+        # Deletes pet history inside history.sqlite
+        queryDeleteHistory = f"delete from history where animalId = {identifier}"
+
+        # Executes commands
+        cursorDB.execute(query)
+        cursorHistory.execute(queryDeleteHistory)
 
         # Deletes record from the database
-        connection.commit()
+        connectionDB.commit()
+        connectionHistory.commit()
 
     except Error:
 
@@ -31,11 +38,13 @@ def deleteRecordAnimal(identifier):
         print(Error.args)
         print(Error)
 
-        connection.rollback()  # Removes any change made during execution
+        connectionDB.rollback()  # Removes any change made during execution
+        connectionHistory.rollback()  # Removes any change made during execution
 
     finally:
 
-        connection.close()  # Closes connection with our database
+        connectionDB.close()  # Closes connection with our database
+        connectionHistory.close()  # Closes connection with our database
 
 
 def deleteRecordClient(identifier):
