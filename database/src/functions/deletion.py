@@ -263,7 +263,7 @@ def deletePetsLinks(identifier):
 def deleteClientsPets(identifier):
     """
     Description:
-    Deletes pets associated with this client.
+    Deletes pets that don't have any more owners and their links.
 
     :param identifier: client id -> integer
     """
@@ -274,17 +274,17 @@ def deleteClientsPets(identifier):
 
     try:
 
-        # SQL syntax that is going to be parsed inside the database console
-        query = f"""
-                delete from
-                    animals
-                where
-                    animals.ROWID in (select animals.ROWID from animals inner join clients, petsClientsLink where 
-                                      animals.ROWID = petsClientsLink.petId and petsClientsLink.clientId = {identifier})
-                """
+        # Gets all the pets of this client
+        queryGetsPets = f"""select petId from petsClientsLink where petsClientsLink.clientId = {identifier}"""
+        pets = cursor.execute(queryGetsPets).fetchall()
 
-        # Executes command
-        cursor.execute(query)
+        # For each pet, we check if it has more than one owner, if not, we delete it since it's only link is this client
+        for pet in pets:
+            queryCountsPetsOwners = f"""select count() from petsClientsLink where petId = {pet[0]}"""
+            numberOfClients = cursor.execute(queryCountsPetsOwners).fetchall()
+            if numberOfClients[0][0] is 1:
+                deleteRecordAnimal(pet[0])
+                deletePetsLinks(pet[0])
 
         # Deletes record from the database
         connection.commit()
@@ -306,7 +306,7 @@ def deleteClientsPets(identifier):
 def deletePetsClients(identifier):
     """
     Description:
-    Deletes pets associated with this pet.
+    Eliminates owners of only this animal and their links.
 
     :param identifier: pet id -> integer
     """
@@ -317,17 +317,17 @@ def deletePetsClients(identifier):
 
     try:
 
-        # SQL syntax that is going to be parsed inside the database console
-        query = f"""
-                delete from
-                    clients
-                where
-                    clients.ROWID in (select clients.ROWID from clients inner join animals, petsClientsLink where 
-                                      animals.ROWID = {identifier} and petsClientsLink.clientId = clients.ROWID)
-                """
+        # Gets all the owners of this pet
+        queryGetsOwners = f"""select clientId from petsClientsLink where petsClientsLink.petId = {identifier}"""
+        owners = cursor.execute(queryGetsOwners).fetchall()
 
-        # Executes command
-        cursor.execute(query)
+        # For each owner, we check if he has more than one pet, if not, we delete him since it's only link is this pet
+        for owner in owners:
+            queryCountsOwnersPets = f"""select count() from petsClientsLink where clientId = {owner[0]}"""
+            numberOfPets = cursor.execute(queryCountsOwnersPets).fetchall()
+            if numberOfPets[0][0] is 1:
+                deleteRecordClient(owner[0])
+                deleteClientsLinks(owner[0])
 
         # Deletes record from the database
         connection.commit()

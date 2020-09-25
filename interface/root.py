@@ -48,6 +48,6 @@ class MainApplication:
 
     def refreshApplication(self):
         """Refreshes all the trees inside all tabs of our application. Also clears all free entries."""
+        clearsElementsWithNoLinks()
         self.databaseFrame.refreshAllTabs()
         self.appointmentsFrame.updateTreeDate()
-        clearsElementsWithNoLinks()

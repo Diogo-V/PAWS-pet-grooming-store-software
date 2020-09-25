@@ -150,8 +150,8 @@ class WindowDeletePet(Toplevel):
             return
 
         # Confirms if the user wants to eliminate this entry
-        msg = messagebox.askyesno('Confirmar remoção', 'Deseja remover a entrada selecionada? Ao fazê-lo, todos os '
-                                                       'clientes associados seram eliminados!', parent=self.window)
+        msg = messagebox.askyesno('Confirmar remoção', 'Deseja remover a entrada? Ao fazê-lo, todos os donos sem '
+                                                       'outros animais serão eliminados!', parent=self.window)
 
         # If the user agreed, we continue
         if msg:
@@ -159,10 +159,10 @@ class WindowDeletePet(Toplevel):
             # Gets pet row id
             petId = self.tree.item(pet[0], "values")[0]
 
-            # Removes from database
+            # Removes pet from database
             deleteRecordAnimal(petId)
 
-            # Eliminates owners of the animal
+            # Eliminates owners of only this animal and their links
             deletePetsClients(petId)
 
             # Removes associated links

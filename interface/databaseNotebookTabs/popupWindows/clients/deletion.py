@@ -157,10 +157,10 @@ class WindowDeleteClient(Toplevel):
             # Gets client row id
             clientID = self.tree.item(client[0], "values")[0]
 
-            # Removes clients from database
+            # Removes client from database
             deleteRecordClient(clientID)
 
-            # Deletes associated pets
+            # Deletes pets that don't have any more owners and their links
             deleteClientsPets(clientID)
 
             # Removes associated links

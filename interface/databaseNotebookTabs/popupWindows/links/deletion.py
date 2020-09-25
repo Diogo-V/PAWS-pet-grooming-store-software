@@ -6,7 +6,6 @@ from tkinter.ttk import *
 from database.src.functions.deletion import deleteRecordPetClientLink, deleteRecordAnimal, deleteRecordClient
 from database.src.query.databaseNotebookTabs.links import *
 from database.src.utils.constants import typeOfAnimal
-from database.src.utils.maintenance import clearsElementsWithNoLinks
 from interface.databaseNotebookTabs.popupWindows.clients.information import WindowClient
 from interface.databaseNotebookTabs.popupWindows.pets.information import WindowPet
 
@@ -365,11 +364,8 @@ class WindowDeleteLink(Toplevel):
                 if not checksIfClientHasMoreThanOnePet(tupleOfIDs[1]):
                     deleteRecordClient(tupleOfIDs[1])
 
-                # Inserts values in our database
+                # Removes values in our database
                 deleteRecordPetClientLink(tupleOfIDs)
-
-                # Clears elements that might have been become free of any links
-                clearsElementsWithNoLinks()
 
                 # Refreshes all trees of our application
                 self.root.refreshApplication()
