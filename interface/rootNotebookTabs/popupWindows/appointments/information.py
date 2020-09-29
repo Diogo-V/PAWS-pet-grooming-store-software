@@ -5,6 +5,7 @@ from tkinter.ttk import *
 from database.src.functions.deletion import deleteRecordAppointment
 from database.src.functions.insertion import insertRecordHistory
 from database.src.query.rootNotebookTabs.appointments import getsInfoForDayAppointmentsWindow
+from database.src.utils.converters import stringToDate
 from interface.databaseNotebookTabs.popupWindows.history.petHistory import WindowPetHistory
 from interface.rootNotebookTabs.popupWindows.appointments.update import WindowUpdateAppointment
 
@@ -191,7 +192,8 @@ class WindowDayAppointment(Toplevel):
         if message == 'yes':
 
             # Changes database entries
-            insertRecordHistory((self.appServices, self.appDate, self.appTime, self.appPrice, self.appObs, self.petID))
+            insertRecordHistory((self.appServices, stringToDate(self.appDate), self.appTime,
+                                 self.appPrice, self.appObs, self.petID))
             deleteRecordAppointment(self.appointmentID)
 
             # Refreshes all trees of our application
