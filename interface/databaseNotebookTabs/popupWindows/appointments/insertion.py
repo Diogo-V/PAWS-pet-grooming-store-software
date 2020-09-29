@@ -141,19 +141,19 @@ class WindowInsertAppointment(Toplevel):
         self.misc = IntVar()
 
         # Creates checkboxes to input our selected services
-        self.entryCheckButtonBath = Checkbutton(self.services, text=services[0], variable=self.bath)
+        self.entryCheckButtonBath = Checkbutton(self.services, text=services[1], variable=self.bath)
         self.entryCheckButtonBath.grid(row=0, column=0, padx=20, pady=10, sticky=W)
-        self.entryCheckButtonNails = Checkbutton(self.services, text=services[1], variable=self.nails)
+        self.entryCheckButtonNails = Checkbutton(self.services, text=services[2], variable=self.nails)
         self.entryCheckButtonNails.grid(row=1, column=0, padx=20, pady=10, sticky=W)
-        self.entryCheckButtonKnot = Checkbutton(self.services, text=services[2], variable=self.knot)
+        self.entryCheckButtonKnot = Checkbutton(self.services, text=services[3], variable=self.knot)
         self.entryCheckButtonKnot.grid(row=2, column=0, padx=20, pady=10, sticky=W)
-        self.entryCheckButtonHygiene = Checkbutton(self.services, text=services[3], variable=self.hygiene)
+        self.entryCheckButtonHygiene = Checkbutton(self.services, text=services[4], variable=self.hygiene)
         self.entryCheckButtonHygiene.grid(row=3, column=0, padx=20, pady=10, sticky=W)
-        self.entryCheckButtonBrushing = Checkbutton(self.services, text=services[4], variable=self.brushing)
+        self.entryCheckButtonBrushing = Checkbutton(self.services, text=services[5], variable=self.brushing)
         self.entryCheckButtonBrushing.grid(row=0, column=1, padx=20, pady=10, sticky=W)
-        self.entryCheckButtonHaircut = Checkbutton(self.services, text=services[5], variable=self.haircut)
+        self.entryCheckButtonHaircut = Checkbutton(self.services, text=services[6], variable=self.haircut)
         self.entryCheckButtonHaircut.grid(row=1, column=1, padx=20, pady=10, sticky=W)
-        self.entryCheckButtonMisc = Checkbutton(self.services, text=services[6], variable=self.misc)
+        self.entryCheckButtonMisc = Checkbutton(self.services, text=services[7], variable=self.misc)
         self.entryCheckButtonMisc.grid(row=2, column=1, padx=20, pady=10, sticky=W)
 
         # Selects the most provided services for convenience
