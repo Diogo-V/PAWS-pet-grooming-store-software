@@ -413,19 +413,19 @@ class WindowInsertAppointment(Toplevel):
 
         # Inserted all the selected services into the list
         if self.bath.get() == 1:
-            selectedServices.append(services[0])
-        if self.nails.get() == 1:
             selectedServices.append(services[1])
-        if self.knot.get() == 1:
+        if self.nails.get() == 1:
             selectedServices.append(services[2])
-        if self.hygiene.get() == 1:
+        if self.knot.get() == 1:
             selectedServices.append(services[3])
-        if self.brushing.get() == 1:
+        if self.hygiene.get() == 1:
             selectedServices.append(services[4])
-        if self.haircut.get() == 1:
+        if self.brushing.get() == 1:
             selectedServices.append(services[5])
-        if self.misc.get() == 1:
+        if self.haircut.get() == 1:
             selectedServices.append(services[6])
+        if self.misc.get() == 1:
+            selectedServices.append(services[7])
 
         return servicesToString(selectedServices)
 
