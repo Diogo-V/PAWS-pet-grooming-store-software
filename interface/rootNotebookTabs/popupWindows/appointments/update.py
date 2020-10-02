@@ -242,19 +242,19 @@ class WindowUpdateAppointment(Toplevel):
         self.misc = IntVar()
 
         # Creates checkboxes to input our selected services
-        self.entryCheckButtonBath = Checkbutton(self.services, text=services[0], variable=self.bath)
+        self.entryCheckButtonBath = Checkbutton(self.services, text=services[1], variable=self.bath)
         self.entryCheckButtonBath.grid(row=0, column=0, padx=20, pady=10, sticky=W)
-        self.entryCheckButtonNails = Checkbutton(self.services, text=services[1], variable=self.nails)
+        self.entryCheckButtonNails = Checkbutton(self.services, text=services[2], variable=self.nails)
         self.entryCheckButtonNails.grid(row=1, column=0, padx=20, pady=10, sticky=W)
-        self.entryCheckButtonKnot = Checkbutton(self.services, text=services[2], variable=self.knot)
+        self.entryCheckButtonKnot = Checkbutton(self.services, text=services[3], variable=self.knot)
         self.entryCheckButtonKnot.grid(row=2, column=0, padx=20, pady=10, sticky=W)
-        self.entryCheckButtonHygiene = Checkbutton(self.services, text=services[3], variable=self.hygiene)
+        self.entryCheckButtonHygiene = Checkbutton(self.services, text=services[4], variable=self.hygiene)
         self.entryCheckButtonHygiene.grid(row=3, column=0, padx=20, pady=10, sticky=W)
-        self.entryCheckButtonBrushing = Checkbutton(self.services, text=services[4], variable=self.brushing)
+        self.entryCheckButtonBrushing = Checkbutton(self.services, text=services[5], variable=self.brushing)
         self.entryCheckButtonBrushing.grid(row=0, column=1, padx=20, pady=10, sticky=W)
-        self.entryCheckButtonHaircut = Checkbutton(self.services, text=services[5], variable=self.haircut)
+        self.entryCheckButtonHaircut = Checkbutton(self.services, text=services[6], variable=self.haircut)
         self.entryCheckButtonHaircut.grid(row=1, column=1, padx=20, pady=10, sticky=W)
-        self.entryCheckButtonMisc = Checkbutton(self.services, text=services[6], variable=self.misc)
+        self.entryCheckButtonMisc = Checkbutton(self.services, text=services[7], variable=self.misc)
         self.entryCheckButtonMisc.grid(row=2, column=1, padx=20, pady=10, sticky=W)
 
         # Sets all the checkButtons that are currently inside our provided services
@@ -543,19 +543,19 @@ class WindowUpdateAppointment(Toplevel):
 
         # Inserted all the selected services into the list
         if self.bath.get() == 1:
-            selectedServices.append(services[0])
-        if self.nails.get() == 1:
             selectedServices.append(services[1])
-        if self.knot.get() == 1:
+        if self.nails.get() == 1:
             selectedServices.append(services[2])
-        if self.hygiene.get() == 1:
+        if self.knot.get() == 1:
             selectedServices.append(services[3])
-        if self.brushing.get() == 1:
+        if self.hygiene.get() == 1:
             selectedServices.append(services[4])
-        if self.haircut.get() == 1:
+        if self.brushing.get() == 1:
             selectedServices.append(services[5])
-        if self.misc.get() == 1:
+        if self.haircut.get() == 1:
             selectedServices.append(services[6])
+        if self.misc.get() == 1:
+            selectedServices.append(services[7])
 
         return servicesToString(selectedServices)
 
