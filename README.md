@@ -1,5 +1,9 @@
 # Description
-Is still under development and is not meant to be used just yet.
+Full-blown database for pet grooming stores. <br />
+Is still missing the statistics tab and the history one. Everything else is fully operational.
+
+# Version
+* Alpha 1.0
 
 # Notes
 * Interface is in Portuguese but can be easily changed; <br/>
